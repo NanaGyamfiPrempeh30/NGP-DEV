@@ -10,7 +10,6 @@ This repository contains Terraform scripts and documentation for migrating on-pr
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
-- [Directory Structure](#directory-structure)
 - [Contributing](#contributing)
 
 ## Overview
