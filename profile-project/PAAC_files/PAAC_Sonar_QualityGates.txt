@@ -2,13 +2,13 @@ pipeline {
     agent any 
     tools {
       maven "MAVEN3"
-      jdk "OracleJDK11"
+      jdk "OracleJDK17"
     }
 
     stages {
       stage('Fetch Code'){
          steps {
-            git branch: 'CICD', url: 'https://github.com/techlearn-center/DevOps.git'
+            git branch: 'CICD', url: 'https://github.com/NanaGyamfiPrempeh30/NGP-DEV.git'
          }
       }
 
