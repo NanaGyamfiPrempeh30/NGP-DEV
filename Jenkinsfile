@@ -7,7 +7,7 @@ pipeline {
     }
 */
     environment {
-        registry = "techlearn2024/cicd"
+        registry = "yawgyamfiprem32/kops-dock"
         registryCredential = 'dockerhub'
     }
 
