@@ -3,7 +3,7 @@
 ############################################################################################
 
 ======================================================================
-### kOps.
+### Kubernetes Operations (kOps).
 ======================================================================
 
 Kubernetes offers powerful container orchestration capabilities, but configuring a cluster from the ground up can be complex and time-consuming. That’s where Kubernetes Operations (kOps) comes in.
