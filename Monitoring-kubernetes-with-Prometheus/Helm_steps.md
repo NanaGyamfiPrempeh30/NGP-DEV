@@ -92,7 +92,7 @@ prometheus-server-ext
 ```
 echo $(kubectl get svc prometheus-server-ext -o=jsonpath='{.spec.ports[0].nodePort}')
 ```
-- You can now access Prometheus by opening your browser and navigating to the IP address and port in the format `http://IP:Port`. For example, use `http://3.93.10.212:32531/`, where `3.93.10.212` is the IP address of the EC2 instance hosting your Grafana pod, and `32531` is the NodePort assigned for accessing Prometheus.
+- You can now access Prometheus by opening your browser and navigating to the IP address and port in the format `http://IP:Port`. For example, use `http://3.93.10.212:32531/`, where `3.93.10.212` is the IP address of the EC2 instance hosting your Prometheus pod, and `32531` is the NodePort assigned for accessing Prometheus.
 
 
 
