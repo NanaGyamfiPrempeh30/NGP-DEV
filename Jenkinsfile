@@ -7,7 +7,7 @@ pipeline {
     }
 */
     environment {
-        registry = "yawgyamfiprem32/kops-dock"
+        registry = "yawgyamfiprem32/sprintboot-dock"
         registryCredential = 'dockerhub'
     }
 
