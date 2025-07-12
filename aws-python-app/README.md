@@ -2,6 +2,7 @@
 
 This guides you through deploying a serverless Flask application on AWS using Pulumi for infrastructure as code. You'll learn how to create cloud resources programmatically, package a Flask application in a container, and expose it through API Gateway.
 
+
 ## Architecture
 
 ```mermaid
