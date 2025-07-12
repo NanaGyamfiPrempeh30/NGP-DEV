@@ -403,7 +403,6 @@ pulumi destroy --yes
 1. **"exec format error" in Lambda**
    - **Cause**: Building Docker image on ARM-based Mac without platform specification
    - **Cause**: Or: aws-wsgi missing from requerments and causing container to fail
-   - **Solution**: Ensure both Dockerfile and Pulumi image resource specify `platform="linux/amd64"`
 
 2. **API Gateway returns 500 errors**
    - **Cause**: Incorrect payload format version in API Gateway integration
