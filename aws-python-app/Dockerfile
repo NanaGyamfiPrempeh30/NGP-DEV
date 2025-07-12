@@ -10,3 +10,4 @@ RUN pip install -r ${LAMBDA_TASK_ROOT}/requirements.txt
 
 # Set the CMD to your handler
 CMD ["app.lambda_handler"]
+
