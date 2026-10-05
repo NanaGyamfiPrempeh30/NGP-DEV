@@ -213,7 +213,7 @@ Status key: ✅ verified · ❓ need owner input
 | Bosonit (Spain), end client ECDC | DevSecOps Engineer | Contract, hybrid / remote from Ghana | Nov 2025 to Jan 2026 | ✅ |
 | Algo AI (Canada) | Lead DevOps Engineer | Part-time, remote | Aug 2025 to Oct 2025 | ✅ |
 | Technology Excellence Services (USA) | DevOps Engineer | Full-time, remote | May 2022 to Mar 2026 | ✅ |
-| Blue Turtle Technologies (South Africa) | Platform Infrastructure Engineer | Remote | May 2020 to Apr 2022 | ✅ |
+| Blue Turtle Technologies (South Africa) | Platform Infrastructure Engineer | Full-time, remote | May 2020 to Apr 2022 | ✅ |
 | Millicom Tigo Ghana | Linux System Engineer | Onsite | Feb 2019 to Mar 2020 | ✅ |
 
 - Headline: **"6+ years in DevOps (since 2020). Linux engineering since 2019."**
@@ -264,7 +264,7 @@ Technology Excellence Services · Blue Turtle · Tigo
 | On-premise to multi-cloud migration | open-source | GitLab `Devops` · Medium 7 Jun 2024 | ✅ |
 | DevSecOps three-tier app on EKS (Terraform, Jenkins, GitLab) | open-source | GitLab `DevSecop` + `eks-terraform-gitlab` · Medium 27 Sep 2024 | ✅ |
 | k8s-platform-kiro (k8s-devsecops v2, spec-driven with Kiro, 9 commits) | open-source | Repo | Mention inside k8s-devsecops page, no own card |
-| Rural bank staff portal (Abokobi Rural Bank): issue logging, approvals with signatures, inventory module. Node/Express, SQLite, Docker Compose, Caddy, self-hosted on the bank's server | client | Internal only. Do **not** link the repo | ✅ facts · ✅ named · see §10.5 |
+| Rural bank staff portal (Abokobi Rural Bank): issue logging, approvals with signatures, inventory module. Node/Express, SQLite, Docker Compose, Caddy, self-hosted on the bank's server | client | Internal only. Do **not** link the repo | ✅ facts · ✅ named · ✅ role: full-stack developer, built with Claude Code as pair · see §10.5 |
 | Loan bot | personal | Planning stage | Don't publish |
 
 GitHub check (via connected account, 5 Oct): 11 owned public repos + 1 collaborator repo. All accounted for above.
