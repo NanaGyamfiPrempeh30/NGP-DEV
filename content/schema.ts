@@ -38,7 +38,8 @@ export const Job = z.object({
   company: z.string(),
   country: z.string(),
   mode: z.enum(["remote", "hybrid", "onsite"]),
-  type: z.enum(["full-time", "part-time", "contract"]),
+  // Omit when the owner has not confirmed it. No label is shown.
+  type: z.enum(["full-time", "part-time", "contract"]).optional(),
   title: z.string(),
   start: z.string(),
   end: z.string().optional(),

@@ -181,7 +181,7 @@ const Job = z.object({
   company: z.string(),
   country: z.string(),
   mode: z.enum(["remote", "hybrid", "onsite"]),
-  type: z.enum(["full-time", "part-time", "contract"]),
+  type: z.enum(["full-time", "part-time", "contract"]).optional(), // omit until owner confirms
   title: z.string(),
   start: z.string(),
   end: z.string().optional(),

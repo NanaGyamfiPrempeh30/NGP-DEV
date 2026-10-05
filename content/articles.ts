@@ -9,7 +9,7 @@ const base = "https://medium.com/@yawgyamfiprempeh27";
 
 // Static copy of the Medium feed (read 5 Oct 2026), merged with RSS and de-duplicated by URL.
 // Keeps the Writing page complete when the feed fails or drops older posts (PRD §7.4).
-// De-duplicate on the trailing post ID, not the full URL: the EKS post is linked by its
+// De-duplicate with mediumPostId, not the full URL: the EKS post is linked by its
 // short /p/ URL because its title (and slug) changed.
 export const articlesFallback: ArticleFallback[] = [
   {
@@ -73,10 +73,15 @@ export const articlesFallback: ArticleFallback[] = [
     tags: [],
   },
   {
-    // TODO(owner): confirm the exact title. Medium blocks automated reads and this post is no longer in the feed.
-    title: "Automating AWS Infrastructure with Python, Terraform and Boto3: A Step-by-Step Guide",
+    title: "Automating AWS Infrastructure with Python, Terraform, and Boto3: A Step-by-Step Guide",
     url: `${base}/automating-aws-infrastructure-with-python-terraform-and-boto3-a-step-by-step-guide-ee638a277984`,
     date: "2024-06-04",
     tags: [],
   },
 ];
+
+// Medium post ID: the hex string that ends every post URL, whatever its form.
+export function mediumPostId(url: string): string | null {
+  const match = new URL(url).pathname.match(/([0-9a-f]{10,12})$/);
+  return match?.[1] ?? null;
+}

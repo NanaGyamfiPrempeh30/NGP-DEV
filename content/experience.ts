@@ -123,8 +123,7 @@ export const jobs: Job[] = [
     company: "Blue Turtle Technologies",
     country: "South Africa",
     mode: "remote",
-    // TODO(owner): PRD and CV give no employment type here. Confirm full-time, then set verified: true.
-    type: "full-time",
+    // TODO(owner): employment type (full-time or part-time). Left out until confirmed.
     title: "Platform Infrastructure Engineer",
     start: "2020-05",
     end: "2022-04",
@@ -151,14 +150,13 @@ export const jobs: Job[] = [
       },
     ],
     stack: ["AWS", "Google Cloud", "Terraform", "CloudFormation"],
-    verified: false,
+    verified: true,
   },
   {
     company: "Millicom Tigo",
     country: "Ghana",
     mode: "onsite",
-    // TODO(owner): PRD and CV give no employment type here. Confirm full-time, then set verified: true.
-    type: "full-time",
+    // TODO(owner): employment type (full-time or part-time). Left out until confirmed.
     title: "Linux System Engineer",
     start: "2019-02",
     end: "2020-03",
@@ -181,7 +179,7 @@ export const jobs: Job[] = [
       },
     ],
     stack: ["Linux", "Ubuntu", "CentOS", "RHEL", "Apache", "Nginx", "MySQL"],
-    verified: false,
+    verified: true,
   },
 ];
 
