@@ -20,4 +20,52 @@ links:
 verified: false
 ---
 
-{/* TODO: case study body. Sections: Context, Problem, What I built, How it works, What broke and how I fixed it, Result, Links. */}
+## Context
+
+I gave myself 48 hours to build a Kubernetes platform by hand on AWS. I used plain EC2 machines and kubeadm, with no managed Kubernetes service. The repo is public.
+
+## Problem
+
+Job adverts ask for production Kubernetes experience. Tutorials stop at one nginx pod. I wanted a system I had designed and debugged myself, so I could explain every part of it to an interviewer.
+
+## What I built
+
+- Three EC2 instances (one master, two workers) in a private subnet, provisioned with Terraform and configured with Ansible.
+- A kubeadm cluster with Calico for pod networking and MetalLB for load balancing.
+- Traefik for ingress and cert-manager for TLS.
+- Vault for secrets, with External Secrets Operator syncing them into the cluster.
+- ArgoCD deploying a three-tier app (frontend, backend, database) from Git.
+- Prometheus and Grafana for metrics.
+
+## How it works
+
+1. I push a change to GitHub.
+2. ArgoCD sees it and applies the manifests.
+3. External Secrets Operator pulls the app's secrets from Vault, so none sit in Git.
+4. Traefik routes traffic to the app through a MetalLB address.
+5. Prometheus scrapes Traefik, and Grafana shows the request rates.
+
+The cluster is private. I reach it over SSH tunnels through the master node.
+
+## What broke and how I fixed it
+
+The first cluster never became ready and printed no error. A t3.small has too little memory for a control plane. I moved to t3.medium.
+
+My first Ingress hung for six hours. Traefik was listening on the HTTPS entry point only, and the Ingress pointed at a TLS secret that did not exist. Traefik had been logging that error the whole time.
+
+Secrets showed as synced but came out empty. Vault's KV v2 engine keeps data under `secret/data/...`, and the UI hides the extra segment.
+
+ArgoCD returned a 404 through my tunnel. The port number in the Host header broke the route, so I tunnelled on port 80.
+
+## Result
+
+Everything worked together inside the 48 hours. I changed an image tag from v1 to v2 in Git, and ArgoCD rolled it out within seconds with no kubectl.
+
+Next time I would start with bigger instances and set up monitoring first. I would also read the controller logs before anything else.
+
+A second version, [k8s-platform-kiro](https://github.com/NanaGyamfiPrempeh30/k8s-platform-kiro), rebuilds this from a written spec using Kiro.
+
+## Links
+
+- [Repo](https://github.com/NanaGyamfiPrempeh30/k8s-devsecops)
+- [Article: a production-grade Kubernetes platform in 48 hours](https://medium.com/@yawgyamfiprempeh27/i-built-a-production-grade-kubernetes-platform-in-48-hours-db5629fba0e3)
