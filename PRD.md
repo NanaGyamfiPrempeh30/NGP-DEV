@@ -1,6 +1,6 @@
 # PRD: Yaw Nana Gyamfi Prempeh Portfolio (Online CV)
 
-Version 1.4 · 5 Oct 2026 · Owner: Yaw Nana Gyamfi Prempeh (NGP-Dev)
+Version 1.6 · 5 Oct 2026 · Owner: Yaw Nana Gyamfi Prempeh (NGP-Dev)
 Build tool: Claude Code. Read `CLAUDE.md` first, then this file.
 
 ---
@@ -255,10 +255,10 @@ Technology Excellence Services · Blue Turtle · Tigo
 | eks-karpenter-gitops-bench (EKS, Karpenter, ArgoCD, Tenki CI, 86 Terraform resources) | open-source | Repo 3★ 5 forks · Medium 22 Jan 2026 | ✅ |
 | AuditTrack (FastAPI/React, ECS Fargate, SQS, Lambda, DynamoDB, S3, Terraform; Azure to AWS migration) | open-source | Repo | ✅ |
 | Sika Track (Telegram bookkeeping bot for Ghanaian informal businesses, Flask, Supabase, Render, encrypted backups) | open-source | Repo | ✅ |
-| nextcloud-installer (9-stage idempotent installer) | open-source | Repo 1★ | ✅ |
+| nextcloud-installer (staged idempotent installer) | open-source | Repo 1★ | ✅ |
 | GXDCH Loire (9 of 12 tests) and Tractus-X EDC | work | Internal, inside Bosonit entry | ✅ no separate page |
 | py-guardian-ops (FastAPI → Azure Container Apps, Trivy) | open-source | Repo · Medium 19 Oct 2025 | ✅ |
-| Serverless Flask on AWS with Pulumi | open-source | Repo: https://github.com/NanaGyamfiPrempeh30/devops-labs/tree/Pulumi/aws-python-app · Medium 12 Jul 2025 | ✅ (link live once rename is done) |
+| Serverless Flask on AWS with Pulumi | open-source | Repo: https://github.com/NanaGyamfiPrempeh30/devops-labs/tree/Pulumi/aws-python-app · Medium 12 Jul 2025 | ✅ (rename done, verified 5 Oct) |
 | Blue/green on ECS with CodePipeline | open-source | GitLab `Devops` · Medium 13 Mar 2025 | ✅ |
 | AWS automation with Python, Terraform and Boto3 | open-source | GitLab `Devops` · Medium 4 Jun 2024 | ✅ |
 | On-premise to multi-cloud migration | open-source | GitLab `Devops` · Medium 7 Jun 2024 | ✅ |
@@ -341,10 +341,11 @@ Link every profile directly. No verification needed; they are the owner's own UR
 - Mentoring series: 6 X posts, 18 Apr to 18 Jun 2026 (§7.5). Mentee agreed to be named (Clinton).
 - Bank repo: owner has asked the bank's IT manager to make it private. Reminder built into CLAUDE.md and milestones M3/M6.
 - Public CV rebuilt without unsourced percentages, fact-checked against repos and articles before the edit. Site and CV now agree.
+- `NGP-DEV` renamed to `devops-labs` (done 5 Oct, 9 branches verified). The new `NGP-DEV` repo is this portfolio.
 
 ### 11.2 Still open (launch blockers)
 1. **Bank repo private?** Owner checks with the IT manager. Claude Code reminds at M3 and blocks launch at M6.
-2. **`NGP-DEV` → `devops-labs`** (owner decision, 5 Oct; owner renames it). Order: (1) rename on GitHub, (2) change the link in the Pulumi Medium article to `https://github.com/NanaGyamfiPrempeh30/devops-labs/tree/Pulumi/aws-python-app`, (3) only then create the new `NGP-DEV`. Reusing the old name kills GitHub's redirect. Claude Code: check the devops-labs URL resolves before linking it.
+2. Bank portal code. Owner wrote most of it unpaid, as a favour, and owns his code. Plan: mirror the bank's portal repo (with history) into a private repo under his account, after a gitleaks scan of the full history. It stays private while it runs the bank's live system. The portfolio still never links it.
 
 ## 12. Milestones
 
@@ -356,7 +357,7 @@ Link every profile directly. No verification needed; they are the owner's own UR
 | M3 | All pages built, responsive, light/dark | Manual check at 360px and 1440px. **Before starting:** remind owner to confirm the bank repo is private (CLAUDE.md) |
 | M4 | Medium + GitHub data fetch | Writing page lists 11 posts |
 | M5 | Accessibility, SEO, security headers | Lighthouse ≥ 95 ×4, securityheaders.com grade A |
-| M6 | Launch | Custom domain (optional), LinkedIn + CV link to site. **Gate:** bank repo confirmed private |
+| M6 | Launch | PR from `main` to `production` merged (the only way production changes). Custom domain (optional), LinkedIn + CV link to site. **Gate:** bank repo confirmed private before that PR merges |
 
 ## 13. Risks
 

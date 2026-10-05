@@ -50,8 +50,8 @@ public/cv/           YNGP_CV_public.pdf (no address/phone/referees)
 10. **Third-party embeds** (TikTok) use a click-to-load facade.
 
 ## Owner reminders (do not skip)
-- **Bank repo check.** Before you start M3 (building pages), and again before you write the Abokobi Rural Bank project page, stop and tell me: "Check with Bismark that `ysamuel73-cloud/aacb-issue-portal` is now private." Wait for my answer. If it's still public, build the page but don't merge it.
-- **Launch gate (M6):** don't deploy to production until I confirm that repo is private.
+- **Bank repo check.** Before you start M3 (building pages), and again before you write the Abokobi Rural Bank project page, stop and tell me: "Check with Bismark that the bank's portal repo is now private." Wait for my answer. If it's still public, build the page but don't merge it.
+- **Launch gate (M6):** don't open or merge the `main` to `production` PR until I confirm that repo is private.
 
 ## Data sources
 - Medium RSS: `https://medium.com/feed/@yawgyamfiprempeh27`, revalidate 86400. Merge with `content/articles.ts`. Never fail the build on fetch error.
@@ -60,6 +60,8 @@ public/cv/           YNGP_CV_public.pdf (no address/phone/referees)
 ## Git
 - Conventional commits (`feat:`, `fix:`, `content:`, `chore:`).
 - One feature per branch. PR to `main`. CI must be green.
+- `main` deploys to Vercel as a preview, behind Vercel Authentication. It is not the live site.
+- `production` is Vercel's Production Branch. It changes only through a PR from `main` to `production`, at M6, after the bank repo check. Never push or merge to `production` otherwise.
 
 ## Adding or editing content
 Use the `portfolio-content` skill in `.claude/skills/`. It has the fact-check steps.
