@@ -19,4 +19,38 @@ links:
 verified: false
 ---
 
-{/* TODO: case study body. Sections: Context, Problem, What I built, How it works, What broke and how I fixed it, Result, Links. */}
+## Context
+
+This is not my project. [Aman Pathak wrote it](https://github.com/AmanPathak-DevOps/End-to-End-Kubernetes-Three-Tier-DevSecOps-Project): a three-tier app on AWS EKS with Jenkins, ArgoCD, Prometheus and Grafana. I deployed it on my own AWS account and wrote up the steps.
+
+## Problem
+
+I wanted to run a full DevSecOps pipeline myself, on infrastructure I had to pay for and fix.
+
+## What I built
+
+Only the changes needed to run it somewhere else. My commits start on 27 August 2024.
+
+- Moved the code from GitHub to GitLab and pointed both Jenkins pipelines at the new repos.
+- Swapped in my own Terraform state bucket, lock table and key pair.
+- Updated image tags in the Kubernetes manifests as the pipelines ran.
+- Rewrote the README.
+
+## How it works
+
+Jenkins builds and scans the frontend and backend, pushes the images to ECR and updates the manifests in Git. ArgoCD deploys them to EKS. That design is Aman's.
+
+## What broke and how I fixed it
+
+TODO(owner): the article records no failures. Tell me what went wrong when you ran it, or drop this page.
+
+## Result
+
+The stack ran on my account. I recommend keeping this as a Medium link under Writing, not as a project.
+
+## Links
+
+- [Original project by Aman Pathak](https://github.com/AmanPathak-DevOps/End-to-End-Kubernetes-Three-Tier-DevSecOps-Project)
+- [My copy: app](https://gitlab.com/NanaGyamfiPrempeh30/DevSecop)
+- [My copy: EKS Terraform](https://gitlab.com/NanaGyamfiPrempeh30/eks-terraform-gitlab)
+- [Article](https://medium.com/@yawgyamfiprempeh27/deploying-an-advanced-comprehensive-end-to-end-devsecops-kubernetes-three-tier-project-a18003741d0a)

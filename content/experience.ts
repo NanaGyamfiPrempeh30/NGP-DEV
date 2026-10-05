@@ -19,7 +19,7 @@ export const jobs: Job[] = [
     end: "2026-01",
     // PRD §10.1 approves 9 claims; §7.2 caps a job at 5 with 1 internal.
     // The other 4 (cert-manager, Tractus-X EDC, GXDCH 9 of 12, 80+ pages of docs)
-    // go on the ECDC project page. TODO(owner): confirm this split.
+    // go on the ECDC project page (owner approved the split, 5 Oct 2026).
     claims: [
       {
         text: "Built ECDC's compliance platform cluster on IONOS Cloud from scratch with Terraform and Ansible. Sole DevSecOps engineer.",
@@ -123,7 +123,7 @@ export const jobs: Job[] = [
     company: "Blue Turtle Technologies",
     country: "South Africa",
     mode: "remote",
-    // TODO(owner): employment type (full-time or part-time). Left out until confirmed.
+    type: "full-time",
     title: "Platform Infrastructure Engineer",
     start: "2020-05",
     end: "2022-04",

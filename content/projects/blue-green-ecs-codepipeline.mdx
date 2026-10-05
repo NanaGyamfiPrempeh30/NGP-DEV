@@ -17,4 +17,39 @@ links:
 verified: false
 ---
 
-{/* TODO: case study body. Sections: Context, Problem, What I built, How it works, What broke and how I fixed it, Result, Links. */}
+## Context
+
+A walkthrough of blue/green deployments on Amazon ECS. AWS CodePipeline runs the release, CodeBuild builds the image and CodeDeploy switches the traffic.
+
+## Problem
+
+Replacing a running container in place means downtime, and going back is slow. With blue/green the new version starts beside the old one. Traffic moves across only when the new one is healthy, and you can move it back.
+
+## What I built
+
+- A web app with a Dockerfile, a `buildspec.yaml` for CodeBuild and an `appspec.yaml` for CodeDeploy.
+- An ECS cluster, a task definition and a service controlled by CodeDeploy.
+- An application load balancer with two target groups, one per colour.
+- A pipeline that builds on every push and then deploys.
+
+## How it works
+
+1. I push a change to the repo.
+2. CodeBuild builds the image, gives it a unique tag and pushes it to ECR.
+3. CodeDeploy starts the new tasks in the second target group.
+4. The load balancer moves traffic to them.
+
+## What broke and how I fixed it
+
+The first pipeline run failed. The CodeBuild service role had no permission to log in to ECR. I added the permission and released the change again.
+
+Deployments then failed on the task definition file. An exported `taskdef.json` carries `registeredAt`, `registeredBy` and `tags`, and CodeDeploy rejects them. I removed those lines.
+
+## Result
+
+A code change now goes from push to live traffic without a manual step, and the old version stays ready for a rollback.
+
+## Links
+
+- [Repo](https://gitlab.com/NanaGyamfiPrempeh30/Devops)
+- [Article: blue/green on Amazon ECS](https://medium.com/@yawgyamfiprempeh27/deploying-blue-green-strategies-using-aws-ci-cd-workflows-on-amazon-elastic-container-service-fc186b739566)

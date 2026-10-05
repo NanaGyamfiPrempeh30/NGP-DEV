@@ -17,4 +17,44 @@ links:
 verified: false
 ---
 
-{/* TODO: case study body. Sections: Context, Problem, What I built, How it works, What broke and how I fixed it, Result, Links. */}
+## Context
+
+A small Flask app that runs on AWS Lambda behind API Gateway. All the infrastructure is written in Python with Pulumi. I wrote it up as a tutorial.
+
+## Problem
+
+I wanted to try infrastructure as code in a real programming language, where YAML was the usual choice, and to run a web app with no server to manage.
+
+## What I built
+
+- An S3 bucket holding a text file.
+- A Flask app that serves that file, packaged as a Docker container for Lambda.
+- An ECR repository, the IAM roles and the Lambda function.
+- An API Gateway route that exposes the function over HTTP.
+
+Pulumi's Python SDK creates all of it.
+
+## How it works
+
+1. A request reaches API Gateway.
+2. API Gateway calls the Lambda function.
+3. The container runs Flask through an adapter and returns the file from S3.
+
+`pulumi up` builds the image, pushes it to ECR and updates the function.
+
+## What broke and how I fixed it
+
+API Gateway returned 500 errors until I set `payload_format_version="1.0"` on the integration. The adapter expects the older event format.
+
+Docker builds failed on my machine until the project folder was shared with Docker Desktop.
+
+TODO(owner): anything else that went wrong here? The article only lists these two as tips.
+
+## Result
+
+One command deploys the whole stack and one command removes it. The code is on the `Pulumi` branch of my labs repo.
+
+## Links
+
+- [Repo](https://github.com/NanaGyamfiPrempeh30/devops-labs/tree/Pulumi/aws-python-app)
+- [Article: a serverless Flask application on AWS with Pulumi](https://medium.com/@yawgyamfiprempeh27/deploying-a-serverless-flask-application-on-aws-with-pulumi-3e82075f1233)

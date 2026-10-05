@@ -24,4 +24,49 @@ links:
 verified: false
 ---
 
-{/* TODO: case study body. Sections: Context, Problem, What I built, How it works, What broke and how I fixed it, Result, Links. */}
+## Context
+
+Wilson Mar gave me access to his Ambient Weather station and asked me to build an MCP server for it. The idea: ask Claude Desktop about the weather in plain words and get real readings back, with no raw JSON to read.
+
+## Problem
+
+The build took a weekend. Publishing took far longer. "Works on my machine" and "a stranger can install it" turned out to be two separate jobs, and no tutorial I found covers the second one.
+
+## What I built
+
+- Three tools over stdio: `ping`, `get_devices` and `get_current_weather`.
+- Python with FastMCP, and httpx for the API calls.
+- A 60-second cache, so the server stays inside Ambient Weather's rate limits.
+- Two ways to load API keys: the OS keyring on a laptop, environment variables in a container.
+- A Docker image on Docker Hub and a listing on mcp.so.
+
+## How it works
+
+1. The assistant calls a tool.
+2. The server checks its cache. A reading younger than 60 seconds is returned straight away.
+3. Otherwise it calls the Ambient Weather API and caches the answer.
+
+Logs go to stderr. Stdout carries JSON-RPC and nothing else, because one stray print line disconnects the client.
+
+## What broke and how I fixed it
+
+It took six rounds. These three cost the most time.
+
+The Docker build failed with "Readme file does not exist". I had put README.md in `.dockerignore`, and the build backend checks that file. One line removed.
+
+I deleted the `keyring` dependency because it looked like a leftover. It was not. The credential loader needs it, and the smoke test crashed two builds later. I now grep before I remove anything.
+
+The container started, exited and printed nothing. I had passed FastMCP a `version` argument it does not accept. The error went to stderr, and my test command threw stderr away. I stopped silencing stderr while debugging.
+
+## Result
+
+The image is on Docker Hub and the server is listed on mcp.so. The source is MIT licensed.
+
+The code was the easy part. Packaging was where the work was.
+
+## Links
+
+- [Repo](https://github.com/NanaGyamfiPrempeh30/ambient-weather-mcp)
+- [Docker Hub](https://hub.docker.com/u/yawgyamfiprem32)
+- [mcp.so listing](https://mcp.so/server/ambient-weather-mcp/NanaGyamfiPrempeh30)
+- [Article: publishing my first MCP server](https://medium.com/@yawgyamfiprempeh27/i-published-my-first-mcp-server-to-docker-hub-and-mcp-so-heres-what-actually-happened-1f26665f9ec1)

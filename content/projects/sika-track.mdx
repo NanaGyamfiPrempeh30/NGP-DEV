@@ -15,4 +15,38 @@ links:
 verified: false
 ---
 
-{/* TODO: case study body. Sections: Context, Problem, What I built, How it works, What broke and how I fixed it, Result, Links. */}
+## Context
+
+Sika Track is a Telegram bot for bookkeeping. It is for informal businesses in Ghana, where the daily record is often a paper notebook.
+
+## Problem
+
+A trader will not open a spreadsheet at the end of a long day. Most already use a chat app. So the books should live in the chat.
+
+## What I built
+
+- A bot that reads plain messages such as "sold 50" or "spent 30 gas" and records them.
+- Summaries of profit by day or by week, on request.
+- A Flask app that receives messages from Telegram through a webhook.
+- Supabase for the database and Render for hosting.
+- A weekly encrypted backup.
+
+## How it works
+
+1. The owner sends a message to the bot.
+2. Telegram posts it to the Flask app.
+3. The app works out the amount and category and saves the entry.
+
+A GitHub Action backs up the database every Sunday. The repo is public, so each backup is encrypted before it is stored. Backups are kept for 90 days.
+
+## What broke and how I fixed it
+
+TODO(owner): the README records no failures. Tell me what went wrong, or this page stays hidden.
+
+## Result
+
+TODO(owner): is anyone using it yet? I have no usage facts.
+
+## Links
+
+- [Repo](https://github.com/NanaGyamfiPrempeh30/Sika-Track)

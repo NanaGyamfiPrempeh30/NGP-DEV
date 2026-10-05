@@ -25,4 +25,44 @@ links:
 verified: false
 ---
 
-{/* TODO: case study body. Sections: Context, Problem, What I built, How it works, What broke and how I fixed it, Result, Links. */}
+## Context
+
+A Kubernetes platform on AWS EKS, built to measure things. Karpenter adds nodes, ArgoCD deploys from Git, and the CI runs on Tenki Cloud runners.
+
+## Problem
+
+"I can deploy Kubernetes" is a weak claim. I wanted numbers I had captured myself: how many resources Terraform manages, what autoscaling does under load, and what CI costs per minute.
+
+## What I built
+
+- Terraform for the VPC, the EKS cluster, Karpenter and ArgoCD. One apply creates 86 AWS resources in about 15 to 20 minutes.
+- Karpenter set to use Spot and On-Demand nodes, on both AMD64 and ARM64.
+- ArgoCD running two environments: dev with one replica, prod with two replicas and an autoscaler.
+- A small Go API on a distroless image, built for both architectures.
+- CI moved from GitHub-hosted runners to Tenki.
+
+## How it works
+
+1. I push a change to Git.
+2. CI builds the image for both architectures.
+3. ArgoCD applies the change to dev or prod.
+4. Under load, the pod autoscaler adds pods. Karpenter adds nodes when the pods need them.
+
+## What broke and how I fixed it
+
+`terraform destroy` failed on dependencies. Kubernetes had created load balancers and security groups that Terraform did not know about. I now delete the Kubernetes services first.
+
+The autoscaler showed an unknown CPU figure. EKS does not install metrics-server by default, so I installed it.
+
+Karpenter said "no instance types found". That message usually points at the NodePool requirements or at missing AWS permissions.
+
+## Result
+
+- Under load the autoscaler went from 2 to 3 pods when CPU reached 76% against a 70% target.
+- Tenki cost $0.006 a minute against $0.008 on GitHub, so 25% less, with twice the CPU.
+- Builds were slower, because each one now targets two architectures. That trade-off is in the article.
+
+## Links
+
+- [Repo](https://github.com/NanaGyamfiPrempeh30/eks-karpenter-gitops-bench)
+- [Article: EKS, Karpenter and ArgoCD](https://medium.com/p/8bd81d4d657b)

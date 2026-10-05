@@ -17,4 +17,37 @@ links:
 verified: false
 ---
 
-{/* TODO: case study body. Sections: Context, Problem, What I built, How it works, What broke and how I fixed it, Result, Links. */}
+## Context
+
+A guide to moving an on-premise web app onto two clouds. The app records guests at a resort and stores a PDF for each one.
+
+## Problem
+
+The app, its database and its files all sat on one on-premise machine. The exercise was to split them across AWS and Google Cloud and move the existing data over.
+
+## What I built
+
+- Terraform that provisions resources in both AWS and Google Cloud.
+- An S3 bucket for the PDF files, with IAM users for access.
+- A Cloud SQL MySQL instance for the database.
+- A Docker image of the app, stored in Google Container Registry.
+- A deployment on Google Kubernetes Engine.
+
+## How it works
+
+The app runs on GKE. It reads and writes guest records in Cloud SQL and keeps the PDFs in S3. The Kubernetes deployment file holds the image path, the bucket name and the database address.
+
+To migrate, I imported the old database into Cloud SQL and synced the PDF files to the bucket.
+
+## What broke and how I fixed it
+
+TODO(owner): the article is a step-by-step guide and records no failures. Tell me what went wrong, or this page stays hidden.
+
+## Result
+
+After the migration, the old entries showed up in the app's guest results page.
+
+## Links
+
+- [Repo](https://gitlab.com/NanaGyamfiPrempeh30/Devops/-/tree/Multi-Cloud)
+- [Article: migrating an on-premise app to a multi-cloud environment](https://medium.com/@yawgyamfiprempeh27/step-by-step-guide-to-migrating-an-on-premise-web-application-to-a-multi-cloud-environment-using-bd35f73fe86e)
