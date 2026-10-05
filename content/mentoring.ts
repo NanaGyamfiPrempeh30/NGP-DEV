@@ -15,8 +15,9 @@ export type MentoringSeries = {
 
 export type Mentor = {
   name: string;
+  description: string;
   project: string;
-  url?: string;
+  url: string;
 };
 
 // PRD §7.5. Paused by the mentee after week 5: say so, and don't imply a finished programme.
@@ -38,8 +39,10 @@ export const mentoring: MentoringSeries | null = {
   ],
 };
 
-// TODO(owner): Wilson Mar's site URL, and confirm he agreed to the link (PRD §7.5).
+// Describe him only with these words (owner, 5 Oct 2026).
 export const mentor: Mentor = {
   name: "Wilson Mar",
+  description: "senior DevSecOps and AI leader",
   project: "Ambient Weather MCP",
+  url: "https://wilsonmar.github.io/",
 };

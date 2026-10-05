@@ -1,0 +1,28 @@
+---
+slug: eks-karpenter-gitops-bench
+title: "eks-karpenter-gitops-bench"
+kind: open-source
+featured: false
+canNameClient: false
+role: "Author"
+start: "2026-01"
+startSource: first-commit
+stack: ["EKS", "Karpenter", "ArgoCD", "Terraform", "Tenki"]
+outcome: "EKS with Karpenter and ArgoCD from one terraform apply, with CI moved to Tenki runners."
+claims:
+  - text: "86 AWS resources from one `terraform apply`, in 15 to 20 minutes"
+    evidence: { label: "Article", url: "https://medium.com/p/8bd81d4d657b" }
+    internal: false
+  - text: "CI 25% cheaper per minute ($0.008 vs $0.006) with double the CPU"
+    evidence: { label: "Article", url: "https://medium.com/p/8bd81d4d657b" }
+    internal: false
+  - text: "HPA scaled 2 to 3 pods when CPU hit 76% against a 70% target"
+    evidence: { label: "Article", url: "https://medium.com/p/8bd81d4d657b" }
+    internal: false
+links:
+  - { label: "Repo", url: "https://github.com/NanaGyamfiPrempeh30/eks-karpenter-gitops-bench" }
+  - { label: "Article", url: "https://medium.com/p/8bd81d4d657b" }
+verified: false
+---
+
+{/* TODO: case study body. Sections: Context, Problem, What I built, How it works, What broke and how I fixed it, Result, Links. */}

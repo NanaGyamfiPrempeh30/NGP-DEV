@@ -1,0 +1,29 @@
+---
+# Holds the 4 Bosonit claims from PRD §10.1 that do not fit on the job entry (max 5, 1 internal).
+slug: ecdc-kubernetes-ionos
+title: "ECDC Kubernetes on IONOS"
+kind: work
+featured: true
+canNameClient: false
+role: "Sole DevSecOps engineer"
+start: "2025-11"
+end: "2026-01"
+startSource: owner
+stack: ["Kubernetes", "IONOS Cloud", "Terraform", "Ansible", "Traefik", "HAProxy", "Vault", "ArgoCD"]
+outcome: "ECDC's compliance platform cluster on IONOS Cloud, built from scratch."
+claims:
+  - text: "cert-manager with a self-signed CA for cluster services; Let's Encrypt HTTP-01 tested on a dummy domain (`hello.ecdc.es`)."
+    evidence: { label: "Article", url: "https://medium.com/@yawgyamfiprempeh27/i-deployed-a-production-kubernetes-cluster-on-a-european-bare-metal-cloud-85555b1fe4a8" }
+    internal: false
+  - text: "Eclipse Tractus-X EDC with custom Helm values and Vault integration."
+    internal: true
+  - text: "Gaia-X GXDCH Loire services deployed locally; 9 of 12 compliance tests passing."
+    internal: true
+  - text: "80+ pages of docs: setup guides, architecture, runbooks."
+    internal: true
+links:
+  - { label: "Article", url: "https://medium.com/@yawgyamfiprempeh27/i-deployed-a-production-kubernetes-cluster-on-a-european-bare-metal-cloud-85555b1fe4a8" }
+verified: false
+---
+
+{/* TODO: case study body. Sections: Context, Problem, What I built, How it works, What broke and how I fixed it, Result, Links. */}

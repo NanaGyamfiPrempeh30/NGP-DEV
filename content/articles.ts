@@ -9,8 +9,8 @@ const base = "https://medium.com/@yawgyamfiprempeh27";
 
 // Static copy of the Medium feed (read 5 Oct 2026), merged with RSS and de-duplicated by URL.
 // Keeps the Writing page complete when the feed fails or drops older posts (PRD §7.4).
-// TODO(owner): the 11th post (4 Jun 2024, AWS automation with Python, Terraform and Boto3)
-// has dropped out of the feed. Send its URL and exact title.
+// De-duplicate on the trailing post ID, not the full URL: the EKS post is linked by its
+// short /p/ URL because its title (and slug) changed.
 export const articlesFallback: ArticleFallback[] = [
   {
     title: "I Built a Kubernetes MCP Server With 453 Passing Tests. Then I Pointed It at a Real Cluster.",
@@ -32,7 +32,7 @@ export const articlesFallback: ArticleFallback[] = [
   },
   {
     title: "EKS + Karpenter + ArgoCD: From Zero to Production GitOps with 25% Cheaper CI/CD Pipelines—Here’s…",
-    url: `${base}/eks-karpenter-argocd-from-zero-to-production-gitops-with-25-cheaper-ci-cd-pipelines-heres-8bd81d4d657b`,
+    url: "https://medium.com/p/8bd81d4d657b",
     date: "2026-01-22",
     tags: [],
   },
@@ -70,6 +70,13 @@ export const articlesFallback: ArticleFallback[] = [
     title: "Step-by-Step Guide to Migrating an On-Premise Web Application to a Multi-Cloud Environment Using…",
     url: `${base}/step-by-step-guide-to-migrating-an-on-premise-web-application-to-a-multi-cloud-environment-using-bd35f73fe86e`,
     date: "2024-06-07",
+    tags: [],
+  },
+  {
+    // TODO(owner): confirm the exact title. Medium blocks automated reads and this post is no longer in the feed.
+    title: "Automating AWS Infrastructure with Python, Terraform and Boto3: A Step-by-Step Guide",
+    url: `${base}/automating-aws-infrastructure-with-python-terraform-and-boto3-a-step-by-step-guide-ee638a277984`,
+    date: "2024-06-04",
     tags: [],
   },
 ];

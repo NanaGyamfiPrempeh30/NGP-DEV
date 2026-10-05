@@ -169,6 +169,7 @@ const Project = z.object({
   role: z.string(),
   start: z.string(),                    // "2026-05"
   end: z.string().optional(),           // omit = ongoing
+  startSource: z.enum(["owner", "first-commit", "article"]), // "article" shows as "Published <Mon YYYY>"
   stack: z.array(z.string()).max(8),
   outcome: z.string().max(120),
   claims: z.array(Claim),

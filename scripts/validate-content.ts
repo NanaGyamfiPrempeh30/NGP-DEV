@@ -1,6 +1,7 @@
 import { Cert, Job } from "../content/schema";
 import { jobs } from "../content/experience";
 import { certs } from "../content/certs";
+import { loadProjects, type LoadedProject } from "../lib/projects";
 
 function fail(message: string): never {
   console.error(`validate: ${message}`);
@@ -42,4 +43,35 @@ for (const [i, cert] of certs.entries()) {
   }
 }
 
-console.log(`validate: ${jobs.length} job(s), ${certs.length} cert(s) OK`);
+let projects: LoadedProject[] = [];
+try {
+  projects = loadProjects();
+} catch (error) {
+  fail(error instanceof Error ? error.message : String(error));
+}
+
+const hidden: string[] = [];
+for (const project of projects) {
+  if (!project.verified) {
+    hidden.push(project.slug);
+    continue;
+  }
+  // A verified project ships, so its facts and page must be complete.
+  if (!/^\d{4}-\d{2}$/.test(project.start)) {
+    fail(`${project.slug}: verified but start "${project.start}" is not YYYY-MM`);
+  }
+  if (project.role.includes("TODO")) {
+    fail(`${project.slug}: verified but role is still a TODO`);
+  }
+  // PRD §7.3: "What broke" is required.
+  if (!project.body.includes("## What broke and how I fixed it")) {
+    fail(`${project.slug}: verified but has no "What broke and how I fixed it" section`);
+  }
+}
+if (hidden.length > 0) {
+  warn(`${hidden.length} project(s) are verified: false and will be hidden in production: ${hidden.join(", ")}`);
+}
+
+console.log(
+  `validate: ${jobs.length} job(s), ${certs.length} cert(s), ${projects.length} project(s) OK`,
+);

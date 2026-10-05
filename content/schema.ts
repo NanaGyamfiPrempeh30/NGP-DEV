@@ -25,6 +25,8 @@ export const Project = z.object({
   role: z.string(),
   start: z.string(),
   end: z.string().optional(),
+  // Where `start` comes from. "article" = Medium publish month, shown as "Published <Mon YYYY>".
+  startSource: z.enum(["owner", "first-commit", "article"]),
   stack: z.array(z.string()).max(8),
   outcome: z.string().max(120),
   claims: z.array(Claim),
