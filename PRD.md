@@ -1,6 +1,6 @@
 # PRD: Yaw Nana Gyamfi Prempeh Portfolio (Online CV)
 
-Version 1.6 · 5 Oct 2026 · Owner: Yaw Nana Gyamfi Prempeh (NGP-Dev)
+Version 1.7 · 7 Oct 2026 · Owner: Yaw Nana Gyamfi Prempeh (NGP-Dev)
 Build tool: Claude Code. Read `CLAUDE.md` first, then this file.
 
 ---
@@ -93,6 +93,7 @@ Contact lives in the footer and on Home. No separate page.
 - Detail page sections, in this order: **Context · Problem · What I built · How it works (diagram) · What broke and how I fixed it · Result · Links**.
 - "What broke" is required. My Medium posts are strong because they show debugging. Keep that voice.
 - Client projects under NDA: `canNameClient: false` shows "Rural bank, Ghana" instead of the name.
+- **Practice labs:** a separate group below Projects, for work that follows another author's project. Each card says "Followed [original author]'s project; deployed and run by me" and links the original. No Problem, What broke or Result claims beyond what my commits show. Data in `content/labs.ts`.
 
 ### 7.4 Writing
 - Fetch `https://medium.com/feed/@yawgyamfiprempeh27` at build. Revalidate every 24 h (ISR).
@@ -253,16 +254,15 @@ Technology Excellence Services · Blue Turtle · Tigo
 | TKA Auto's & Logistics: marketing site, customer tracking portal, admin dashboard for a US auction car import business (Copart, IAAI, Manheim to Ghana). Next.js, TypeScript, Supabase, Stripe + Paystack, Vercel | client | Live site tka-auto-logistics.vercel.app · Repo | ✅ role: software engineer and graphic designer · ✅ named |
 | ambient-weather-mcp (FastMCP, 60 s cache, Docker Hub, mcp.so, GHCR) | open-source | Repo · Docker Hub · mcp.so · Medium 25 May 2026 | ✅ |
 | eks-karpenter-gitops-bench (EKS, Karpenter, ArgoCD, Tenki CI, 86 Terraform resources) | open-source | Repo 3★ 5 forks · Medium 22 Jan 2026 | ✅ |
-| AuditTrack (FastAPI/React, ECS Fargate, SQS, Lambda, DynamoDB, S3, Terraform; Azure to AWS migration) | open-source | Repo | ✅ |
 | Sika Track (Telegram bookkeeping bot for Ghanaian informal businesses, Flask, Supabase, Render, encrypted backups) | open-source | Repo | ✅ |
 | nextcloud-installer (staged idempotent installer) | open-source | Repo 1★ | ✅ |
 | GXDCH Loire (9 of 12 tests) and Tractus-X EDC | work | Internal, inside Bosonit entry | ✅ no separate page |
 | py-guardian-ops (FastAPI → Azure Container Apps, Trivy) | open-source | Repo · Medium 19 Oct 2025 | ✅ |
 | Serverless Flask on AWS with Pulumi | open-source | Repo: https://github.com/NanaGyamfiPrempeh30/devops-labs/tree/Pulumi/aws-python-app · Medium 12 Jul 2025 | ✅ (rename done, verified 5 Oct) |
 | Blue/green on ECS with CodePipeline | open-source | GitLab `Devops` · Medium 13 Mar 2025 | ✅ |
-| AWS automation with Python, Terraform and Boto3 | open-source | GitLab `Devops` · Medium 4 Jun 2024 | ✅ |
-| On-premise to multi-cloud migration | open-source | GitLab `Devops` · Medium 7 Jun 2024 | ✅ |
-| DevSecOps three-tier app on EKS (Terraform, Jenkins, GitLab) | open-source | GitLab `DevSecop` + `eks-terraform-gitlab` · Medium 27 Sep 2024 | ✅ |
+| AWS automation with Python, Terraform and Boto3 | writing only | Medium 4 Jun 2024 | ✅ no project page (owner, 7 Oct) |
+| On-premise to multi-cloud migration | practice lab | GitLab `Devops` · Medium 7 Jun 2024 | Practice lab. Original author: ❓ owner to send |
+| DevSecOps three-tier project on EKS (Terraform, Jenkins, GitLab) | practice lab | GitLab `DevSecop` + `eks-terraform-gitlab` · Medium 27 Sep 2024 | Practice lab. Credit: Aman Pathak |
 | k8s-platform-kiro (k8s-devsecops v2, spec-driven with Kiro, 9 commits) | open-source | Repo | Mention inside k8s-devsecops page, no own card |
 | Rural bank staff portal (Abokobi Rural Bank): issue logging, approvals with signatures, inventory module. Node/Express, SQLite, Docker Compose, Caddy, self-hosted on the bank's server | client | Internal only. Do **not** link the repo | ✅ facts · ✅ named · ✅ role: full-stack developer, built with Claude Code as pair · see §10.5 |
 | Loan bot | personal | Planning stage | Don't publish |
@@ -341,6 +341,7 @@ Link every profile directly. No verification needed; they are the owner's own UR
 - Mentoring series: 6 X posts, 18 Apr to 18 Jun 2026 (§7.5). Mentee agreed to be named (Clinton).
 - Bank repo: owner has asked the bank's IT manager to make it private. Reminder built into CLAUDE.md and milestones M3/M6.
 - Public CV rebuilt without unsourced percentages, fact-checked against repos and articles before the edit. Site and CV now agree.
+- AuditTrack: dropped from the site (owner, 7 Oct). Boto3: Writing entry only. Three-tier and on-premise-to-multi-cloud: moved to Practice labs.
 - `NGP-DEV` renamed to `devops-labs` (done 5 Oct, 9 branches verified). The new `NGP-DEV` repo is this portfolio.
 
 ### 11.2 Still open (launch blockers)
