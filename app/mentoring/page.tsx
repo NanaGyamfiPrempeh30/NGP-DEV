@@ -34,12 +34,12 @@ export default function Mentoring() {
           </p>
 
           <h3>The posts</h3>
-          <ol className="entries">
+          <ol role="list" className="entries">
             {mentoring.posts.map((post) => (
               <li className="entry" key={post.url}>
                 <p className="when">{formatDate(post.date)}</p>
                 <p style={{ marginTop: 0 }}>
-                  <a href={post.url}>Read the post on X</a>
+                  <a href={post.url}>Post from {formatDate(post.date)} on X</a>
                 </p>
               </li>
             ))}

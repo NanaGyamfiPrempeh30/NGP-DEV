@@ -1,11 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Click-to-load: nothing from TikTok is requested until the visitor asks for it.
 export function TikTokFacade({ handle }: { handle: string }) {
   const [loaded, setLoaded] = useState(false);
   const profile = `https://www.tiktok.com/@${handle}`;
+  const embed = useRef<HTMLQuoteElement>(null);
+
+  // The button disappears on load, so move keyboard focus to what replaced it.
+  useEffect(() => {
+    if (loaded) embed.current?.focus();
+  }, [loaded]);
 
   function load() {
     setLoaded(true);
@@ -31,6 +37,8 @@ export function TikTokFacade({ handle }: { handle: string }) {
 
   return (
     <blockquote
+      ref={embed}
+      tabIndex={-1}
       className="tiktok-embed"
       cite={profile}
       data-unique-id={handle}

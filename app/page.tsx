@@ -29,7 +29,7 @@ export default function Home() {
       </div>
 
       <h2>Check these first</h2>
-      <ul className="proof-strip">
+      <ul role="list" className="proof-strip">
         {proof.map((item) => (
           <li key={item.text}>
             <a href={item.url}>{item.text}</a>
@@ -40,7 +40,7 @@ export default function Home() {
       {featured.length > 0 ? (
         <>
           <h2>Featured projects</h2>
-          <ul className="cards">
+          <ul role="list" className="cards">
             {featured.map((project) => (
               <ProjectCard key={project.slug} project={project} />
             ))}

@@ -17,12 +17,12 @@ export default function Writing() {
         I write on <a href="https://medium.com/@yawgyamfiprempeh27">Medium</a>. Each title opens the
         article there.
       </p>
-      <ul className="entries">
+      <ul role="list" className="entries">
         {articles.map((article) => (
           <li className="entry" key={article.url}>
             <p className="when">{formatDate(article.date)}</p>
             <div>
-              <h2 style={{ marginTop: 0, fontSize: "1.15rem" }}>
+              <h2 className="entry-title">
                 <a href={article.url}>{article.title}</a>
               </h2>
               <Tags items={article.tags} />

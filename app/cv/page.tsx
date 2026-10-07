@@ -27,7 +27,7 @@ export default function Cv() {
       <p className="meta">Last updated {formatDate(cvUpdated)}.</p>
 
       <h2>Experience</h2>
-      <ol className="entries">
+      <ol role="list" className="entries">
         {getJobs().map((job) => (
           <JobEntry key={`${job.company}-${job.start}`} job={job} />
         ))}

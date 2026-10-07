@@ -312,6 +312,11 @@ a.proof {
   }
 }
 
+.entry-title {
+  font-size: 1.15rem;
+  margin-top: 0;
+}
+
 /* Cards */
 .cards {
   display: grid;

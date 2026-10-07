@@ -5,7 +5,7 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div className="wrap">
         <h2>Contact</h2>
-        <ul className="links">
+        <ul role="list" className="links">
           {profiles.map((profile) => (
             <li key={profile.url}>
               <a href={profile.url}>{profile.label}</a>

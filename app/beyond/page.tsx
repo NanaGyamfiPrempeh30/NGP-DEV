@@ -22,7 +22,7 @@ export default function Beyond() {
       {designWorks.length > 0 ? (
         <>
           <h2>Graphic design</h2>
-          <ul className="cards">
+          <ul role="list" className="cards">
             {designWorks.map((work) => (
               <li key={work.src}>
                 <Image src={work.src} alt={work.alt} width={work.width} height={work.height} />

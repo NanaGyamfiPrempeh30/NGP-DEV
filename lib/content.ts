@@ -1,6 +1,7 @@
 import { certs } from "../content/certs";
 import { jobs } from "../content/experience";
 import { labs } from "../content/labs";
+import { otherWork } from "../content/other-work";
 import { articlesFallback } from "../content/articles";
 import { visible } from "./visibility";
 
@@ -10,6 +11,10 @@ export function getJobs() {
 
 export function getLabs() {
   return visible(labs);
+}
+
+export function getOtherWork() {
+  return visible(otherWork);
 }
 
 // Build rule: a cert past its expiry date is hidden.

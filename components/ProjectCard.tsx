@@ -20,10 +20,12 @@ export function ProjectCard({ project }: { project: LoadedProject }) {
       <p>{project.outcome}</p>
       <Tags items={project.stack} max={5} />
       {project.links.length > 0 ? (
-        <ul className="links">
+        <ul role="list" className="links">
           {project.links.map((link) => (
             <li key={link.url}>
-              <a href={link.url}>{link.label}</a>
+              <a href={link.url} aria-label={`${link.label}: ${project.title}`}>
+                {link.label}
+              </a>
             </li>
           ))}
         </ul>

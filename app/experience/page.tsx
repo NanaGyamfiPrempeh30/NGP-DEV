@@ -16,7 +16,8 @@ export default function Experience() {
       <h1>Experience</h1>
       <p className="lede">{headline}</p>
 
-      <ol className="entries">
+      <h2>Jobs</h2>
+      <ol role="list" className="entries">
         {getJobs().map((job) => (
           <JobEntry key={`${job.company}-${job.start}`} job={job} />
         ))}
@@ -24,7 +25,7 @@ export default function Experience() {
 
       <h2>Freelance and side projects</h2>
       <p>These ran alongside the jobs above.</p>
-      <ul className="entries">
+      <ul role="list" className="entries">
         {sideWork.map((work) => (
           <li className="entry" key={work.name}>
             <p className="when">{formatRange(work.start, work.end)}</p>
@@ -47,7 +48,7 @@ export default function Experience() {
       </p>
 
       <h2>Certifications and courses</h2>
-      <ul className="entries">
+      <ul role="list" className="entries">
         {getCerts().map((cert) => (
           <li className="entry" key={cert.name}>
             <p className="when">{formatDate(cert.issued)}</p>

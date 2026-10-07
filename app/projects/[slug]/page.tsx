@@ -5,7 +5,6 @@ import { Claims } from "@/components/Claims";
 import { DraftBadge } from "@/components/DraftBadge";
 import { Tags } from "@/components/Tags";
 import { formatDate, formatRange } from "@/lib/dates";
-import { Markdown } from "@/lib/markdown";
 import { getProjects, type LoadedProject } from "@/lib/projects";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -32,6 +31,7 @@ export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = getProjects().find((p) => p.slug === slug);
   if (!project) notFound();
+  const { default: Body } = await import(`@/content/projects/${slug}.mdx`);
 
   return (
     <article>
@@ -57,7 +57,7 @@ export default async function ProjectPage({ params }: Props) {
       ) : null}
 
       <div className="prose">
-        <Markdown source={project.body} />
+        <Body />
       </div>
     </article>
   );
