@@ -50,6 +50,11 @@ export default function Projects() {
                   {lab.credit.url ? <a href={lab.credit.url}>See the original</a> : null}
                 </p>
                 <p>{lab.summary}</p>
+                {lab.note ? (
+                  <p className="meta">
+                    {lab.note.label} <a href={lab.note.url}>Google&apos;s notice</a>
+                  </p>
+                ) : null}
                 <p className="meta">Started {formatDate(lab.start)}</p>
                 <Tags items={lab.stack} max={5} />
                 <ul className="links">

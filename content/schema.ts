@@ -42,7 +42,8 @@ export const Lab = z.object({
     author: z.string(),
     url: z.string().url().optional(),
   }),
-  summary: z.string(), // only what my own commits show
+  summary: z.string(), // only what my own commits or the owner's notes show
+  note: Evidence.optional(), // a dated fact about the tools, with its source
   start: z.string(),
   startSource: z.enum(["owner", "first-commit", "article"]),
   stack: z.array(z.string()).max(8),

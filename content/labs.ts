@@ -31,10 +31,14 @@ export const labs: Lab[] = [
     // TODO(owner): original author and source link.
     credit: { author: "TODO(owner)" },
     summary:
-      "My branch holds the Terraform files, the MySQL dump and the Kubernetes manifests I used to run it on AWS and Google Cloud.",
+      "A guest registration web app. COVID-19 status PDFs go to AWS S3 and the MySQL database runs on Google Cloud SQL. The Docker image sits in Google Container Registry and the app runs on GKE. Terraform provisions it.",
+    note: {
+      label: "Google shut down Container Registry in March 2025. Artifact Registry replaces it.",
+      url: "https://cloud.google.com/artifact-registry/docs/transition/transition-from-gcr",
+    },
     start: "2024-06",
     startSource: "first-commit",
-    stack: ["Terraform", "Kubernetes", "MySQL"],
+    stack: ["Terraform", "GKE", "Cloud SQL", "AWS S3", "Docker"],
     links: [
       { label: "My copy", url: "https://gitlab.com/NanaGyamfiPrempeh30/Devops/-/tree/Multi-Cloud" },
       {
