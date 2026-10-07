@@ -25,29 +25,6 @@ export const labs: Lab[] = [
     ],
     verified: false,
   },
-  {
-    slug: "on-premise-to-multi-cloud",
-    title: "On-premise to multi-cloud migration",
-    // TODO(owner): original author and source link.
-    credit: { author: "TODO(owner)" },
-    summary:
-      "A guest registration web app. COVID-19 status PDFs go to AWS S3 and the MySQL database runs on Google Cloud SQL. The Docker image sits in Google Container Registry and the app runs on GKE. Terraform provisions it.",
-    note: {
-      label: "Google shut down Container Registry in March 2025. Artifact Registry replaces it.",
-      url: "https://cloud.google.com/artifact-registry/docs/transition/transition-from-gcr",
-    },
-    start: "2024-06",
-    startSource: "first-commit",
-    stack: ["Terraform", "GKE", "Cloud SQL", "AWS S3", "Docker"],
-    links: [
-      { label: "My copy", url: "https://gitlab.com/NanaGyamfiPrempeh30/Devops/-/tree/Multi-Cloud" },
-      {
-        label: "Article",
-        url: "https://medium.com/@yawgyamfiprempeh27/step-by-step-guide-to-migrating-an-on-premise-web-application-to-a-multi-cloud-environment-using-bd35f73fe86e",
-      },
-    ],
-    verified: false,
-  },
 ];
 
 export function labCredit(lab: Lab): string {

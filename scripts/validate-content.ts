@@ -1,7 +1,8 @@
-import { Cert, Job, Lab } from "../content/schema";
+import { Cert, Job, Lab, OtherWork } from "../content/schema";
 import { jobs } from "../content/experience";
 import { certs } from "../content/certs";
 import { labs } from "../content/labs";
+import { otherWork } from "../content/other-work";
 import { loadProjects, type LoadedProject } from "../lib/projects";
 
 function fail(message: string): never {
@@ -84,6 +85,13 @@ for (const [i, lab] of labs.entries()) {
   }
 }
 
+for (const [i, work] of otherWork.entries()) {
+  const result = OtherWork.safeParse(work);
+  if (!result.success) {
+    fail(`otherWork[${i}] (${work.slug}): ${result.error.message}`);
+  }
+}
+
 console.log(
-  `validate: ${jobs.length} job(s), ${certs.length} cert(s), ${projects.length} project(s), ${labs.length} lab(s) OK`,
+  `validate: ${jobs.length} job(s), ${certs.length} cert(s), ${projects.length} project(s), ${labs.length} lab(s), ${otherWork.length} other OK`,
 );

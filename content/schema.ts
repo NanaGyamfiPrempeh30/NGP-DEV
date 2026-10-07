@@ -42,8 +42,19 @@ export const Lab = z.object({
     author: z.string(),
     url: z.string().url().optional(),
   }),
-  summary: z.string(), // only what my own commits or the owner's notes show
-  note: Evidence.optional(), // a dated fact about the tools, with its source
+  summary: z.string(), // only what my own commits show
+  start: z.string(),
+  startSource: z.enum(["owner", "first-commit", "article"]),
+  stack: z.array(z.string()).max(8),
+  links: z.array(Evidence),
+  verified: z.boolean(),
+});
+
+// A small project shown as a card only, with no case study.
+export const OtherWork = z.object({
+  slug: z.string(),
+  title: z.string(),
+  summary: z.string().max(160),
   start: z.string(),
   startSource: z.enum(["owner", "first-commit", "article"]),
   stack: z.array(z.string()).max(8),
@@ -79,4 +90,5 @@ export type Claim = z.infer<typeof Claim>;
 export type Project = z.infer<typeof Project>;
 export type Job = z.infer<typeof Job>;
 export type Lab = z.infer<typeof Lab>;
+export type OtherWork = z.infer<typeof OtherWork>;
 export type Cert = z.infer<typeof Cert>;
