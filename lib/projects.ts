@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import { Project } from "../content/schema";
+import { visible } from "./visibility";
 
 const dir = path.join(process.cwd(), "content", "projects");
 
@@ -26,8 +27,7 @@ export function loadProjects(): LoadedProject[] {
     });
 }
 
-// Pages use this. A production build never shows verified: false.
+// Pages use this. Production never shows verified: false (see lib/visibility.ts).
 export function getProjects(): LoadedProject[] {
-  const projects = loadProjects();
-  return process.env.NODE_ENV === "production" ? projects.filter((p) => p.verified) : projects;
+  return visible(loadProjects());
 }
