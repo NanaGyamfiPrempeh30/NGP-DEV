@@ -7,8 +7,8 @@ canNameClient: true
 role: "Software engineer and graphic designer"
 start: "2026-07"
 startSource: first-commit
-stack: ["Next.js", "TypeScript", "Supabase", "Stripe", "Paystack", "Vercel"]
-outcome: "Marketing site, customer tracking portal and admin dashboard for a US auction car import business."
+stack: ["Next.js", "TypeScript", "Supabase", "Vercel"]
+outcome: "Makes shipping a car from the USA to Ghana easier to arrange and to follow."
 claims: []
 links:
   - { label: "Live site", url: "https://tka-auto-logistics.vercel.app" }
@@ -18,27 +18,32 @@ verified: false
 
 ## Context
 
-TKA Auto's & Logistics imports cars bought at US auctions (Copart, IAAI and Manheim) into Ghana. I was the software engineer and the graphic designer.
+TKA Auto's & Logistics is a US-based business. It buys cars at US auctions (Copart, IAAI and Manheim) and ships them to Ghana. I was the software engineer and the graphic designer.
 
 ## Problem
 
-TODO(owner): what was the client using before, and what did they ask for?
+The site exists to make shipping and logistics from the USA to Ghana easier for people in Ghana. A buyer needs a simple way to ask for a quote, and then a way to see where the car is.
 
 ## What I built
 
 - A marketing site.
-- A portal where customers track their car.
-- An admin dashboard for the business.
+- A quote form that saves each request, and an inbox where staff work through them.
+- Customer accounts with an order tracking dashboard.
+- An admin area where staff manage orders.
 
-Built with Next.js and TypeScript on Vercel, with Supabase for data. Payments go through Stripe and Paystack.
+Built with Next.js and TypeScript on Vercel, with Supabase for the database and sign-in.
 
 ## How it works
 
-TODO(owner).
+1. A visitor sends a quote request. Anyone can submit one. Only an admin can read them.
+2. Staff pick it up in the admin inbox and update its status.
+3. Once there is an order, the customer signs in and follows it on their dashboard.
+
+Routes under the admin area are closed to everyone but the admin.
 
 ## What broke and how I fixed it
 
-TODO(owner): tell me what went wrong, or this page stays hidden.
+TODO(owner): confirm the candidates I listed for you. Nothing goes here until you do.
 
 ## Result
 

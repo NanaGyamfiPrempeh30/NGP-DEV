@@ -8,7 +8,7 @@ role: "Author"
 start: "2026-04"
 startSource: first-commit
 stack: ["Flask", "Supabase", "Render", "Telegram"]
-outcome: "Telegram bookkeeping bot for informal businesses in Ghana, with encrypted backups."
+outcome: "Telegram bookkeeping bot for informal businesses in Ghana. I use it, and so do others."
 claims: []
 links:
   - { label: "Repo", url: "https://github.com/NanaGyamfiPrempeh30/Sika-Track" }
@@ -17,7 +17,9 @@ verified: false
 
 ## Context
 
-Sika Track is a Telegram bot for bookkeeping. It is for informal businesses in Ghana, where the daily record is often a paper notebook.
+Sika Track is a Telegram bot for bookkeeping. I made it for informal businesses in Ghana, where the daily record is often a paper notebook. It is a personal project. I use it myself, and so do other people.
+
+Built with Claude.
 
 ## Problem
 
@@ -25,27 +27,28 @@ A trader will not open a spreadsheet at the end of a long day. Most already use 
 
 ## What I built
 
-- A bot that reads plain messages such as "sold 50" or "spent 30 gas" and records them.
-- Summaries of profit by day or by week, on request.
-- A Flask app that receives messages from Telegram through a webhook.
-- Supabase for the database and Render for hosting.
-- A weekly encrypted backup.
+- Plain messages become entries. "sold 200 kenkey" records a GHS 200 sale under kenkey. "spent 30 gas" records an expense.
+- "today" and "week" return sales, expenses and profit.
+- You can list, edit, remove or undo an entry.
+- Sale and Expense buttons, for people who would sooner tap than type.
+- An evening summary, which you can switch off.
+- A privacy notice inside the bot.
 
 ## How it works
 
 1. The owner sends a message to the bot.
-2. Telegram posts it to the Flask app.
-3. The app works out the amount and category and saves the entry.
+2. Telegram posts it to a Flask app through a webhook.
+3. The app works out the amount and the category, then saves the entry.
 
-A GitHub Action backs up the database every Sunday. The repo is public, so each backup is encrypted before it is stored. Backups are kept for 90 days.
+The app runs on Render and the data sits in Supabase. A GitHub Action backs up the database every Sunday. The repo is public, so each backup is encrypted before it is stored, and kept for 90 days.
 
 ## What broke and how I fixed it
 
-TODO(owner): the README records no failures. Tell me what went wrong, or this page stays hidden.
+TODO(owner): confirm which of the candidates I listed for you are worth telling. Nothing goes here until you do.
 
 ## Result
 
-TODO(owner): is anyone using it yet? I have no usage facts.
+It is in daily use by me and by others.
 
 ## Links
 

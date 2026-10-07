@@ -1,6 +1,7 @@
-import { Cert, Job } from "../content/schema";
+import { Cert, Job, Lab } from "../content/schema";
 import { jobs } from "../content/experience";
 import { certs } from "../content/certs";
+import { labs } from "../content/labs";
 import { loadProjects, type LoadedProject } from "../lib/projects";
 
 function fail(message: string): never {
@@ -72,6 +73,17 @@ if (hidden.length > 0) {
   warn(`${hidden.length} project(s) are verified: false and will be hidden in production: ${hidden.join(", ")}`);
 }
 
+for (const [i, lab] of labs.entries()) {
+  const result = Lab.safeParse(lab);
+  if (!result.success) {
+    fail(`labs[${i}] (${lab.slug}): ${result.error.message}`);
+  }
+  // A lab ships only with a named author to credit.
+  if (lab.verified && lab.credit.author.includes("TODO")) {
+    fail(`${lab.slug}: verified but the original author is still a TODO`);
+  }
+}
+
 console.log(
-  `validate: ${jobs.length} job(s), ${certs.length} cert(s), ${projects.length} project(s) OK`,
+  `validate: ${jobs.length} job(s), ${certs.length} cert(s), ${projects.length} project(s), ${labs.length} lab(s) OK`,
 );
