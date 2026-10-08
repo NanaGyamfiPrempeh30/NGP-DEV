@@ -1,4 +1,4 @@
----
+{/*
 slug: sika-track
 title: "Sika Track"
 kind: open-source
@@ -13,7 +13,7 @@ claims: []
 links:
   - { label: "Repo", url: "https://github.com/NanaGyamfiPrempeh30/Sika-Track" }
 verified: false
----
+*/}
 
 ## Context
 
@@ -40,11 +40,11 @@ A trader will not open a spreadsheet at the end of a long day. Most already use 
 2. Telegram posts it to a Flask app through a webhook.
 3. The app works out the amount and the category, then saves the entry.
 
-The app runs on Render and the data sits in Supabase. A GitHub Action backs up the database every Sunday. The repo is public, so each backup is encrypted before it is stored, and kept for 90 days.
+The app runs on Render and the data sits in Supabase. A GitHub Action backs up the database every Sunday. The repo is public, so each backup is encrypted before it is stored, and kept for 90 days. A rule in the repo keeps database backups out of Git.
 
 ## What broke and how I fixed it
 
-TODO(owner): confirm which of the candidates I listed for you are worth telling. Nothing goes here until you do.
+The app crashed on startup. The fix was to make the database setup lazy, so it runs when first needed and not at start-up. That was on 5 April 2026.
 
 ## Result
 

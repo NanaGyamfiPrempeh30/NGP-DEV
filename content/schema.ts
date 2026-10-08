@@ -20,6 +20,8 @@ export const Project = z.object({
   title: z.string(),
   kind: z.enum(["work", "client", "open-source"]),
   featured: z.boolean().default(false),
+  // true = never rendered anywhere, whatever `verified` says. Only the owner lifts it.
+  hidden: z.boolean().default(false),
   canNameClient: z.boolean().default(false),
   clientLabel: z.string().optional(),
   role: z.string(),
