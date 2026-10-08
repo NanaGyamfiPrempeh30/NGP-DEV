@@ -1,6 +1,6 @@
 # PRD: Yaw Nana Gyamfi Prempeh Portfolio (Online CV)
 
-Version 1.4 · 5 Oct 2026 · Owner: Yaw Nana Gyamfi Prempeh (NGP-Dev)
+Version 1.9 · 8 Oct 2026 · Owner: Yaw Nana Gyamfi Prempeh (NGP-Dev)
 Build tool: Claude Code. Read `CLAUDE.md` first, then this file.
 
 ---
@@ -93,6 +93,8 @@ Contact lives in the footer and on Home. No separate page.
 - Detail page sections, in this order: **Context · Problem · What I built · How it works (diagram) · What broke and how I fixed it · Result · Links**.
 - "What broke" is required. My Medium posts are strong because they show debugging. Keep that voice.
 - Client projects under NDA: `canNameClient: false` shows "Rural bank, Ghana" instead of the name.
+- **Practice labs:** a separate group below Projects, for work that follows another author's project. Each card says "Followed [original author]'s project; deployed and run by me" and links the original. No Problem, What broke or Result claims beyond what my commits show. Data in `content/labs.ts`.
+- **Other work:** cards with no case study, for small projects with no story to tell. Data in `content/other-work.ts`.
 
 ### 7.4 Writing
 - Fetch `https://medium.com/feed/@yawgyamfiprempeh27` at build. Revalidate every 24 h (ISR).
@@ -116,9 +118,8 @@ Contact lives in the footer and on Home. No separate page.
 - **Being mentored:** Wilson Mar (Ambient Weather MCP). Link his site, with his consent.
 
 ### 7.6 Beyond Code
-- UAV pilot: "1,000+ flights". TikTok @ngp_dronelens. Use a click-to-load facade (thumbnail first, TikTok script only after click). This keeps Lighthouse scores high and avoids loading TikTok trackers on page load.
-- Graphic design: gallery of 6 to 12 of my own works. `next/image`, WebP/AVIF, alt text on every image.
-- Add drone licence/registration if I hold one (Ghana Civil Aviation Authority). Without it, say "hobbyist pilot".
+- Drone flying: listed as a hobby, with a plain link to TikTok @ngp_dronelens. No embed, no thumbnail, no licence line, no flight count (owner, 8 Oct).
+- Graphic design: gallery of 6 to 12 of my own works. `next/image`, WebP/AVIF, alt text on every image. Render this block only once the owner has sent works. Never ship an empty section.
 
 ### 7.7 CV
 - Same data as Experience, laid out for print (`@media print`, A4).
@@ -213,7 +214,7 @@ Status key: ✅ verified · ❓ need owner input
 | Bosonit (Spain), end client ECDC | DevSecOps Engineer | Contract, hybrid / remote from Ghana | Nov 2025 to Jan 2026 | ✅ |
 | Algo AI (Canada) | Lead DevOps Engineer | Part-time, remote | Aug 2025 to Oct 2025 | ✅ |
 | Technology Excellence Services (USA) | DevOps Engineer | Full-time, remote | May 2022 to Mar 2026 | ✅ |
-| Blue Turtle Technologies (South Africa) | Platform Infrastructure Engineer | Remote | May 2020 to Apr 2022 | ✅ |
+| Blue Turtle Technologies (South Africa) | Platform Infrastructure Engineer | Full-time, remote | May 2020 to Apr 2022 | ✅ |
 | Millicom Tigo Ghana | Linux System Engineer | Onsite | Feb 2019 to Mar 2020 | ✅ |
 
 - Headline: **"6+ years in DevOps (since 2020). Linux engineering since 2019."**
@@ -250,21 +251,19 @@ Technology Excellence Services · Blue Turtle · Tigo
 | k8s-devsecops (kubeadm, Calico, MetalLB, Traefik, Vault, ESO, ArgoCD, Prometheus/Grafana on AWS) | open-source | Repo 53★ 19 forks · Medium 16 Jan 2026 | ✅ **feature** |
 | k8s-troubleshoot-mcp (16 read-only tools, RBAC boundary, prompt-injection escaping, **453 passing tests**, 6 bugs found on a live cluster) | open-source | Repo (MIT) · Medium 28 Aug 2026 · Glama | ✅ **feature** |
 | ECDC Kubernetes on IONOS | work | Medium 9 Jun 2026 | ✅ **feature** |
-| TKA Auto's & Logistics: marketing site, customer tracking portal, admin dashboard for a US auction car import business (Copart, IAAI, Manheim to Ghana). Next.js, TypeScript, Supabase, Stripe + Paystack, Vercel | client | Live site tka-auto-logistics.vercel.app · Repo | ✅ role: software engineer and graphic designer · ✅ named |
+| TKA Auto's & Logistics: marketing site, customer tracking portal, admin dashboard for a US auction car import business (Copart, IAAI, Manheim to Ghana). Next.js, TypeScript, Supabase, Vercel | client | Live site tka-auto-logistics.vercel.app · Repo | ✅ role: software engineer and graphic designer · ✅ named |
 | ambient-weather-mcp (FastMCP, 60 s cache, Docker Hub, mcp.so, GHCR) | open-source | Repo · Docker Hub · mcp.so · Medium 25 May 2026 | ✅ |
 | eks-karpenter-gitops-bench (EKS, Karpenter, ArgoCD, Tenki CI, 86 Terraform resources) | open-source | Repo 3★ 5 forks · Medium 22 Jan 2026 | ✅ |
-| AuditTrack (FastAPI/React, ECS Fargate, SQS, Lambda, DynamoDB, S3, Terraform; Azure to AWS migration) | open-source | Repo | ✅ |
 | Sika Track (Telegram bookkeeping bot for Ghanaian informal businesses, Flask, Supabase, Render, encrypted backups) | open-source | Repo | ✅ |
-| nextcloud-installer (9-stage idempotent installer) | open-source | Repo 1★ | ✅ |
+| nextcloud-installer (staged idempotent installer) | open-source | Repo 1★ | ✅ |
 | GXDCH Loire (9 of 12 tests) and Tractus-X EDC | work | Internal, inside Bosonit entry | ✅ no separate page |
-| py-guardian-ops (FastAPI → Azure Container Apps, Trivy) | open-source | Repo · Medium 19 Oct 2025 | ✅ |
-| Serverless Flask on AWS with Pulumi | open-source | Repo: https://github.com/NanaGyamfiPrempeh30/devops-labs/tree/Pulumi/aws-python-app · Medium 12 Jul 2025 | ✅ (link live once rename is done) |
+| py-guardian-ops (FastAPI → Azure Container Apps, Trivy) | other work | Repo · Medium 19 Oct 2025 | "Other work" card only, no case study, unless owner sends a story |
+| Serverless Flask on AWS with Pulumi | open-source | Repo: https://github.com/NanaGyamfiPrempeh30/devops-labs/tree/Pulumi/aws-python-app · Medium 12 Jul 2025 | ✅ (rename done, verified 5 Oct) |
 | Blue/green on ECS with CodePipeline | open-source | GitLab `Devops` · Medium 13 Mar 2025 | ✅ |
-| AWS automation with Python, Terraform and Boto3 | open-source | GitLab `Devops` · Medium 4 Jun 2024 | ✅ |
-| On-premise to multi-cloud migration | open-source | GitLab `Devops` · Medium 7 Jun 2024 | ✅ |
-| DevSecOps three-tier app on EKS (Terraform, Jenkins, GitLab) | open-source | GitLab `DevSecop` + `eks-terraform-gitlab` · Medium 27 Sep 2024 | ✅ |
+| AWS automation with Python, Terraform and Boto3 | writing only | Medium 4 Jun 2024 | ✅ no project page (owner, 7 Oct) |
+| DevSecOps three-tier project on EKS (Terraform, Jenkins, GitLab) | practice lab | GitLab `DevSecop` + `eks-terraform-gitlab` · Medium 27 Sep 2024 | Practice lab. Credit: Aman Pathak |
 | k8s-platform-kiro (k8s-devsecops v2, spec-driven with Kiro, 9 commits) | open-source | Repo | Mention inside k8s-devsecops page, no own card |
-| Rural bank staff portal (Abokobi Rural Bank): issue logging, approvals with signatures, inventory module. Node/Express, SQLite, Docker Compose, Caddy, self-hosted on the bank's server | client | Internal only. Do **not** link the repo | ✅ facts · ✅ named · see §10.5 |
+| Rural bank staff portal (Abokobi Rural Bank): issue logging, approvals with signatures, inventory module. Node/Express, SQLite, Docker Compose, Caddy, self-hosted on the bank's server | client | Internal only. Do **not** link the repo | ✅ facts · ✅ named · ✅ role: full-stack developer, built with Claude Code as pair · see §10.5 |
 | Loan bot | personal | Planning stage | Don't publish |
 
 GitHub check (via connected account, 5 Oct): 11 owned public repos + 1 collaborator repo. All accounted for above.
@@ -276,7 +275,7 @@ Unchanged. Pull from RSS. EKS title fixed by owner.
 - Teaching cohort: dropped from the site (owner decision, 5 Oct).
 - Mentee: see §7.5.
 - Mentored by Wilson Mar ✅
-- UAV pilot, 1,000+ flights, TikTok @ngp_dronelens ✅ owner stated. Licence ❓
+- Drone flying: hobby, TikTok @ngp_dronelens link only ✅
 - Graphic design ❓ samples.
 
 ### 10.5 Case study notes: rural bank portal
@@ -339,12 +338,17 @@ Link every profile directly. No verification needed; they are the owner's own UR
 - Clients named (owner approved): TKA Auto's & Logistics, Ten Forward International Group, Abokobi Rural Bank. Set `canNameClient: true` for these three only.
 - afarmforme stack: Bootstrap, JavaScript, HTML (frontend).
 - Mentoring series: 6 X posts, 18 Apr to 18 Jun 2026 (§7.5). Mentee agreed to be named (Clinton).
-- Bank repo: owner has asked the bank's IT manager to make it private. Reminder built into CLAUDE.md and milestones M3/M6.
+- Bank page: hidden until the owner confirms the bank's portal repo is private. Not a launch blocker (owner, 8 Oct). A test proves the page and card are absent from the production build.
+- Clinton confirmed he is happy to be named by first name (8 Oct). Mentoring stays shown as paused.
 - Public CV rebuilt without unsourced percentages, fact-checked against repos and articles before the edit. Site and CV now agree.
+- AuditTrack and on-premise-to-multi-cloud: dropped from the site (owner, 7 Oct). Boto3: Writing entry only. Three-tier: moved to Practice labs, credited to Aman Pathak. py-guardian-ops: "Other work" card only.
+- TKA: payments (Stripe, Paystack) are not built, so they are not listed.
+- Case studies render with `@next/mdx` (owner approved, 7 Oct).
+- `NGP-DEV` renamed to `devops-labs` (done 5 Oct, 9 branches verified). The new `NGP-DEV` repo is this portfolio.
 
-### 11.2 Still open (launch blockers)
-1. **Bank repo private?** Owner checks with the IT manager. Claude Code reminds at M3 and blocks launch at M6.
-2. **`NGP-DEV` → `devops-labs`** (owner decision, 5 Oct; owner renames it). Order: (1) rename on GitHub, (2) change the link in the Pulumi Medium article to `https://github.com/NanaGyamfiPrempeh30/devops-labs/tree/Pulumi/aws-python-app`, (3) only then create the new `NGP-DEV`. Reusing the old name kills GitHub's redirect. Claude Code: check the devops-labs URL resolves before linking it.
+### 11.2 Still open (not launch blockers)
+1. **Bank page hidden.** It stays hidden until the owner confirms the bank's portal repo is private.
+2. Bank portal code. Owner wrote most of it unpaid, as a favour, and owns his code. Plan: mirror the bank's portal repo (with history) into a private repo under his account, after a gitleaks scan of the full history. It stays private while it runs the bank's live system. The portfolio still never links it.
 
 ## 12. Milestones
 
@@ -353,17 +357,16 @@ Link every profile directly. No verification needed; they are the owner's own UR
 | M0 | Owner resolves §11.2 | Every item answered |
 | M1 | Repo, Next.js scaffold, CI green, deployed to Vercel | Preview URL loads |
 | M2 | Content schema + all verified content in `/content` | `npm run validate` passes |
-| M3 | All pages built, responsive, light/dark | Manual check at 360px and 1440px. **Before starting:** remind owner to confirm the bank repo is private (CLAUDE.md) |
+| M3 | All pages built, responsive, light/dark | Manual check at 360px and 1440px |
 | M4 | Medium + GitHub data fetch | Writing page lists 11 posts |
 | M5 | Accessibility, SEO, security headers | Lighthouse ≥ 95 ×4, securityheaders.com grade A |
-| M6 | Launch | Custom domain (optional), LinkedIn + CV link to site. **Gate:** bank repo confirmed private |
+| M6 | Launch | PR from `main` to `production` merged (the only way production changes). Custom domain (optional), LinkedIn + CV link to site |
 
 ## 13. Risks
 
 | Risk | Mitigation |
 |------|-----------|
-| Inconsistent claims hurt credibility | Section 11 is a launch blocker. `verified` flag hides unchecked items. |
+| Inconsistent claims hurt credibility | `verified` flag hides unchecked items. |
 | Medium RSS changes or rate-limits | Static fallback list; build never fails on RSS error. |
 | GitHub API limit (60 req/h unauthenticated) | Fetch once per build, cache 24 h, optional `GITHUB_TOKEN` in Vercel env. |
-| TikTok embed hurts performance/privacy | Click-to-load facade. |
 | Naming clients without permission | `canNameClient` defaults to false for client work until owner confirms. |
