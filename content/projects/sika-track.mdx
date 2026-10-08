@@ -9,9 +9,14 @@ start: "2026-04"
 startSource: first-commit
 stack: ["Flask", "Supabase", "Render", "Telegram"]
 outcome: "Telegram bookkeeping bot for informal businesses in Ghana. I use it, and so do others."
-claims: []
+claims:
+  - text: "Money columns moved from REAL to NUMERIC(12,2) after 12345.67 was stored as 12345.7. Existing databases migrate automatically."
+    evidence: { label: "PR #3", url: "https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/3" }
+    internal: false
 links:
   - { label: "Repo", url: "https://github.com/NanaGyamfiPrempeh30/Sika-Track" }
+  - { label: "PR #3", url: "https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/3" }
+  - { label: "PR #6", url: "https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/6" }
 verified: false
 */}
 
@@ -40,11 +45,21 @@ A trader will not open a spreadsheet at the end of a long day. Most already use 
 2. Telegram posts it to a Flask app through a webhook.
 3. The app works out the amount and the category, then saves the entry.
 
-The app runs on Render and the data sits in Supabase. A GitHub Action backs up the database every Sunday. The repo is public, so each backup is encrypted before it is stored, and kept for 90 days. A rule in the repo keeps database backups out of Git.
+The app runs on Render and the data sits in Supabase. A GitHub Action backs up the database every Sunday. The repo is public, so each backup is encrypted before it is stored, and kept for 90 days.
 
 ## What broke and how I fixed it
 
 The app crashed on startup. The fix was to make the database setup lazy, so it runs when first needed and not at start-up. That was on 5 April 2026.
+
+The database stored money inexactly. 12345.67 was saved as 12345.7. The columns were `REAL`, which keeps only about six digits. I moved them to `NUMERIC(12,2)`, an exact type, and a migration upgrades existing databases automatically. See [PR #3](https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/3), merged on 27 September 2026.
+
+A failed database step could jam the bot. The same PR made the bot reuse one connection, which is faster. But a statement that fails can leave that connection stuck in an aborted transaction. The bot now clears aborted transactions and reconnects if the connection has dropped.
+
+## Near misses
+
+Anyone who knew the bot's web address could have sent it fake messages, for example to delete another trader's data. I added a webhook secret, and the bot now rejects any call without it. That is also in [PR #3](https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/3).
+
+An unzipped backup sat in my code folder, where it could have been pushed to the public repo. I made Git ignore backup files in [PR #6](https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/6), merged on 28 September 2026.
 
 ## Result
 
@@ -53,3 +68,5 @@ It is in daily use by me and by others.
 ## Links
 
 - [Repo](https://github.com/NanaGyamfiPrempeh30/Sika-Track)
+- [PR #3: webhook secret, exact money type, connection handling](https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/3)
+- [PR #6: keep backups out of Git](https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/6)
