@@ -5,12 +5,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 };
 
-// remark-frontmatter makes MDX skip the YAML block. gray-matter and Zod read that block (lib/projects.ts).
-// Plugins are named as strings so Turbopack can load them.
-const withMDX = createMDX({
-  options: {
-    remarkPlugins: ["remark-frontmatter"],
-  },
-});
+// No plugins: each project file keeps its YAML inside an MDX comment, which MDX skips.
+// gray-matter and Zod read that block (lib/projects.ts).
+const withMDX = createMDX();
 
 export default withMDX(nextConfig);

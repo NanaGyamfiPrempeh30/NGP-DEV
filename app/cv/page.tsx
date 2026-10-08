@@ -29,7 +29,7 @@ export default function Cv() {
       <h2>Experience</h2>
       <ol role="list" className="entries">
         {getJobs().map((job) => (
-          <JobEntry key={`${job.company}-${job.start}`} job={job} />
+          <JobEntry key={`${job.company}-${job.start}`} job={job} maxTags={8} />
         ))}
       </ol>
 

@@ -3,3 +3,6 @@ allowBuilds:
   unrs-resolver: true
 minimumReleaseAgeExclude:
   - '@vitejs/plugin-react@6.1.2'
+  - '@playwright/test@1.64.0'
+  - playwright-core@1.64.0
+  - playwright@1.64.0

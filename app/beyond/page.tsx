@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Claims } from "@/components/Claims";
-import { TikTokFacade } from "@/components/TikTokFacade";
-import { designWorks, droneLicence, flights, tiktokHandle } from "@/content/beyond";
+import { designWorks, tiktok } from "@/content/beyond";
 
 export const metadata: Metadata = {
   title: "Beyond code",
-  description: "Drone flying and graphic design by Yaw Nana Gyamfi Prempeh.",
+  description: "What Yaw Nana Gyamfi Prempeh does away from the keyboard.",
 };
 
 export default function Beyond() {
@@ -14,10 +12,10 @@ export default function Beyond() {
     <>
       <h1>Beyond code</h1>
 
-      <h2>Drone pilot</h2>
-      <p>{droneLicence ?? "I fly as a hobbyist pilot."}</p>
-      <Claims claims={[flights]} />
-      <TikTokFacade handle={tiktokHandle} />
+      <h2>Drone flying</h2>
+      <p>
+        I fly drones as a hobby. My videos are on TikTok: <a href={tiktok.url}>{tiktok.label}</a>
+      </p>
 
       {designWorks.length > 0 ? (
         <>

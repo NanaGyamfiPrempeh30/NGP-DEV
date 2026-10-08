@@ -9,9 +9,17 @@ const filters = [
   { value: "open-source", label: "Open source" },
 ] as const;
 
+type Filter = (typeof filters)[number]["value"];
+
 // The cards are rendered on the server. This only sets data-filter; CSS hides the rest.
-export function ProjectFilter({ children }: { children: ReactNode }) {
-  const [filter, setFilter] = useState<(typeof filters)[number]["value"]>("all");
+export function ProjectFilter({
+  counts,
+  children,
+}: {
+  counts: Record<Filter, number>;
+  children: ReactNode;
+}) {
+  const [filter, setFilter] = useState<Filter>("all");
   return (
     <div data-filter={filter}>
       <div className="filters" role="group" aria-label="Filter projects by kind">
@@ -26,6 +34,9 @@ export function ProjectFilter({ children }: { children: ReactNode }) {
           </button>
         ))}
       </div>
+      <p className="meta" role="status" aria-live="polite">
+        Showing {counts[filter]} of {counts.all} projects
+      </p>
       {children}
     </div>
   );

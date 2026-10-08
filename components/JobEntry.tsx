@@ -6,7 +6,7 @@ import { Tags } from "./Tags";
 const typeLabel = { "full-time": "Full-time", "part-time": "Part-time", contract: "Contract" } as const;
 const modeLabel = { remote: "Remote", hybrid: "Hybrid", onsite: "On site" } as const;
 
-export function JobEntry({ job }: { job: Job }) {
+export function JobEntry({ job, maxTags }: { job: Job; maxTags?: number }) {
   const facts = [job.type ? typeLabel[job.type] : null, modeLabel[job.mode], job.country].filter(Boolean);
   return (
     <li className="entry">
@@ -17,7 +17,7 @@ export function JobEntry({ job }: { job: Job }) {
         </h3>
         <p className="meta">{facts.join(", ")}</p>
         <Claims claims={job.claims} />
-        <Tags items={job.stack} />
+        <Tags items={job.stack} max={maxTags} />
       </div>
     </li>
   );

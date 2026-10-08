@@ -1,14 +1,6 @@
 import Link from "next/link";
+import { NavLinks } from "./NavLinks";
 import { Preferences } from "./Preferences";
-
-const nav = [
-  { href: "/experience", label: "Experience" },
-  { href: "/projects", label: "Projects" },
-  { href: "/writing", label: "Writing" },
-  { href: "/mentoring", label: "Mentoring" },
-  { href: "/beyond", label: "Beyond code" },
-  { href: "/cv", label: "CV" },
-];
 
 export function SiteHeader() {
   return (
@@ -20,16 +12,20 @@ export function SiteHeader() {
         <Link className="brand" href="/">
           Yaw Nana Gyamfi Prempeh
         </Link>
-        <nav aria-label="Main">
-          <ul>
-            {nav.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href}>{item.label}</Link>
-              </li>
-            ))}
-          </ul>
+        {/* Wide screens: links in a row. Small screens: a details/summary menu. CSS shows one of the two. */}
+        <nav aria-label="Main" className="nav-wide">
+          <NavLinks />
         </nav>
-        <Preferences />
+        <details className="nav-narrow">
+          <summary>Menu</summary>
+          <nav aria-label="Main">
+            <NavLinks />
+          </nav>
+          <Preferences />
+        </details>
+        <div className="prefs-wide">
+          <Preferences />
+        </div>
       </div>
     </header>
   );

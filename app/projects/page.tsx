@@ -25,7 +25,14 @@ export default function Projects() {
       <h1>Projects</h1>
       {projects.length > 0 ? <h2>Case studies</h2> : null}
       {projects.length > 0 ? (
-        <ProjectFilter>
+        <ProjectFilter
+          counts={{
+            all: projects.length,
+            work: projects.filter((p) => p.kind === "work").length,
+            client: projects.filter((p) => p.kind === "client").length,
+            "open-source": projects.filter((p) => p.kind === "open-source").length,
+          }}
+        >
           <ul role="list" className="cards">
             {projects.map((project) => (
               <ProjectCard key={project.slug} project={project} />

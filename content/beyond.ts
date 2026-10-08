@@ -1,14 +1,11 @@
-import type { Claim } from "./schema";
-
-// PRD §7.6. Owner-stated count, so it is marked internal (no public proof link).
-export const flights: Claim = { text: "1,000+ flights", internal: true };
-
-// TODO(owner): Ghana Civil Aviation Authority licence or registration. Without it the page says "hobbyist pilot".
-export const droneLicence: string | null = null;
-
-export const tiktokHandle = "ngp_dronelens";
+// PRD §7.6: drone flying is a hobby. Link only, no embed.
+export const tiktok = {
+  label: "tiktok.com/@ngp_dronelens",
+  url: "https://www.tiktok.com/@ngp_dronelens",
+};
 
 export type DesignWork = { src: string; alt: string; width: number; height: number };
 
 // TODO(owner): 6 to 12 of your own design works, with alt text for each.
+// The section is not rendered while this list is empty.
 export const designWorks: DesignWork[] = [];

@@ -170,6 +170,66 @@ code {
   margin: 0;
 }
 
+.site-header nav a[aria-current="page"] {
+  color: var(--fg);
+  font-weight: 750;
+  text-decoration-thickness: 0.16em;
+}
+
+/* Small screens get the details/summary menu. Wide screens get the row. */
+.nav-wide,
+.prefs-wide {
+  display: none;
+}
+
+.prefs-wide {
+  margin-left: auto;
+}
+
+.nav-narrow {
+  margin-left: auto;
+}
+
+.nav-narrow summary {
+  border: 1px solid var(--muted);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  min-height: 2.5rem;
+  padding: 0.4rem 0.9rem;
+}
+
+.nav-narrow[open] {
+  flex-basis: 100%;
+}
+
+.nav-narrow[open] summary {
+  width: fit-content;
+  margin-left: auto;
+}
+
+.nav-narrow nav ul {
+  flex-direction: column;
+  gap: 0;
+  margin-block: 0.5rem;
+}
+
+.nav-narrow nav a {
+  display: block;
+  padding-block: 0.6rem;
+}
+
+@media (min-width: 62rem) {
+  .nav-wide,
+  .prefs-wide {
+    display: block;
+  }
+
+  .nav-narrow {
+    display: none;
+  }
+}
+
 .site-header nav a {
   display: inline-block;
   padding-block: 0.35rem;
@@ -191,7 +251,6 @@ code {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-left: auto;
 }
 
 button {
@@ -370,14 +429,6 @@ a.proof {
 
 .prose li {
   margin-top: 0.4rem;
-}
-
-.facade {
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  margin-top: 1.25rem;
-  max-width: var(--measure);
-  padding: 1rem 1.2rem 1.2rem;
 }
 
 .validation {
