@@ -34,6 +34,10 @@ export function loadProjects(): LoadedProject[] {
 
 // Pages use this. Production never shows verified: false (see lib/visibility.ts).
 // `hidden` wins over everything: a hidden project is never rendered, linked or listed, in any environment.
+export function servable<T extends { hidden: boolean; verified: boolean }>(projects: T[]): T[] {
+  return visible(projects.filter((project) => !project.hidden));
+}
+
 export function getProjects(): LoadedProject[] {
-  return visible(loadProjects().filter((project) => !project.hidden));
+  return servable(loadProjects());
 }

@@ -24,7 +24,7 @@ export function SiteHeader() {
           <Preferences />
         </details>
         <div className="prefs-wide">
-          <Preferences />
+          <Preferences compact />
         </div>
       </div>
     </header>

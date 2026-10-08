@@ -220,6 +220,21 @@ code {
 }
 
 @media (min-width: 62rem) {
+  .site-header .bar {
+    flex-wrap: nowrap;
+    gap: 1.25rem;
+  }
+
+  .site-header .brand {
+    white-space: nowrap;
+  }
+
+  .nav-wide ul {
+    flex-wrap: nowrap;
+    gap: 0.95rem;
+    white-space: nowrap;
+  }
+
   .nav-wide,
   .prefs-wide {
     display: block;
@@ -251,6 +266,19 @@ code {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.prefs.compact {
+  flex-wrap: nowrap;
+}
+
+.prefs.compact button {
+  align-items: center;
+  display: inline-flex;
+  font-weight: 700;
+  justify-content: center;
+  min-width: 2.5rem;
+  padding: 0;
 }
 
 button {

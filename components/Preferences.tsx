@@ -22,7 +22,7 @@ function write(key: string, value: string) {
   }
 }
 
-export function Preferences() {
+export function Preferences({ compact = false }: { compact?: boolean }) {
   const [theme, setTheme] = useState<Theme>("system");
   const [comfort, setComfort] = useState(false);
 
@@ -50,10 +50,35 @@ export function Preferences() {
     else delete document.documentElement.dataset.comfort;
   }
 
+  const themeLabel = `Theme: ${names[theme]}`;
+
+  // Compact: icon buttons for the wide header. The names stay available to screen readers and as tooltips.
+  if (compact) {
+    return (
+      <div className="prefs compact">
+        <button type="button" onClick={nextTheme} aria-label={`${themeLabel}. Change theme`} title={themeLabel}>
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          aria-pressed={comfort}
+          aria-label="Comfort mode"
+          title="Comfort mode: larger text and spacing"
+          onClick={toggleComfort}
+        >
+          <span aria-hidden="true">Aa</span>
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="prefs">
       <button type="button" onClick={nextTheme}>
-        Theme: {names[theme]}
+        {themeLabel}
       </button>
       <button type="button" aria-pressed={comfort} onClick={toggleComfort}>
         Comfort mode

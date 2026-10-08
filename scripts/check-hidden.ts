@@ -20,8 +20,11 @@ function walk(dir: string, textFile: RegExp): string[] {
   });
 }
 
+// The bank portal stays hidden until the owner lifts it (CLAUDE.md), whether or not its file is in the repo.
+const alwaysHidden = ["rural-bank-staff-portal", "Abokobi"];
+
 const hidden = loadProjects().filter((project) => project.hidden);
-const needles = hidden.flatMap((project) => [project.slug, project.title]);
+const needles = [...alwaysHidden, ...hidden.flatMap((project) => [project.slug, project.title])];
 const files = roots.flatMap(([dir, textFile]) => walk(dir, textFile));
 
 if (files.length === 0) {
@@ -36,9 +39,9 @@ for (const file of files) {
     if (text.includes(needle)) leaks.push(`${file}: contains "${needle}"`);
   }
 }
-for (const project of hidden) {
+for (const slug of ["rural-bank-staff-portal", ...hidden.map((project) => project.slug)]) {
   for (const ext of ["html", "rsc", "meta"]) {
-    const page = path.join(".next/server/app/projects", `${project.slug}.${ext}`);
+    const page = path.join(".next/server/app/projects", `${slug}.${ext}`);
     if (fs.existsSync(page)) leaks.push(`${page}: page was built`);
   }
 }
@@ -49,4 +52,4 @@ if (leaks.length > 0) {
   process.exit(1);
 }
 
-console.log(`check-hidden: ${hidden.length} hidden project(s), ${files.length} file(s) scanned, no leaks`);
+console.log(`check-hidden: ${needles.length} term(s), ${files.length} file(s) scanned, no leaks`);

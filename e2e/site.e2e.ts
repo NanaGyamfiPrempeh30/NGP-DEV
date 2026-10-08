@@ -12,7 +12,7 @@ const routes = [
   { name: "cv", path: "/cv" },
 ];
 
-const widths = [360, 1440];
+const widths = [360, 1024, 1440];
 const schemes = ["light", "dark"] as const;
 
 for (const route of routes) {
@@ -46,6 +46,20 @@ for (const route of routes) {
     await expect(first).toHaveText("Skip to content");
     const outline = await first.evaluate((el) => getComputedStyle(el).outlineStyle);
     expect(outline).not.toBe("none");
+  });
+}
+
+for (const width of [1024, 1440]) {
+  test(`header stays on one row at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const brand = await page.locator(".site-header .brand").boundingBox();
+    const lastLink = await page.locator(".nav-wide a").last().boundingBox();
+    const comfort = await page.getByRole("button", { name: "Comfort mode" }).boundingBox();
+    const centre = (box: { y: number; height: number } | null) => (box ? box.y + box.height / 2 : -1);
+    expect(Math.abs(centre(brand) - centre(lastLink))).toBeLessThan(8);
+    expect(Math.abs(centre(brand) - centre(comfort))).toBeLessThan(8);
+    expect(comfort!.x + comfort!.width).toBeLessThanOrEqual(width);
   });
 }
 
