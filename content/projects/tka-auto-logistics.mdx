@@ -1,4 +1,4 @@
----
+{/*
 slug: tka-auto-logistics
 title: "TKA Auto's & Logistics"
 kind: client
@@ -14,7 +14,7 @@ links:
   - { label: "Live site", url: "https://tka-auto-logistics.vercel.app" }
   - { label: "Repo", url: "https://github.com/NanaGyamfiPrempeh30/tka-auto-logistics" }
 verified: false
----
+*/}
 
 ## Context
 
@@ -43,7 +43,11 @@ Routes under the admin area are closed to everyone but the admin.
 
 ## What broke and how I fixed it
 
-TODO(owner): confirm the candidates I listed for you. Nothing goes here until you do.
+The Supabase integration failed on every push. GitHub showed a red cross on commit 740e6ab, and the failing check was Supabase Preview. The error read: `failed to clone repo: openfile: invalid path: "NUL"`.
+
+NUL is a reserved device name on Windows. Most likely a command that redirected output to nul from WSL created a real file with that name, and Supabase's cloner choked on it.
+
+I found the file with `git ls-files | grep -iE '(^|/)nul$'`, removed it and pushed. The error cleared, and /dashboard and /register worked again. The fix went in on 18 July 2026.
 
 ## Result
 

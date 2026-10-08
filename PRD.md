@@ -164,6 +164,7 @@ const Project = z.object({
   title: z.string(),
   kind: z.enum(["work", "client", "open-source"]),
   featured: z.boolean().default(false),
+  hidden: z.boolean().default(false),   // never rendered while true; owner lifts it
   canNameClient: z.boolean().default(false), // set true only after client agrees
   clientLabel: z.string().optional(),   // shown when canNameClient=false
   role: z.string(),
