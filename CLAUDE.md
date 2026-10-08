@@ -47,11 +47,10 @@ public/cv/           YNGP_CV_public.pdf (no address/phone/referees)
 7. **Design:** load the UI/UX plugin and the `frontend-design` skill before building any page. Check `/plugin` for the exact name.
 8. **Accessibility is not optional:** WCAG 2.2 AA, 18px body text min, line height 1.6, max 70ch, no justified text. Test keyboard nav on every page.
 9. **Performance budget:** Home page JS < 100 KB gzipped. Server components by default; `"use client"` only when needed. Images through `next/image`.
-10. **Third-party embeds** (TikTok) use a click-to-load facade.
+10. **Third-party embeds:** none in v1. If one is added later, use a click-to-load facade.
 
 ## Owner reminders (do not skip)
-- **Bank repo check.** Before you start M3 (building pages), and again before you write the Abokobi Rural Bank project page, stop and tell me: "Check with Bismark that the bank's portal repo is now private." Wait for my answer. If it's still public, build the page but don't merge it.
-- **Launch gate (M6):** don't open or merge the `main` to `production` PR until I confirm that repo is private.
+- **Bank page stays hidden.** The Abokobi Rural Bank page and card are hidden (`hidden: true`) until I confirm the bank's portal repo is private. This does not block launch. Don't unhide it and don't push its case study until I say so.
 
 ## Data sources
 - Medium RSS: `https://medium.com/feed/@yawgyamfiprempeh27`, revalidate 86400. Merge with `content/articles.ts`. Never fail the build on fetch error.
@@ -61,7 +60,7 @@ public/cv/           YNGP_CV_public.pdf (no address/phone/referees)
 - Conventional commits (`feat:`, `fix:`, `content:`, `chore:`).
 - One feature per branch. PR to `main`. CI must be green.
 - `main` deploys to Vercel as a preview, behind Vercel Authentication. It is not the live site.
-- `production` is Vercel's Production Branch. It changes only through a PR from `main` to `production`, at M6, after the bank repo check. Never push or merge to `production` otherwise.
+- `production` is Vercel's Production Branch. It changes only through a PR from `main` to `production`, at M6. Never push or merge to `production` otherwise.
 
 ## Adding or editing content
 Use the `portfolio-content` skill in `.claude/skills/`. It has the fact-check steps.
