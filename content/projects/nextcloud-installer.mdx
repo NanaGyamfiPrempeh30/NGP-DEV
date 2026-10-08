@@ -1,0 +1,57 @@
+{/*
+slug: nextcloud-installer
+title: "nextcloud-installer"
+kind: open-source
+featured: false
+canNameClient: false
+role: "Author"
+start: "2026-06"
+startSource: first-commit
+stack: ["Nextcloud", "nginx", "PHP-FPM", "MariaDB", "Redis"]
+outcome: "Unattended, idempotent staged installer for Nextcloud on native Linux."
+claims: []
+links:
+  - { label: "Repo", url: "https://github.com/NanaGyamfiPrempeh30/nextcloud-installer" }
+verified: false
+*/}
+
+## Context
+
+A command-line installer for Nextcloud on a plain Linux stack: nginx, PHP-FPM, MariaDB and Redis. It runs unattended from start to finish.
+
+## Problem
+
+Nextcloud's official all-in-one Docker image needs a web setup wizard for the domain, add-ons and timezone. You cannot script that step. I wanted an install that a script could run and safely run again.
+
+## What I built
+
+- A staged installer. It detects the system, checks it, installs packages, verifies the download checksum, sets up the database, runs Nextcloud's own `occ` installer, wires Redis, sets up TLS and verifies the result.
+- Every stage can run twice. A second run skips finished work.
+- A separate exit code for each kind of failure, so other scripts can react.
+- Self-signed TLS by default. Let's Encrypt when you pass a real domain.
+
+## How it works
+
+Before it changes anything, the installer asks Nextcloud whether it is already installed. The answer has three states: installed, not installed, or unknown. On "unknown" it stops.
+
+That third state matters. If the database is briefly down, a yes-or-no check reads the failure as "not installed" and reinstalls over a working system.
+
+## What broke and how I fixed it
+
+I found seven bugs by running it on real Ubuntu 24.04 machines. None showed up in review. Three of them:
+
+A second run broke the database login. The installer made a new password each run, but `CREATE USER IF NOT EXISTS` kept the old one. I added an `ALTER USER` so the two always match.
+
+A failed install left a half-written config file behind, and the next run read the stale password from it. The installer now deletes that file when Nextcloud is not installed.
+
+Redis was installed and running, but Nextcloud was never told to use it. I added the config step and a check that reads the setting back.
+
+## Result
+
+Tested on Ubuntu 24.04 LTS: full install, a clean second run, the database-down path, a full reset and reinstall, and ONLYOFFICE integration.
+
+Not tested yet: the Let's Encrypt path with a real domain. The README says so.
+
+## Links
+
+- [Repo](https://github.com/NanaGyamfiPrempeh30/nextcloud-installer)

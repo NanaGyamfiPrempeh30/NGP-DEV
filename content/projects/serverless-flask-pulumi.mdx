@@ -1,0 +1,71 @@
+{/*
+# Start is the first commit on path aws-python-app, branch Pulumi (12 Jul 2025), not the repo's first commit.
+slug: serverless-flask-pulumi
+title: "Serverless Flask on AWS with Pulumi"
+kind: open-source
+featured: false
+canNameClient: false
+role: "Author"
+start: "2025-07"
+startSource: first-commit
+stack: ["Pulumi", "Python", "Flask", "AWS Lambda", "API Gateway", "ECR", "Docker"]
+outcome: "A Flask app on AWS Lambda behind API Gateway, with every resource defined in Pulumi."
+claims:
+  - text: "The Lambda container uses a Python 3.10 base image, with 512 MB of memory and a 30 s timeout."
+    evidence: { label: "Article", url: "https://medium.com/@yawgyamfiprempeh27/deploying-a-serverless-flask-application-on-aws-with-pulumi-3e82075f1233" }
+    internal: false
+links:
+  - { label: "Repo", url: "https://github.com/NanaGyamfiPrempeh30/devops-labs/tree/Pulumi/aws-python-app" }
+  - { label: "Article", url: "https://medium.com/@yawgyamfiprempeh27/deploying-a-serverless-flask-application-on-aws-with-pulumi-3e82075f1233" }
+  - { label: "X thread", url: "https://x.com/y_nagprem/status/2107076305225502895" }
+verified: false
+*/}
+
+## Context
+
+A small Flask app that runs on AWS Lambda behind an API Gateway HTTP API. One Pulumi stack, written with the Python SDK, creates every resource. I wrote it up as a tutorial on Medium in July 2025.
+
+## Problem
+
+I wanted to try Pulumi, an infrastructure-as-code tool where you write infrastructure in a normal programming language. A small serverless Flask app was the test.
+
+## What I built
+
+A Pulumi stack with:
+
+- An S3 bucket holding a text file.
+- An ECR repository.
+- A Lambda function that runs as a container image, built with awsx.
+- An IAM role with the `AWSLambdaBasicExecutionRole` policy.
+- An API Gateway v2 HTTP API with an `AWS_PROXY` integration, a catch-all route and a `$default` stage.
+
+The Flask app is wrapped with aws-wsgi so Lambda can call it.
+
+## How it works
+
+1. A request reaches the HTTP API.
+2. The catch-all route passes it to the Lambda function through the `AWS_PROXY` integration.
+3. aws-wsgi hands the request to Flask.
+4. Flask returns the contents of `text.txt`.
+
+That file is copied into the container image. The S3 bucket holds a copy, but the app does not read from it.
+
+## What broke and how I fixed it
+
+The article lists three problems and the fix for each.
+
+- The Docker build fails. Run Docker Desktop as Administrator, and share the project directory under Settings > Resources > File Sharing.
+- API Gateway returns 500 errors. Set `payload_format_version="1.0"` on the integration.
+- Permission errors. Check the IAM roles and the Lambda permissions.
+
+## Result
+
+The code is on the `Pulumi` branch of my labs repo, and the article walks through it step by step.
+
+Pulumi's account followed me and liked the thread. [Here is the thread on X](https://x.com/y_nagprem/status/2107076305225502895).
+
+## Links
+
+- [Repo](https://github.com/NanaGyamfiPrempeh30/devops-labs/tree/Pulumi/aws-python-app)
+- [Article: a serverless Flask application on AWS with Pulumi](https://medium.com/@yawgyamfiprempeh27/deploying-a-serverless-flask-application-on-aws-with-pulumi-3e82075f1233)
+- [X thread](https://x.com/y_nagprem/status/2107076305225502895)
