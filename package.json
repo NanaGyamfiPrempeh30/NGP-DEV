@@ -11,16 +11,25 @@
     "test": "vitest run",
     "validate": "tsx scripts/validate-content.ts",
     "build": "pnpm validate && next build",
+    "check:hidden": "tsx scripts/check-hidden.ts",
+    "e2e": "playwright test",
     "start": "next start"
   },
   "dependencies": {
+    "@mdx-js/loader": "3.1.1",
+    "@mdx-js/react": "3.1.1",
+    "@next/mdx": "16.3.8",
+    "gray-matter": "4.0.3",
     "next": "16.3.8",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "zod": "4.6.5"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "4.3.3",
+    "@types/mdx": "2.0.13",
     "@types/node": "26.6.4",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",

@@ -164,11 +164,13 @@ const Project = z.object({
   title: z.string(),
   kind: z.enum(["work", "client", "open-source"]),
   featured: z.boolean().default(false),
+  hidden: z.boolean().default(false),   // never rendered while true; owner lifts it
   canNameClient: z.boolean().default(false), // set true only after client agrees
   clientLabel: z.string().optional(),   // shown when canNameClient=false
   role: z.string(),
   start: z.string(),                    // "2026-05"
   end: z.string().optional(),           // omit = ongoing
+  startSource: z.enum(["owner", "first-commit", "article"]), // "article" shows as "Published <Mon YYYY>"
   stack: z.array(z.string()).max(8),
   outcome: z.string().max(120),
   claims: z.array(Claim),
@@ -180,7 +182,7 @@ const Job = z.object({
   company: z.string(),
   country: z.string(),
   mode: z.enum(["remote", "hybrid", "onsite"]),
-  type: z.enum(["full-time", "part-time", "contract"]),
+  type: z.enum(["full-time", "part-time", "contract"]).optional(), // omit until owner confirms
   title: z.string(),
   start: z.string(),
   end: z.string().optional(),
