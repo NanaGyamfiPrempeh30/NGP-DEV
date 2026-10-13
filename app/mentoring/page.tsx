@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { mentor, mentoring } from "@/content/mentoring";
+import { mentoring, mentors } from "@/content/mentoring";
 import { formatDate } from "@/lib/dates";
 
 export const metadata: Metadata = {
@@ -48,10 +48,11 @@ export default function Mentoring() {
       ) : null}
 
       <h2>Being mentored</h2>
-      <p>
-        <a href={mentor.url}>{mentor.name}</a>, {mentor.description}, mentored me while I built the{" "}
-        {mentor.project} server.
-      </p>
+      {mentors.map((mentor) => (
+        <p key={mentor.url}>
+          <a href={mentor.url}>{mentor.name}</a>, {mentor.description}, mentored me {mentor.when}.
+        </p>
+      ))}
     </>
   );
 }

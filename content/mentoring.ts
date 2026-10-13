@@ -16,7 +16,8 @@ export type MentoringSeries = {
 export type Mentor = {
   name: string;
   description: string;
-  project: string;
+  // What he mentored me on. The page prints: "<name>, <description>, mentored me <when>."
+  when: string;
   url: string;
 };
 
@@ -39,10 +40,20 @@ export const mentoring: MentoringSeries | null = {
   ],
 };
 
-// Describe him only with these words (owner, 5 Oct 2026).
-export const mentor: Mentor = {
-  name: "Wilson Mar",
-  description: "senior DevSecOps and AI leader",
-  project: "Ambient Weather MCP",
-  url: "https://wilsonmar.github.io/",
-};
+// Use only the owner's words for each person. Order is the order on the page.
+export const mentors: Mentor[] = [
+  {
+    // Owner, 13 Oct 2026. No phone, email, employer or dates.
+    name: "Dr. Fredrick Ayivor, Ph.D.",
+    description: "senior DevOps and AI engineer",
+    when: "at the beginning and in the early years of my DevOps career",
+    url: "https://www.linkedin.com/in/dr-fredrick-ayivor-ph-d-4347a491",
+  },
+  {
+    // Owner, 5 Oct 2026.
+    name: "Wilson Mar",
+    description: "senior DevSecOps and AI leader",
+    when: "while I built the Ambient Weather MCP server",
+    url: "https://wilsonmar.github.io/",
+  },
+];
