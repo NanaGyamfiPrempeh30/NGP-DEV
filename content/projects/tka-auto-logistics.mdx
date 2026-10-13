@@ -1,0 +1,61 @@
+{/*
+slug: tka-auto-logistics
+title: "TKA Auto's & Logistics"
+kind: client
+featured: false
+canNameClient: true
+role: "Software engineer and graphic designer"
+start: "2026-07"
+startSource: first-commit
+stack: ["Next.js", "TypeScript", "Supabase", "Vercel"]
+outcome: "Makes shipping a car from the USA to Ghana easier to arrange and to follow."
+claims: []
+links:
+  - { label: "Live site", url: "https://tka-auto-logistics.vercel.app" }
+  - { label: "Repo", url: "https://github.com/NanaGyamfiPrempeh30/tka-auto-logistics" }
+verified: false
+*/}
+
+## Context
+
+TKA Auto's & Logistics is a US-based business. It buys cars at US auctions (Copart, IAAI and Manheim) and ships them to Ghana. I was the software engineer and the graphic designer.
+
+## Problem
+
+The site exists to make shipping and logistics from the USA to Ghana easier for people in Ghana. A buyer needs a simple way to ask for a quote, and then a way to see where the car is.
+
+## What I built
+
+- A marketing site.
+- A quote form that saves each request, and an inbox where staff work through them.
+- Customer accounts with an order tracking dashboard.
+- An admin area where staff manage orders.
+
+Built with Next.js and TypeScript on Vercel, with Supabase for the database and sign-in.
+
+## How it works
+
+1. A visitor sends a quote request. Anyone can submit one. Only an admin can read them.
+2. Staff pick it up in the admin inbox and update its status.
+3. Once there is an order, the customer signs in and follows it on their dashboard.
+
+Routes under the admin area are closed to everyone but the admin.
+
+## What broke and how I fixed it
+
+The Supabase integration failed on every push. GitHub showed a red cross on commit 740e6ab, and the failing check was Supabase Preview. The error read: `failed to clone repo: openfile: invalid path: "NUL"`.
+
+NUL is a reserved device name on Windows. Most likely a command that redirected output to nul from WSL created a real file with that name, and Supabase's cloner choked on it.
+
+I found the file with `git ls-files | grep -iE '(^|/)nul$'`, removed it and pushed. The error cleared, and /dashboard and /register worked again. The fix went in on 18 July 2026.
+
+## Result
+
+The site is live.
+
+TODO(owner): any outcome the client has agreed to share?
+
+## Links
+
+- [Live site](https://tka-auto-logistics.vercel.app)
+- [Repo](https://github.com/NanaGyamfiPrempeh30/tka-auto-logistics)

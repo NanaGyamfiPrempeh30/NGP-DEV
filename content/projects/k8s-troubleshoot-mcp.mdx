@@ -1,0 +1,72 @@
+{/*
+slug: k8s-troubleshoot-mcp
+title: "Kubernetes Troubleshooting MCP Server"
+kind: open-source
+featured: true
+canNameClient: false
+role: "Sole developer"
+start: "2026-06"
+startSource: first-commit
+stack: ["Python", "MCP", "Kubernetes", "RBAC", "Hypothesis", "Docker"]
+outcome: "Lets AI assistants read cluster state safely, with RBAC as the hard boundary."
+claims:
+  - text: "16 read-only diagnostic tools, zero write verbs in the ServiceAccount"
+    evidence: { label: "Repo", url: "https://github.com/NanaGyamfiPrempeh30/k8s-troubleshoot-mcp" }
+    internal: false
+  - text: "453 passing tests, then 6 real bugs found against a live cluster"
+    evidence: { label: "Article", url: "https://medium.com/@yawgyamfiprempeh27/i-built-a-kubernetes-mcp-server-with-453-passing-tests-then-i-pointed-it-at-a-real-cluster-e0b17bbc783b" }
+    internal: false
+  - text: "2 independent security layers (RBAC and a namespace allowlist), shown failing closed"
+    evidence: { label: "Article", url: "https://medium.com/@yawgyamfiprempeh27/i-built-a-kubernetes-mcp-server-with-453-passing-tests-then-i-pointed-it-at-a-real-cluster-e0b17bbc783b" }
+    internal: false
+links:
+  - { label: "Repo", url: "https://github.com/NanaGyamfiPrempeh30/k8s-troubleshoot-mcp" }
+  - { label: "Article", url: "https://medium.com/@yawgyamfiprempeh27/i-built-a-kubernetes-mcp-server-with-453-passing-tests-then-i-pointed-it-at-a-real-cluster-e0b17bbc783b" }
+  - { label: "Glama", url: "https://glama.ai/mcp/servers/NanaGyamfiPrempeh30/k8s-troubleshoot-mcp" }
+verified: false
+*/}
+
+## Context
+
+This is a diagnostics server for Kubernetes that speaks the Model Context Protocol. It gives an AI assistant 16 tools for pods, logs, events, deployments and nodes. The assistant can look at a cluster. It cannot change one. The server has no access to secrets, cannot exec into a pod and has nothing to write with.
+
+## Problem
+
+Troubleshooting a cluster means running kubectl again and again and joining the output up in your head. An assistant can do that joining for you, but only if you let it near the cluster. I wanted that help without handing over write access. Pod logs are a second risk. Anyone who can write to a log can try to slip instructions to the assistant reading it.
+
+## What I built
+
+- 16 read-only tools served over stdio.
+- A ServiceAccount with zero write verbs. Kubernetes RBAC is the real boundary.
+- A namespace allowlist inside the app, as a second check.
+- Log content is JSON-escaped before it goes into a response, so injected text arrives as plain data.
+- A Docker image that runs as a non-root user, with secret scanning in CI.
+
+## How it works
+
+1. The assistant calls a tool on the server.
+2. The server checks the namespace against its allowlist.
+3. The server calls the Kubernetes API with its ServiceAccount.
+4. RBAC allows the read, or refuses it.
+
+The two checks do not depend on each other. If RBAC is ever set too wide, the allowlist still blocks the call. If the allowlist has a hole, RBAC blocks it.
+
+## What broke and how I fixed it
+
+I had 351 green tests before I tried a real cluster. The first live call returned pod logs as a Python bytes dump. The Kubernetes client says it returns a string and hands back raw bytes. Every one of my mocks returned a string, so no test could see it. I fixed the decode, then made the shared fixture return real bytes. Undo the fix now and ten tests fail.
+
+Next, `unschedulable` came back as null on a healthy node. The API leaves the field out, and my mocks had set it to false.
+
+Then both event tools crashed. Real clusters send `eventTime: null` and the client rejects it before my code runs. One setting fixed it: `client_side_validation = False`.
+
+## Result
+
+The suite now has 453 passing tests. The live cluster found six bugs that those tests could not. I also watched both security layers refuse a call they should refuse, and kept the screenshots. The repo has a debug log with dates and line numbers for all six bugs.
+
+What I took from it: a mock repeats your own assumption back to you. Only the real API can tell you the assumption is wrong.
+
+## Links
+
+- [Repo](https://github.com/NanaGyamfiPrempeh30/k8s-troubleshoot-mcp)
+- [Article: 453 passing tests, then a real cluster](https://medium.com/@yawgyamfiprempeh27/i-built-a-kubernetes-mcp-server-with-453-passing-tests-then-i-pointed-it-at-a-real-cluster-e0b17bbc783b)
+- [Glama listing](https://glama.ai/mcp/servers/NanaGyamfiPrempeh30/k8s-troubleshoot-mcp)
