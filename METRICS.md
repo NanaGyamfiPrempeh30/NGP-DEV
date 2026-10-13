@@ -42,7 +42,7 @@ These go on the site with a link. Use them in interviews when someone asks "give
 | 86 AWS resources from one `terraform apply`, 15 to 20 min | eks-karpenter-gitops-bench | Medium, 22 Jan 2026 |
 | CI 25% cheaper per minute ($0.008 vs $0.006) with double the CPU | eks-karpenter-gitops-bench | Same |
 | HPA scaled 2 → 3 pods when CPU hit 76% against a 70% target | eks-karpenter-gitops-bench | Same |
-| 12 platform components working together in 48 hours | k8s-devsecops | Medium, 16 Jan 2026 · 53★ repo |
+| Platform built in 48 hours | k8s-devsecops | Medium, 16 Jan 2026 · 53★ repo |
 | 3 nodes + 1 bastion, 0 public node IPs, MTU 1450 fix | ECDC / IONOS | Medium, 9 Jun 2026 |
 | 6 debugging rounds from "works locally" to Docker Hub + mcp.so | ambient-weather-mcp | Medium, 25 May 2026 |
 | 9 of 12 GXDCH compliance tests | Bosonit | Internal, explain live |
