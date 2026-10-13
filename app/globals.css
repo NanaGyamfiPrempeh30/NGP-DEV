@@ -522,7 +522,7 @@ button[aria-pressed="true"] {
 
 .entry-title a {
   color: var(--fg);
-  text-decoration-color: var(--rule);
+  text-decoration-color: var(--muted);
 }
 
 .entry-title a:hover {
@@ -625,7 +625,7 @@ button[aria-pressed="true"] {
   color: var(--fg);
   display: block;
   font-weight: 650;
-  text-decoration-color: var(--rule);
+  text-decoration-color: var(--muted);
 }
 
 .writing-list a:hover {

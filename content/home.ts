@@ -29,8 +29,8 @@ export const proofStrip: ProofItem[] = [
     project: "eks-karpenter-gitops-bench",
   },
   {
-    figure: "0 public IPs",
-    what: "on the 3 nodes of the ECDC cluster",
+    figure: "0",
+    what: "public IPs on the 3 nodes of the ECDC cluster",
     source: "Proof: Medium article",
     url: "https://medium.com/@yawgyamfiprempeh27/i-deployed-a-production-kubernetes-cluster-on-a-european-bare-metal-cloud-85555b1fe4a8",
     project: "ecdc-kubernetes-ionos",
