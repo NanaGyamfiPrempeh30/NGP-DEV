@@ -1,0 +1,73 @@
+{/*
+# Holds the 4 Bosonit claims from PRD §10.1 that do not fit on the job entry (max 5, 1 internal).
+slug: ecdc-kubernetes-ionos
+title: "ECDC Kubernetes on IONOS"
+kind: work
+featured: true
+canNameClient: false
+role: "Sole DevSecOps engineer"
+start: "2025-11"
+end: "2026-01"
+startSource: owner
+stack: ["Kubernetes", "IONOS Cloud", "Terraform", "Ansible", "Traefik", "HAProxy", "Vault", "ArgoCD"]
+outcome: "ECDC's compliance platform cluster on IONOS Cloud, built from scratch."
+claims:
+  - text: "cert-manager with a self-signed CA for cluster services; Let's Encrypt HTTP-01 tested on a dummy domain (`hello.ecdc.es`)."
+    evidence: { label: "Article", url: "https://medium.com/@yawgyamfiprempeh27/i-deployed-a-production-kubernetes-cluster-on-a-european-bare-metal-cloud-85555b1fe4a8" }
+    internal: false
+  - text: "Eclipse Tractus-X EDC with custom Helm values and Vault integration."
+    internal: true
+  - text: "Gaia-X GXDCH Loire services deployed locally; 9 of 12 compliance tests passing."
+    internal: true
+  - text: "80+ pages of docs: setup guides, architecture, runbooks."
+    internal: true
+links:
+  - { label: "Article", url: "https://medium.com/@yawgyamfiprempeh27/i-deployed-a-production-kubernetes-cluster-on-a-european-bare-metal-cloud-85555b1fe4a8" }
+verified: false
+*/}
+
+## Context
+
+A contract with Bosonit, from November 2025 to January 2026. The end client was ECDC, and the job was the Kubernetes cluster for its compliance platform. It ran on IONOS Cloud. I was the only DevSecOps engineer on it.
+
+## Problem
+
+IONOS gives you virtual machines, a network and a public IP. Everything else is yours to build. My earlier cluster was on AWS, where a managed service usually absorbs the pain. Here the nodes had to stay private, HTTPS traffic still had to get in, and the certificates had to renew without me.
+
+## What I built
+
+- Three nodes (one master, two workers) on a private network, provisioned with Terraform and Ansible.
+- One bastion host running OpenVPN. Without a VPN profile you cannot reach a node, even with a valid SSH key.
+- Calico in VXLAN mode for pod networking.
+- Traefik for ingress and cert-manager for certificates.
+- Vault stored on NFS, with External Secrets Operator syncing secrets into the cluster.
+- ArgoCD, KEDA, Prometheus and Grafana.
+
+## How it works
+
+1. A request reaches the bastion's public IP.
+2. HAProxy on the bastion passes it on in TCP mode. It does not open the TLS connection.
+3. Traefik inside the cluster ends TLS and routes the request.
+4. Port 80 follows the same path, so Let's Encrypt can complete its HTTP-01 check.
+
+Engineers come in through OpenVPN. The ArgoCD screen is only reachable over an SSH tunnel through the bastion.
+
+## What broke and how I fixed it
+
+I locked myself out. I added one iptables rule on the bastion to forward port 443, and it cut SSH to every node. I got back in through the IONOS remote console. Then I moved HTTPS routing to HAProxy, which leaves SSH alone.
+
+cert-manager sat in "pending" and gave no reason. The reason was in the Order resource, which I had not been reading.
+
+Pods failed now and then under load. VXLAN adds overhead, so pods needed an MTU of 1450 where the default is 1500. That one took a while to trace.
+
+## Result
+
+The cluster was still running when I wrote it up in June 2026. No node has a public IP, and the bastion is the only way in.
+
+I would change two things. NFS ran on the master node, so storage pressure could hit the control plane. It belongs on its own machine. And Vault needs auto-unseal before anything depends on it, because External Secrets Operator fails quietly when Vault seals.
+
+I now keep a timestamped log of every change while I work. That log is how I found the iptables rule.
+
+## Links
+
+- [Article: a production Kubernetes cluster on a European bare-metal cloud](https://medium.com/@yawgyamfiprempeh27/i-deployed-a-production-kubernetes-cluster-on-a-european-bare-metal-cloud-85555b1fe4a8)

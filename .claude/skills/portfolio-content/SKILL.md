@@ -23,7 +23,7 @@ Turns raw info from the owner into a verified, schema-valid entry in `/content`.
    - Overlapping dates with another job? Set `type` to part-time or contract.
    - Client named? Only if owner says the client agreed. Else `canNameClient: false` and a generic `clientLabel` ("Rural bank, Ghana").
 
-4. **Write.** Projects go in `content/projects/<slug>.mdx` with frontmatter matching `Project` in `content/schema.ts`. Body sections, in order:
+4. **Write.** Projects go in `content/projects/<slug>.mdx` with frontmatter matching `Project` in `content/schema.ts`. The YAML block sits inside an MDX comment: the file starts with `{/*` and the block ends with `*/}` (not `---`), so the MDX compiler skips it. Body sections, in order:
    - Context
    - Problem
    - What I built
