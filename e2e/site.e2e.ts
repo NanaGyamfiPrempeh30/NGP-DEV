@@ -310,6 +310,110 @@ test("TikTok card: only with a real screenshot, and the link opens safely", asyn
   expect(await card.locator("iframe, script").count()).toBe(0);
 });
 
+test("lower Home sections: anchors land below the header, find-in-page works, no shift while scrolling", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.addInitScript(() => {
+    const w = window as unknown as { __cls: number };
+    w.__cls = 0;
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries() as unknown as { value: number; hadRecentInput: boolean }[]) {
+        if (!entry.hadRecentInput) w.__cls += entry.value;
+      }
+    }).observe({ type: "layout-shift", buffered: true });
+  });
+  await page.goto("/");
+  await page.waitForTimeout(800);
+  const before = await page.evaluate(() => (window as unknown as { __cls: number }).__cls);
+  await settle(page);
+  const after = await page.evaluate(() => (window as unknown as { __cls: number }).__cls);
+  expect(after - before).toBeLessThan(0.01);
+
+  const headerBottom = async () => (await page.locator(".site-header").boundingBox())!.height;
+  for (const id of ["featured-title", "jobs-title", "writing-title", "contact"]) {
+    await page.goto(`/#${id}`);
+    await page.waitForTimeout(600);
+    const top = (await page.locator(`#${id}`).boundingBox())!.y;
+    expect(top).toBeGreaterThanOrEqual((await headerBottom()) - 1);
+    // Near the end of the page the browser cannot scroll further, so the target may sit lower.
+    const atEnd = await page.evaluate(() => Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 1);
+    if (!atEnd) expect(top).toBeLessThan(260);
+  }
+
+  // The header Contact button jumps to the contact band.
+  await page.goto("/");
+  await page.locator(".site-header a.btn", { hasText: "Contact" }).click();
+  await page.waitForTimeout(600);
+  const contactTop = (await page.locator("#contact").boundingBox())!.y;
+  expect(contactTop).toBeGreaterThanOrEqual((await headerBottom()) - 1);
+
+  // Text in a section that has not been scrolled to is still found by the browser's find.
+  await page.goto("/");
+  const found = await page.evaluate(() => (window as unknown as { find: (s: string) => boolean }).find("See all articles"));
+  expect(found).toBe(true);
+});
+
+test("case-study contents links land below the header", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/projects/ecdc-kubernetes-ionos");
+  const header = (await page.locator(".site-header").boundingBox())!.height;
+  for (const link of await page.locator(".toc a").all()) {
+    const id = (await link.getAttribute("href"))!.slice(1);
+    await link.click();
+    await page.waitForTimeout(400);
+    const top = (await page.locator(`[id="${id}"]`).boundingBox())!.y;
+    expect(top).toBeGreaterThanOrEqual(header - 1);
+  }
+});
+
+test("ECDC diagram: complete with no hover, flows on touch and on keyboard focus", async ({ browser }) => {
+  const context = await browser.newContext({ hasTouch: true, isMobile: true, viewport: { width: 412, height: 860 } });
+  const page = await context.newPage();
+  await page.goto("/projects/ecdc-kubernetes-ionos");
+  const diagram = page.locator("figure.diagram");
+  await diagram.scrollIntoViewIfNeeded();
+  // Everything is drawn without any interaction: 5 boxes, the private network outline, 2 dashed links, all labels.
+  expect(await diagram.locator("rect.box").count()).toBe(5);
+  expect(await diagram.locator("rect.private").count()).toBe(1);
+  expect(await diagram.locator("line.flow").count()).toBe(2);
+  // A horizontal SVG line has no height, so check that it is drawn rather than Playwright's box visibility.
+  for (const line of await diagram.locator("line.flow").all()) {
+    const drawn = await line.evaluate((el) => {
+      const style = getComputedStyle(el);
+      return (el as SVGLineElement).getBBox().width > 0 && style.stroke !== "none" && style.visibility === "visible" && style.opacity === "1";
+    });
+    expect(drawn).toBe(true);
+  }
+  await expect(diagram.locator("text", { hasText: "OpenVPN: the only way in" })).toBeVisible();
+  const state = () => diagram.locator("line.flow").first().evaluate((el) => getComputedStyle(el).animationPlayState);
+  expect(await state()).toBe("paused");
+  await diagram.locator(".scroll").tap();
+  expect(await state()).toBe("running");
+  await context.close();
+
+  const desktop = await browser.newPage();
+  await desktop.goto("/projects/ecdc-kubernetes-ionos");
+  const scroller = desktop.locator("figure.diagram .scroll");
+  await scroller.focus();
+  expect(await desktop.locator("figure.diagram line.flow").first().evaluate((el) => getComputedStyle(el).animationPlayState)).toBe("running");
+  await desktop.close();
+});
+
+test("reduced motion switches off every animation, including the glow and the diagram flow", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  const names = await page.evaluate(() => {
+    const all = [...document.querySelectorAll("*")];
+    const running = all.flatMap((el) =>
+      [null, "::before", "::after"].map((pseudo) => getComputedStyle(el, pseudo).animationName).filter((n) => n && n !== "none"),
+    );
+    return [...new Set(running)];
+  });
+  expect(names).toEqual([]);
+  await page.goto("/projects/ecdc-kubernetes-ionos");
+  await page.locator("figure.diagram .scroll").focus();
+  expect(await page.locator("figure.diagram line.flow").first().evaluate((el) => getComputedStyle(el).animationName)).toBe("none");
+});
+
 test("the hidden bank page is not served or linked", async ({ page, request }) => {
   const response = await request.get("/projects/rural-bank-staff-portal");
   expect(response.status()).toBe(404);
