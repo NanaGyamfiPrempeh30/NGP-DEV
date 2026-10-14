@@ -24,8 +24,8 @@ export function NavLinks() {
             <Link
               href={item.href}
               aria-current={current ? "page" : undefined}
-              // Closes the small-screen menu after a choice. The menu itself opens with no script.
-              onClick={(event) => event.currentTarget.closest("details")?.removeAttribute("open")}
+              // Closes the small-screen menu after a choice.
+              onClick={(event) => event.currentTarget.closest("dialog")?.close()}
             >
               {item.label}
             </Link>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { Gallery } from "@/components/Gallery";
 import { designWorks, tiktok } from "@/content/beyond";
 
 export const metadata: Metadata = {
@@ -20,13 +20,7 @@ export default function Beyond() {
       {designWorks.length > 0 ? (
         <>
           <h2>Graphic design</h2>
-          <ul role="list" className="cards">
-            {designWorks.map((work) => (
-              <li key={work.src}>
-                <Image src={work.src} alt={work.alt} width={work.width} height={work.height} />
-              </li>
-            ))}
-          </ul>
+          <Gallery works={designWorks} />
         </>
       ) : null}
     </>

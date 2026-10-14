@@ -52,7 +52,8 @@ export default function Projects() {
           <p>These are other people&apos;s projects. I followed them and ran them myself to learn.</p>
           <ul role="list" className="cards">
             {labs.map((lab) => (
-              <li className="card" key={lab.slug}>
+              <li className="card-slot" key={lab.slug}>
+                <article className="card">
                 <h3>{lab.title}</h3>
                 <p>
                   {labCredit(lab)}.{" "}
@@ -71,6 +72,7 @@ export default function Projects() {
                   ))}
                 </ul>
                 <DraftBadge verified={lab.verified} />
+                </article>
               </li>
             ))}
           </ul>
@@ -83,7 +85,8 @@ export default function Projects() {
           <p>Smaller projects. Each has code or an article, but no case study.</p>
           <ul role="list" className="cards">
             {other.map((work) => (
-              <li className="card" key={work.slug}>
+              <li className="card-slot" key={work.slug}>
+                <article className="card">
                 <h3>{work.title}</h3>
                 <p>{work.summary}</p>
                 <p className="meta">Started {formatDate(work.start)}</p>
@@ -98,6 +101,7 @@ export default function Projects() {
                   ))}
                 </ul>
                 <DraftBadge verified={work.verified} />
+                </article>
               </li>
             ))}
           </ul>
