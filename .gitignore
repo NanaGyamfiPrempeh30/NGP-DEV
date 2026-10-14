@@ -29,3 +29,8 @@ playwright-report/
 
 # Design originals stay local. Only converted WebP in public/design ships.
 /design-src/
+
+# Backstop: Lighthouse's Chrome profile folders (Windows-style names on WSL). scripts/lighthouse.mjs
+# runs from the OS temp directory, so these should never appear here.
+/C:*
+lighthouse-*/

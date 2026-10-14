@@ -14,6 +14,7 @@
     "check:hidden": "tsx scripts/check-hidden.ts",
     "design:images": "tsx scripts/design-images.ts",
     "e2e": "playwright test",
+    "lighthouse": "node scripts/lighthouse.mjs",
     "start": "next start"
   },
   "dependencies": {
