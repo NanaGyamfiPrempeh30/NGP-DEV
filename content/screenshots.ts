@@ -12,7 +12,8 @@ export type Screenshot = {
 export const screenshots: Screenshot[] = [
   {
     id: "tiktok-profile",
-    src: "tiktok-profile.png",
+    // The owner's file arrived as "tiktok-profile.png.png" (Windows hid the first extension).
+    src: "tiktok-profile.png.png",
     caption: "TikTok profile screenshot, 14 Oct 2026.",
     host: "tiktok.com/@ngp_dronelens",
     url: "https://www.tiktok.com/@ngp_dronelens",
