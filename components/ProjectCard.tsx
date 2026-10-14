@@ -21,7 +21,7 @@ export function ProjectCard({ project }: { project: LoadedProject }) {
       <Tags items={project.stack} max={5} />
       {project.links.length > 0 ? (
         <ul role="list" className="links">
-          {project.links.map((link) => (
+          {project.links.slice(0, 3).map((link) => (
             <li key={link.url}>
               <a href={link.url} aria-label={`${link.label}: ${project.title}`}>
                 {link.label}

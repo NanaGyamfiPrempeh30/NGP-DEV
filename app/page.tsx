@@ -10,32 +10,41 @@ import { getProjects } from "@/lib/projects";
 export default function Home() {
   const projects = getProjects();
   const slugs = new Set(projects.map((p) => p.slug));
-  const proof = proofStrip.filter((item) => !item.project || slugs.has(item.project));
+  const proof = proofStrip.filter((item) => slugs.has(item.project));
   const featured = projects.filter((p) => p.featured).slice(0, 3);
   const articles = getArticles().slice(0, 2);
 
   return (
     <>
-      <h1>Yaw Nana Gyamfi Prempeh</h1>
-      <p className="lede">{roleLine}</p>
-      <p className="meta">{location}</p>
-      <p>{headline}</p>
-      <p>Every claim on this site links to its proof.</p>
-
-      <div className="actions">
-        <a href={cvPdf}>Download CV</a>
-        <a href={`mailto:${email}`}>Email me</a>
-        <a href="https://github.com/NanaGyamfiPrempeh30">GitHub</a>
+      <div className="hero">
+        <h1>Yaw Nana Gyamfi Prempeh</h1>
+        <p className="lede">{roleLine}</p>
+        <p className="meta">{location}</p>
+        <p>
+          {headline} Every claim on this site links to its proof.
+        </p>
+        <div className="actions">
+          <a href={cvPdf}>Download CV</a>
+          <a href={`mailto:${email}`}>Email me</a>
+        </div>
       </div>
 
-      <h2>Check these first</h2>
-      <ul role="list" className="proof-strip">
-        {proof.map((item) => (
-          <li key={item.text}>
-            <a href={item.url}>{item.text}</a>
-          </li>
-        ))}
-      </ul>
+      {proof.length > 0 ? (
+        <>
+          <h2>Check these first</h2>
+          <ul role="list" className="proof-strip">
+            {proof.map((item) => (
+              <li key={item.figure}>
+                <a href={item.url}>
+                  <span className="figure">{item.figure}</span>
+                  <span className="what">{item.what}</span>
+                  <span className="source">{item.source}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : null}
 
       {featured.length > 0 ? (
         <>
@@ -52,11 +61,11 @@ export default function Home() {
       ) : null}
 
       <h2>Latest writing</h2>
-      <ul>
+      <ul role="list" className="writing-list">
         {articles.map((article) => (
           <li key={article.url}>
             <a href={article.url}>{article.title}</a>
-            <span className="meta"> {formatDate(article.date)}</span>
+            <span className="meta">{formatDate(article.date)}</span>
           </li>
         ))}
       </ul>
