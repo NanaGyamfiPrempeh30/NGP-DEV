@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { EcdcDiagram } from "@/components/EcdcDiagram";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SocialRow } from "@/components/SocialRow";
 import { headline } from "@/content/experience";
@@ -48,7 +49,8 @@ export default function Home() {
         </div>
         {/* Photo slot. Falls back to a monogram tile if the photo file is missing. */}
         {heroPhoto ? (
-          <div className="portrait photo" style={{ "--i": 3 } as React.CSSProperties}>
+          <div className="portrait-wrap" style={{ "--i": 3 } as React.CSSProperties}>
+          <div className="portrait photo">
             <Image
               src={heroPhoto.src}
               alt={heroPhoto.alt}
@@ -57,6 +59,14 @@ export default function Home() {
               sizes="(min-width: 60rem) 400px, 260px"
               priority
             />
+          </div>
+          {/* From 1024px: a tilted card on the photo's corner that leads to the ECDC case study. */}
+          {slugs.has("ecdc-kubernetes-ionos") ? (
+            <Link className="hero-card" href="/projects/ecdc-kubernetes-ionos" aria-label="Case study: ECDC Kubernetes on IONOS">
+              <EcdcDiagram thumbnail />
+              <span>Case study</span>
+            </Link>
+          ) : null}
           </div>
         ) : (
           <div className="portrait" role="img" aria-label="Monogram: NGP" style={{ "--i": 3 } as React.CSSProperties}>

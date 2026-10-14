@@ -246,6 +246,70 @@ test("gallery: a picture opens in a dialog with its alt text, and Esc closes it"
   await expect(first).toBeFocused();
 });
 
+for (const width of [320, 375, 412]) {
+  test(`proof tiles at ${width}px: figures and labels on one line, nothing overlaps`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    for (const tile of await page.locator(".tile a").all()) {
+      const report = await tile.evaluate((a) => {
+        const parts = [...a.children] as HTMLElement[];
+        const boxes = parts.map((el) => el.getBoundingClientRect());
+        const lineHeight = (el: HTMLElement) => parseFloat(getComputedStyle(el).lineHeight);
+        const oneLine = (el: HTMLElement) => el.getBoundingClientRect().height < lineHeight(el) * 1.5;
+        const fits = (el: HTMLElement) => el.scrollWidth <= el.clientWidth + 1;
+        const outer = a.getBoundingClientRect();
+        let overlap = false;
+        for (let i = 1; i < boxes.length; i++) if (boxes[i]!.top < boxes[i - 1]!.bottom - 0.5) overlap = true;
+        const inside = boxes.every((b) => b.left >= outer.left - 0.5 && b.right <= outer.right + 0.5);
+        const figure = a.querySelector<HTMLElement>(".figure")!;
+        const label = a.querySelector<HTMLElement>(".label")!;
+        return { figure: oneLine(figure) && fits(figure), label: oneLine(label) && fits(label), overlap, inside };
+      });
+      expect(report).toEqual({ figure: true, label: true, overlap: false, inside: true });
+    }
+  });
+}
+
+test("header buttons keep their text on one line at every width", async ({ page }) => {
+  for (const width of [320, 375, 412, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto("/");
+    for (const button of await page.locator(".site-header .btn, .site-header button").all()) {
+      if (!(await button.isVisible())) continue;
+      const wraps = await button.evaluate((el) => el.scrollHeight > el.clientHeight + 1 || getComputedStyle(el).whiteSpace !== "nowrap");
+      expect(wraps).toBe(false);
+    }
+  }
+});
+
+test("hero case-study card: tilted from 1024px, straightens on hover, hidden below 1024px", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const card = page.locator(".hero-card");
+  await expect(card).toBeVisible();
+  await expect(card).toContainText("Case study");
+  const angle = () => card.evaluate((el) => getComputedStyle(el).transform);
+  expect(await angle()).not.toBe("none");
+  await card.hover();
+  await page.waitForTimeout(400);
+  expect(await angle()).toMatch(/^matrix\(1, 0, 0, 1, 0, 0\)$|^none$/);
+  await page.setViewportSize({ width: 1000, height: 900 });
+  await expect(card).toBeHidden();
+});
+
+test("TikTok card: only with a real screenshot, and the link opens safely", async ({ page }) => {
+  await page.goto("/beyond");
+  const card = page.locator(".drone-card");
+  if ((await card.count()) === 0) return; // no screenshot yet: the section is simply absent
+  const link = card.getByRole("link", { name: "Open on TikTok" });
+  await expect(link).toHaveAttribute("href", "https://www.tiktok.com/@ngp_dronelens");
+  await expect(link).toHaveAttribute("target", "_blank");
+  await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  await expect(card.locator("figcaption")).toContainText("TikTok profile, @ngp_dronelens, as of ");
+  expect(await card.locator("iframe, script").count()).toBe(0);
+});
+
 test("the hidden bank page is not served or linked", async ({ page, request }) => {
   const response = await request.get("/projects/rural-bank-staff-portal");
   expect(response.status()).toBe(404);

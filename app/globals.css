@@ -244,9 +244,13 @@ button:active {
   transform: scale(0.97);
 }
 
+/* Only the primary button glows, and the glow does not move. */
 .btn.primary {
   background: var(--accent);
   border-color: transparent;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 55%, transparent),
+    0 10px 30px -8px color-mix(in srgb, var(--accent) 60%, transparent);
   color: var(--on-accent);
 }
 
@@ -461,6 +465,38 @@ button[aria-pressed="true"] {
   width: 100%;
 }
 
+/* Header buttons and links never wrap their text. */
+.site-header :is(.btn, button, a) {
+  white-space: nowrap;
+}
+
+/* The sticky header never covers a heading you jump to. */
+[id] {
+  scroll-margin-top: 6rem;
+}
+
+/* Section headings on Home sit on a faint grid that fades toward the edges. */
+main > section {
+  isolation: isolate;
+  position: relative;
+}
+
+main > section > h2 {
+  position: relative;
+}
+
+main > section > h2::before {
+  background-image:
+    linear-gradient(var(--rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+  content: "";
+  inset: -1.25rem -1rem -1.25rem -1rem;
+  mask-image: radial-gradient(60% 70% at 12% 50%, #000 10%, transparent 75%);
+  position: absolute;
+  z-index: -1;
+}
+
 .skip {
   background: var(--surface);
   left: 0.5rem;
@@ -523,7 +559,8 @@ button[aria-pressed="true"] {
 }
 
 .hero-text > *,
-.portrait {
+.hero > .portrait,
+.portrait-wrap {
   animation: rise var(--slow) var(--ease) both;
   animation-delay: calc(var(--i, 0) * 60ms);
 }
@@ -590,12 +627,65 @@ button[aria-pressed="true"] {
 }
 
 /* With a photo: 4:5, rounded, 260px wide on small screens and up to 400px beside the text. */
+.portrait-wrap {
+  position: relative;
+  width: 260px;
+}
+
 .portrait.photo {
   aspect-ratio: 4 / 5;
   display: block;
   overflow: hidden;
   padding: 0;
-  width: 260px;
+  width: 100%;
+}
+
+/* Tilted case-study card on the photo's corner. Desktop only; it straightens on hover. */
+.hero-card {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .hero-card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    bottom: -1.5rem;
+    box-shadow: var(--shadow), 0 14px 30px -12px rgb(0 0 0 / 0.45);
+    color: var(--fg);
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.55rem 0.6rem 0.5rem;
+    right: -0.75rem;
+    position: absolute;
+    text-decoration: none;
+    transform: rotate(3deg);
+    transition: transform var(--fast) var(--ease);
+    width: 13rem;
+  }
+
+  .hero-card svg {
+    display: block;
+    height: auto;
+    width: 100%;
+  }
+
+  /* At thumbnail size the labels are too small to read, so only the shapes and the flow show. */
+  .hero-card svg text {
+    display: none;
+  }
+
+  .hero-card span {
+    color: var(--accent);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: var(--text-xs);
+    font-weight: 700;
+  }
+
+  .hero-card:hover,
+  .hero-card:focus-visible {
+    transform: rotate(0deg);
+  }
 }
 
 .portrait.photo img {
@@ -617,7 +707,7 @@ button[aria-pressed="true"] {
     grid-template-columns: minmax(0, 1fr) clamp(15rem, 28vw, 400px);
   }
 
-  .portrait.photo {
+  .portrait-wrap {
     width: 100%;
   }
 
@@ -717,14 +807,24 @@ button[aria-pressed="true"] {
   transition: transform var(--fast) var(--ease);
 }
 
+/* Big accent figures, small mono labels. Neither wraps, at any width. */
 .tile .figure {
+  color: var(--accent);
   font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: var(--text-figure);
+  font-size: clamp(2.7rem, 2rem + 3.4vw, 4.6rem);
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 1.05;
   margin-top: 0.5rem;
+  white-space: nowrap;
+}
+
+.tile .label {
+  font-size: 0.72rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tile .figure small {
@@ -1198,6 +1298,64 @@ button[aria-pressed="true"] {
   margin-top: 3.25rem;
 }
 
+/* Framed screenshot: a plain browser-window frame around a real screenshot. */
+.framed {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  margin-top: var(--gap);
+  max-width: 40rem;
+  overflow: hidden;
+}
+
+.frame-bar {
+  align-items: center;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.55rem 0.8rem;
+}
+
+.frame-bar .dots {
+  display: inline-flex;
+  gap: 0.35rem;
+}
+
+.frame-bar .dots i {
+  background: var(--rule);
+  border-radius: 50%;
+  display: block;
+  height: 0.6rem;
+  width: 0.6rem;
+}
+
+.frame-bar .address {
+  background: var(--bg);
+  border-radius: 999px;
+  color: var(--muted);
+  flex: 1;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-xs);
+  overflow: hidden;
+  padding: 0.15rem 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.framed img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.framed figcaption {
+  color: var(--muted);
+  font-size: var(--text-sm);
+  padding: 0.7rem 0.9rem;
+}
+
 /* ECDC diagram */
 .diagram {
   background: var(--surface);
@@ -1226,37 +1384,37 @@ button[aria-pressed="true"] {
   margin-top: 0.75rem;
 }
 
-.diagram .box {
+:is(.diagram, .hero-card) .box {
   fill: var(--surface-2);
   stroke: var(--rule);
 }
 
-.diagram .edge {
+:is(.diagram, .hero-card) .edge {
   fill: none;
   stroke: var(--accent);
   stroke-dasharray: 6 6;
   stroke-width: 2;
 }
 
-.diagram .private {
+:is(.diagram, .hero-card) .private {
   fill: none;
   stroke: var(--warm);
   stroke-dasharray: 3 5;
 }
 
-.diagram text {
+:is(.diagram, .hero-card) text {
   fill: var(--fg);
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 13px;
 }
 
-.diagram text.dim {
+:is(.diagram, .hero-card) text.dim {
   fill: var(--muted);
   font-size: 11px;
 }
 
 /* The dashes are a long line that slides by one dash period, so only transform is animated. */
-.diagram .flow {
+:is(.diagram, .hero-card) .flow {
   animation: flow 1.2s linear infinite;
 }
 
@@ -1430,6 +1588,11 @@ html.js .timeline[data-reveal].is-in::before {
   .card:hover,
   .social a:hover .glyph {
     transform: none;
+  }
+
+  .hero-card:hover,
+  .hero-card:focus-visible {
+    transform: rotate(3deg);
   }
 
   ::view-transition-group(*),
