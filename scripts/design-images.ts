@@ -3,6 +3,7 @@ import path from "node:path";
 import sharp from "sharp";
 import { DesignWork, designWorks } from "../content/design";
 import { publishable } from "../lib/design";
+import { screenshots } from "../content/screenshots";
 
 // Run by hand after adding or changing a design entry: `pnpm design:images`.
 // Converts /design-src originals to WebP in public/design and records their sizes.
@@ -48,6 +49,26 @@ async function main() {
     }
   }
   fs.writeFileSync(sizesFile, `${JSON.stringify(sizes, null, 2)}\n`);
+
+  // Screenshots (content/screenshots.ts): same rules, own folder. A missing original is skipped.
+  const shotDir = "public/shots";
+  fs.mkdirSync(shotDir, { recursive: true });
+  const shotSizes: Record<string, { width: number; height: number }> = {};
+  for (const shot of screenshots) {
+    const source = path.join(srcDir, shot.src);
+    if (!fs.existsSync(source)) {
+      console.warn(`shots: ${shot.id} has no file at ${source}. Skipped; the section stays hidden.`);
+      continue;
+    }
+    const info = await sharp(source)
+      .rotate()
+      .resize({ width: maxWidth, withoutEnlargement: true })
+      .webp({ quality })
+      .toFile(path.join(shotDir, `${shot.id}.webp`));
+    shotSizes[shot.id] = { width: info.width, height: info.height };
+    console.log(`shots: ${shot.id}.webp ${info.width}x${info.height} ${Math.round(info.size / 1024)} KB`);
+  }
+  fs.writeFileSync("content/shot-sizes.json", `${JSON.stringify(shotSizes, null, 2)}\n`);
 }
 
 main().catch((error) => {

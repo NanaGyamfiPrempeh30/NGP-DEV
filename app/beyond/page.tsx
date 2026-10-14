@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { FramedShot } from "@/components/FramedShot";
 import { Gallery } from "@/components/Gallery";
 import { tiktok } from "@/content/beyond";
 import { clientLine, getDesignWorks } from "@/lib/design";
+import { getScreenshot } from "@/lib/screenshots";
 
 export const metadata: Metadata = {
   title: "Beyond code",
@@ -9,6 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default function Beyond() {
+  const tiktokShot = getScreenshot("tiktok-profile");
   const works = getDesignWorks().flatMap((work) =>
     work.width && work.height
       ? [
@@ -34,6 +37,24 @@ export default function Beyond() {
       <p>
         I fly drones as a hobby. My videos are on TikTok: <a href={tiktok.url}>{tiktok.label}</a>
       </p>
+
+      {tiktokShot ? (
+        <div className="drone-card">
+          <FramedShot
+            src={tiktokShot.file}
+            alt={tiktokShot.alt}
+            width={tiktokShot.width}
+            height={tiktokShot.height}
+            host={tiktokShot.host}
+            caption={`${tiktokShot.source}, as of ${tiktokShot.date}`}
+          />
+          <p>
+            <a href={tiktokShot.url} target="_blank" rel="noopener noreferrer">
+              Open on TikTok
+            </a>
+          </p>
+        </div>
+      ) : null}
 
       {works.length > 0 ? (
         <>
