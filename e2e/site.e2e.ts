@@ -12,7 +12,7 @@ const routes = [
   { name: "cv", path: "/cv" },
 ];
 
-const widths = [360, 1024, 1440];
+const widths = [360, 768, 1024, 1440];
 const schemes = ["light", "dark"] as const;
 
 for (const route of routes) {
