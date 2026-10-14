@@ -8,12 +8,21 @@ import "./globals.css";
 
 // Two families, both variable, latin only. next/font downloads them at build time and serves them from this site.
 // Atkinson Hyperlegible is drawn for readers who mix letters up, which suits this site's readability rules.
-const sans = Atkinson_Hyperlegible_Next({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+// Only the main text face is preloaded. Fallback metrics live in globals.css (next/font has none for these).
+const sans = Atkinson_Hyperlegible_Next({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+  adjustFontFallback: false,
+  fallback: ["Atkinson Next Fallback", "system-ui", "sans-serif"],
+});
 const mono = Atkinson_Hyperlegible_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
   display: "swap",
   preload: false,
+  adjustFontFallback: false,
+  fallback: ["Atkinson Mono Fallback", "ui-monospace", "monospace"],
 });
 
 export const metadata: Metadata = {

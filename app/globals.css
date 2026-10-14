@@ -1,5 +1,25 @@
 @import "tailwindcss";
 
+/* Fallback faces sized to match Atkinson Hyperlegible, so text does not shift when the real fonts arrive.
+   Measured against Arial-compatible and Courier-compatible metrics. */
+@font-face {
+  ascent-override: 100.24%;
+  descent-override: 32.73%;
+  font-family: "Atkinson Next Fallback";
+  line-gap-override: 0%;
+  size-adjust: 97.76%;
+  src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("Helvetica");
+}
+
+@font-face {
+  ascent-override: 93.33%;
+  descent-override: 30.48%;
+  font-family: "Atkinson Mono Fallback";
+  line-gap-override: 0%;
+  size-adjust: 105%;
+  src: local("Courier New"), local("CourierNewPSMT"), local("Liberation Mono"), local("Courier");
+}
+
 /* Tokens. "Ops-room dark" is the base look; light is a full second theme, not an inversion.
    The system setting picks one unless the visitor chooses with the theme button. */
 :root {
@@ -465,6 +485,12 @@ button[aria-pressed="true"] {
   width: 100%;
 }
 
+/* Below-the-fold Home sections skip rendering until they come near the viewport. */
+main > section:not(.hero) {
+  contain-intrinsic-size: auto 900px;
+  content-visibility: auto;
+}
+
 /* Header buttons and links never wrap their text. */
 .site-header :is(.btn, button, a) {
   white-space: nowrap;
@@ -522,7 +548,7 @@ main > section > h2::before {
 
 /* Grid lines and a slow glow, CSS only. The glow drifts by transform; it stops when the tab is hidden. */
 .hero-bg {
-  contain: strict;
+  contain: strict; /* includes paint containment */
   inset: -2rem calc(-1 * var(--gutter)) -1rem;
   overflow: hidden;
   pointer-events: none;
@@ -542,16 +568,18 @@ main > section > h2::before {
   position: absolute;
 }
 
+/* A small soft layer, scaled up. Only its transform animates, so the drift never repaints. */
 .hero-bg::before {
   animation: drift 26s ease-in-out infinite alternate;
   background: radial-gradient(closest-side, var(--glow), transparent);
   content: "";
-  height: 44rem;
-  left: -10rem;
+  height: 10rem;
+  left: 2rem;
   position: absolute;
-  top: -22rem;
-  width: 44rem;
-  will-change: transform;
+  top: -4rem;
+  transform: scale(4.4);
+  transform-origin: center;
+  width: 10rem;
 }
 
 :root[data-tab-hidden] .hero-bg::before {
@@ -1413,9 +1441,14 @@ main > section > h2::before {
   font-size: 11px;
 }
 
-/* The dashes are a long line that slides by one dash period, so only transform is animated. */
+/* The dashes are a long line that slides by one dash period, so only transform is animated.
+   The flow runs only while the pointer or keyboard focus is on the diagram, so nothing loops off-screen. */
 :is(.diagram, .hero-card) .flow {
-  animation: flow 1.2s linear infinite;
+  animation: flow 1.2s linear infinite paused;
+}
+
+:is(.diagram, .hero-card):is(:hover, :focus-within, :focus-visible) .flow {
+  animation-play-state: running;
 }
 
 /* Gallery and lightbox (Beyond code). Rendered only when works exist. */
@@ -1552,8 +1585,12 @@ html.js .timeline[data-reveal].is-in::before {
 }
 
 @keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(4.4);
+  }
+
   to {
-    transform: translate3d(28rem, 10rem, 0);
+    transform: translate3d(28rem, 10rem, 0) scale(4.4);
   }
 }
 

@@ -58,6 +58,7 @@ export default function Home() {
               height={heroPhoto.height}
               sizes="(min-width: 60rem) 400px, 260px"
               priority
+              fetchPriority="high"
             />
           </div>
           {/* From 1024px: a tilted card on the photo's corner that leads to the ECDC case study. */}
