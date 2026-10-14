@@ -42,10 +42,10 @@ export const mentoring: MentoringSeries | null = {
 // Use only the owner's words for each person. Order is the order on the page.
 export const mentors: Mentor[] = [
   {
-    // Owner, 14 Oct 2026. Name and words only: no link, employer, role, phone, email or dates.
-    name: "Dr. Fredrick Ayivor",
+    // Owner, 14 Oct 2026: exact wording. Name and words only: no link, employer, role, phone, email or dates.
+    name: "Dr Fredrick Ayivor",
     words:
-      " was a great addition to my early career, and a superb mentor at the beginning and early stages of my DevOps career. I am grateful for the tremendous work he did.",
+      " mentored me early in my DevOps career. He made sure I understood the principles behind DevOps and cloud engineering, not just the tools. I'm grateful for the work he put in.",
   },
   {
     // Owner, 5 Oct 2026.
