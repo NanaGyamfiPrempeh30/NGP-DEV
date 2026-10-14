@@ -303,8 +303,19 @@ button[aria-pressed="true"] {
   padding-block: 0.8rem;
 }
 
+/* After the first scroll the header looks shorter. It is done with transforms, so its layout height
+   never changes and nothing on the page shifts (no CLS when scrolling back to the top). */
+.site-header,
+.site-header .bar {
+  transition: transform var(--fast) var(--ease);
+}
+
+:root[data-scrolled] .site-header {
+  transform: translateY(-0.4rem);
+}
+
 :root[data-scrolled] .site-header .bar {
-  padding-block: 0.4rem;
+  transform: translateY(0.2rem);
 }
 
 .progress {
