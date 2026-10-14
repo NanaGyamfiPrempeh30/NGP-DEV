@@ -589,6 +589,22 @@ button[aria-pressed="true"] {
   line-height: 1;
 }
 
+/* With a photo: 4:5, rounded, 260px wide on small screens and up to 400px beside the text. */
+.portrait.photo {
+  aspect-ratio: 4 / 5;
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  width: 260px;
+}
+
+.portrait.photo img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
 .portrait small {
   color: var(--muted);
   font-family: var(--font-mono), ui-monospace, monospace;
@@ -598,7 +614,11 @@ button[aria-pressed="true"] {
 @media (min-width: 60rem) {
   .hero {
     align-items: end;
-    grid-template-columns: minmax(0, 1fr) clamp(15rem, 26vw, 21rem);
+    grid-template-columns: minmax(0, 1fr) clamp(15rem, 28vw, 400px);
+  }
+
+  .portrait.photo {
+    width: 100%;
   }
 
   .portrait {
@@ -628,6 +648,12 @@ button[aria-pressed="true"] {
   min-height: 2.75rem;
   min-width: 2.75rem;
   text-decoration: none;
+}
+
+.social .glyph svg {
+  fill: currentColor;
+  height: 1.15rem;
+  width: 1.15rem;
 }
 
 .social .glyph {
@@ -947,6 +973,7 @@ button[aria-pressed="true"] {
   display: none;
 }
 
+
 .draft,
 .todo {
   border: 1px dashed var(--warm);
@@ -1263,6 +1290,7 @@ button[aria-pressed="true"] {
 }
 
 .gallery button {
+  background: var(--surface);
   border-radius: var(--radius);
   display: block;
   min-height: 0;
@@ -1271,12 +1299,21 @@ button[aria-pressed="true"] {
   width: 100%;
 }
 
+/* Each piece keeps its own shape, uncropped. */
 .gallery img {
-  aspect-ratio: 1;
   height: auto;
-  object-fit: cover;
   transition: transform var(--slow) var(--ease);
   width: 100%;
+}
+
+.gallery figcaption {
+  display: grid;
+  gap: 0.1rem;
+  margin-top: 0.6rem;
+}
+
+.gallery-title {
+  font-weight: 700;
 }
 
 .gallery button:hover img {
@@ -1303,6 +1340,14 @@ button[aria-pressed="true"] {
   max-height: 70dvh;
   object-fit: contain;
   width: 100%;
+}
+
+.lightbox[open] {
+  animation: fade var(--fast) var(--ease);
+}
+
+.lightbox button {
+  margin-top: 1rem;
 }
 
 .validation {

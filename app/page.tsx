@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SocialRow } from "@/components/SocialRow";
@@ -5,6 +6,7 @@ import { headline } from "@/content/experience";
 import { cvPdf, location, proofStrip, roleLine, tagline } from "@/content/home";
 import { getArticles, getJobs } from "@/lib/content";
 import { formatDate, formatRange } from "@/lib/dates";
+import { heroPhoto } from "@/lib/hero";
 import { getProjects } from "@/lib/projects";
 
 const typeLabel = { "full-time": "Full-time", "part-time": "Part-time", contract: "Contract" } as const;
@@ -44,11 +46,24 @@ export default function Home() {
             <SocialRow label="Profiles" />
           </div>
         </div>
-        {/* Photo slot. Shows a monogram until the owner supplies a photo. */}
-        <div className="portrait" role="img" aria-label="Monogram: NGP" style={{ "--i": 3 } as React.CSSProperties}>
-          <span aria-hidden="true">NGP</span>
-          <small aria-hidden="true">{location}</small>
-        </div>
+        {/* Photo slot. Falls back to a monogram tile if the photo file is missing. */}
+        {heroPhoto ? (
+          <div className="portrait photo" style={{ "--i": 3 } as React.CSSProperties}>
+            <Image
+              src={heroPhoto.src}
+              alt={heroPhoto.alt}
+              width={heroPhoto.width}
+              height={heroPhoto.height}
+              sizes="(min-width: 60rem) 400px, 260px"
+              priority
+            />
+          </div>
+        ) : (
+          <div className="portrait" role="img" aria-label="Monogram: NGP" style={{ "--i": 3 } as React.CSSProperties}>
+            <span aria-hidden="true">NGP</span>
+            <small aria-hidden="true">{location}</small>
+          </div>
+        )}
       </section>
 
       {proof.length > 0 ? (
@@ -57,9 +72,15 @@ export default function Home() {
           <ul role="list" className="bento">
             {proof.map((item) => (
               <li key={item.label} className={`tile ${item.size}`} data-reveal>
-                <a href={item.url}>
+                {/* The label carries the final figure for screen readers. The animated digits are hidden from them. */}
+                <a
+                  href={item.url}
+                  aria-label={`${item.count}${item.suffix ?? ""} ${item.what}. ${item.label}. ${
+                    item.internal ? "Private work: see why" : "See proof"
+                  }`}
+                >
                   <span className="label">{item.label}</span>
-                  <span className="figure">
+                  <span className="figure" aria-hidden="true">
                     <span data-count={item.count}>{item.count}</span>
                     {item.suffix ? <small>{item.suffix}</small> : null}
                   </span>

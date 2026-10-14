@@ -26,3 +26,6 @@ next-env.d.ts
 # Playwright
 test-results/
 playwright-report/
+
+# Design originals stay local. Only converted WebP in public/design ships.
+/design-src/

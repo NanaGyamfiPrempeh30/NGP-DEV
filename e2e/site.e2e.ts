@@ -139,6 +139,113 @@ test("tap targets in the header and hero are at least 44px", async ({ page }) =>
   }
 });
 
+test("hover: cards lift, glow and slide their arrow; reduced motion keeps them still", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await settle(page);
+  const card = page.locator(".cards.featured .card").first();
+  await card.scrollIntoViewIfNeeded();
+  const read = () =>
+    card.evaluate((el) => ({
+      lift: getComputedStyle(el).transform,
+      glow: getComputedStyle(el, "::after").opacity,
+      arrow: getComputedStyle(el.querySelector(".go")!, "::after").transform,
+    }));
+  expect(await read()).toEqual({ lift: "none", glow: "0", arrow: "none" });
+  await card.hover();
+  await page.waitForTimeout(400);
+  const hovered = await read();
+  expect(hovered.lift).toBe("matrix(1, 0, 0, 1, 0, -4)");
+  expect(hovered.glow).toBe("1");
+  expect(hovered.arrow).toBe("matrix(1, 0, 0, 1, 5, 0)");
+
+  const tile = page.locator(".tile a").first();
+  await tile.scrollIntoViewIfNeeded();
+  await tile.hover();
+  await page.waitForTimeout(400);
+  expect(await tile.evaluate((el) => getComputedStyle(el).transform)).toBe("matrix(1, 0, 0, 1, 0, -4)");
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await card.hover();
+  await page.waitForTimeout(100);
+  expect(await card.evaluate((el) => getComputedStyle(el).transform)).toBe("none");
+});
+
+test("moving between pages starts a view transition", async ({ page }) => {
+  // Count calls to the browser's View Transitions API.
+  await page.addInitScript(() => {
+    const w = window as unknown as { __transitions: number };
+    w.__transitions = 0;
+    const original = document.startViewTransition?.bind(document);
+    if (!original) return;
+    document.startViewTransition = ((...args: Parameters<typeof original>) => {
+      w.__transitions += 1;
+      return original(...args);
+    }) as typeof document.startViewTransition;
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await page.locator(".nav-wide a", { hasText: "Experience" }).click();
+  await expect(page).toHaveURL(/\/experience$/);
+  await expect(page.locator("h1")).toHaveText("Experience");
+  expect(await page.evaluate(() => (window as unknown as { __transitions: number }).__transitions)).toBeGreaterThan(0);
+});
+
+test("the hero glow pauses while the tab is hidden", async ({ page }) => {
+  await page.goto("/");
+  // Wait until the site script is running: it sets --progress on its first pass.
+  await page.waitForFunction(() => document.documentElement.style.getPropertyValue("--progress") !== "");
+  const state = () =>
+    page.evaluate(() => getComputedStyle(document.querySelector(".hero-bg")!, "::before").animationPlayState);
+  expect(await state()).toBe("running");
+  // A test cannot really hide the tab, so report it as hidden and fire the browser's own event.
+  const setHidden = (hidden: boolean) =>
+    page.evaluate((value) => {
+      Object.defineProperty(document, "hidden", { configurable: true, get: () => value });
+      document.dispatchEvent(new Event("visibilitychange"));
+    }, hidden);
+  await setHidden(true);
+  expect(await state()).toBe("paused");
+  await setHidden(false);
+  expect(await state()).toBe("running");
+});
+
+test("hero photo: served through the image optimiser with its alt text", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const photo = page.getByAltText("Portrait of Yaw Nana Gyamfi Prempeh");
+  await expect(photo).toBeVisible();
+  const box = await photo.boundingBox();
+  expect(box!.width).toBeLessThanOrEqual(400);
+  expect(Math.abs(box!.width / box!.height - 4 / 5)).toBeLessThan(0.01);
+  expect(await photo.evaluate((img: HTMLImageElement) => img.currentSrc)).toContain("/_next/image");
+  await page.setViewportSize({ width: 375, height: 800 });
+  // The framed slot is 260px wide on small screens; the photo fills it inside a 1px border.
+  expect(Math.round((await page.locator(".portrait.photo").boundingBox())!.width)).toBe(260);
+});
+
+test("proof tiles announce the final figure, not the count-up", async ({ page }) => {
+  await page.goto("/");
+  const tile = page.locator(".tile a").first();
+  await expect(tile).toHaveAttribute("aria-label", /^453 /);
+  await expect(tile.locator(".figure")).toHaveAttribute("aria-hidden", "true");
+});
+
+test("gallery: a picture opens in a dialog with its alt text, and Esc closes it", async ({ page }) => {
+  await page.goto("/beyond");
+  await settle(page);
+  const first = page.locator(".gallery button").first();
+  const alt = await first.locator("img").getAttribute("alt");
+  await first.focus();
+  await page.keyboard.press("Enter");
+  const dialog = page.locator("dialog.lightbox");
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByText(alt!)).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(first).toBeFocused();
+});
+
 test("the hidden bank page is not served or linked", async ({ page, request }) => {
   const response = await request.get("/projects/rural-bank-staff-portal");
   expect(response.status()).toBe(404);

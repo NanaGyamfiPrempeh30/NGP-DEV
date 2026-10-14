@@ -120,6 +120,9 @@ Contact lives in the footer and on Home. No separate page.
 ### 7.6 Beyond Code
 - Drone flying: listed as a hobby, with a plain link to TikTok @ngp_dronelens. No embed, no thumbnail, no licence line, no flight count (owner, 8 Oct).
 - Graphic design: gallery of 6 to 12 of my own works. `next/image`, WebP/AVIF, alt text on every image. Render this block only once the owner has sent works. Never ship an empty section.
+  - Client pieces are allowed with the client's consent (owner decision, 13 Oct 2026). `consent: false` hides a piece everywhere. The client is named only when `canNameClient: true`; otherwise the caption says "Client work".
+  - Originals stay in `/design-src` (not in git). `pnpm design:images` writes WebP (max 1600px wide, quality 82, no EXIF) to `public/design` for verified pieces only.
+  - No contact details, addresses or personal names in any image. If zero pieces are visible, the section is hidden.
 
 ### 7.7 CV
 - Same data as Experience, laid out for print (`@media print`, A4).
@@ -199,6 +202,21 @@ const Cert = z.object({
   expires: z.string().optional(),
   validationNo: z.string().optional(),
   verifyUrl: z.string().url().optional(),
+});
+
+// content/design.ts
+const DesignWork = z.object({
+  id: z.string(),
+  title: z.string(),
+  alt: z.string().min(20).max(140),
+  year: z.number().int().optional(),
+  kind: z.enum(["own", "client"]),
+  clientName: z.string().optional(),
+  canNameClient: z.boolean().default(false),
+  consent: z.boolean().default(false),  // client work only; false = hidden everywhere
+  verified: z.boolean(),
+  order: z.number().int(),
+  src: z.string(),                      // file name in /design-src
 });
 ```
 **Build rule:** certs past `expires` are hidden.

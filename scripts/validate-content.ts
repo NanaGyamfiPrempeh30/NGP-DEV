@@ -3,6 +3,8 @@ import { jobs } from "../content/experience";
 import { certs } from "../content/certs";
 import { labs } from "../content/labs";
 import { otherWork } from "../content/other-work";
+import { DesignWork, designWorks } from "../content/design";
+import { designSizes, publishable } from "../lib/design";
 import { loadProjects, type LoadedProject } from "../lib/projects";
 
 function fail(message: string): never {
@@ -92,6 +94,29 @@ for (const [i, work] of otherWork.entries()) {
   }
 }
 
+const designIds = new Set<string>();
+for (const [i, work] of designWorks.entries()) {
+  const result = DesignWork.safeParse(work);
+  if (!result.success) {
+    fail(`designWorks[${i}] (${work.id}): ${result.error.message}`);
+  }
+  if (designIds.has(work.id)) {
+    fail(`designWorks[${i}] (${work.id}): duplicate id`);
+  }
+  designIds.add(work.id);
+  const ships = work.verified && publishable(work);
+  if (ships && !designSizes[work.id]) {
+    warn(`${work.id} has no converted image and is skipped. Run \`pnpm design:images\``);
+  }
+  // No file may exist for a piece that is unverified or lacks consent.
+  if (!ships && designSizes[work.id]) {
+    fail(`${work.id}: must not ship but has a converted image. Run \`pnpm design:images\``);
+  }
+  if (!ships) {
+    warn(`design work ${work.id} is hidden (verified: ${work.verified}, consent: ${work.consent ?? false})`);
+  }
+}
+
 console.log(
-  `validate: ${jobs.length} job(s), ${certs.length} cert(s), ${projects.length} project(s), ${labs.length} lab(s), ${otherWork.length} other OK`,
+  `validate: ${jobs.length} job(s), ${certs.length} cert(s), ${projects.length} project(s), ${labs.length} lab(s), ${otherWork.length} other, ${designWorks.length} design work(s) OK`,
 );
