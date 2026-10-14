@@ -785,6 +785,14 @@ main > section > h2::before {
   width: 1.15rem;
 }
 
+.social .glyph svg.stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
 .social .glyph {
   align-items: center;
   background: var(--surface);
@@ -1541,39 +1549,35 @@ main > section > h2::before {
   user-select: all;
 }
 
-/* Scroll reveal. Content is only hidden when a script is running to show it again. */
-html.js [data-reveal] {
-  opacity: 0;
-  transform: translateY(18px);
+/* Scroll reveal, CSS only. Items slide up a little as they enter the viewport, using scroll-driven
+   animations where the browser has them. Only transform moves, never opacity, so nothing is ever
+   hidden: content above the fold is visible at once, with no script and no wait for hydration. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] {
+      animation: reveal linear both;
+      animation-range: entry 0% entry 70%;
+      animation-timeline: view();
+    }
+
+    .timeline[data-reveal]::before {
+      animation: draw linear both;
+      animation-range: entry 10% cover 55%;
+      animation-timeline: view();
+    }
+  }
 }
 
-html.js [data-reveal].is-in {
-  opacity: 1;
-  transform: none;
-  transition:
-    opacity var(--slow) var(--ease),
-    transform var(--slow) var(--ease);
+@keyframes reveal {
+  from {
+    transform: translateY(28px);
+  }
 }
 
-html.js :is(.bento, .cards) > [data-reveal]:nth-child(2) {
-  transition-delay: 60ms;
-}
-
-html.js :is(.bento, .cards) > [data-reveal]:nth-child(3) {
-  transition-delay: 120ms;
-}
-
-html.js :is(.bento, .cards) > [data-reveal]:nth-child(4) {
-  transition-delay: 180ms;
-}
-
-html.js .timeline[data-reveal]::before {
-  transform: scaleY(0);
-}
-
-html.js .timeline[data-reveal].is-in::before {
-  transform: scaleY(1);
-  transition: transform 600ms var(--ease) 150ms;
+@keyframes draw {
+  from {
+    transform: scaleY(0);
+  }
 }
 
 @keyframes rise {
@@ -1624,12 +1628,6 @@ html.js .timeline[data-reveal].is-in::before {
     animation: none !important;
     scroll-behavior: auto !important;
     transition: none !important;
-  }
-
-  html.js [data-reveal],
-  html.js .timeline[data-reveal]::before {
-    opacity: 1;
-    transform: none;
   }
 
   .tile a:hover,

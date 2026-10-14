@@ -120,6 +120,32 @@ test("without scripts, every figure and card is still visible", async ({ browser
   await context.close();
 });
 
+test("with scripts off, the first project cards are visible at once", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 800 } });
+  const page = await context.newPage();
+  await page.goto("/projects");
+  const first = page.locator(".card-slot").first();
+  await expect(first).toBeVisible();
+  await expect(first).toBeInViewport();
+  const style = await first.evaluate((el) => {
+    const s = getComputedStyle(el);
+    return { opacity: s.opacity, visibility: s.visibility };
+  });
+  expect(style).toEqual({ opacity: "1", visibility: "visible" });
+  await context.close();
+});
+
+test("first-row cards and tiles are never transparent, with scripts on", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  for (const path of ["/", "/projects"]) {
+    await page.goto(path);
+    for (const el of await page.locator("[data-reveal]").all()) {
+      if (!(await el.isVisible())) continue;
+      expect(await el.evaluate((node) => getComputedStyle(node).opacity)).toBe("1");
+    }
+  }
+});
+
 test("with reduced motion, nothing waits for a scroll or an animation", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");

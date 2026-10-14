@@ -3,7 +3,8 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-// The only site script for motion. One scroll listener, one IntersectionObserver.
+// The only site script for motion: one scroll listener (header and progress bar), and one
+// IntersectionObserver for the proof count-up. Scroll reveals are CSS only.
 // Everything it animates is already in the HTML, so the page is complete without it.
 export function SiteMotion() {
   const pathname = usePathname();
@@ -31,7 +32,8 @@ export function SiteMotion() {
     const onVisibility = () => root.toggleAttribute("data-tab-hidden", document.hidden);
     document.addEventListener("visibilitychange", onVisibility);
 
-    // Count a figure up to the number already printed in the HTML.
+    // Count a figure up to the number already printed in the HTML, but only for figures that scroll
+    // into view later. A figure already on screen when the page loads keeps its final value.
     const countUp = (el: HTMLElement) => {
       const target = Number(el.dataset.count);
       if (reduce || !Number.isFinite(target) || target === 0) return;
@@ -44,31 +46,29 @@ export function SiteMotion() {
       requestAnimationFrame(tick);
     };
 
-    const targets = document.querySelectorAll<HTMLElement>("[data-reveal]");
-    const show = (el: HTMLElement) => {
-      el.classList.add("is-in");
-      el.querySelectorAll<HTMLElement>("[data-count]").forEach(countUp);
-    };
-    if (!("IntersectionObserver" in window)) {
-      targets.forEach(show);
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          show(entry.target as HTMLElement);
-          observer.unobserve(entry.target);
-        }
-      },
-      { rootMargin: "0px 0px -8% 0px" },
-    );
-    targets.forEach((el) => observer.observe(el));
+    const figures = document.querySelectorAll<HTMLElement>("[data-count]");
+    const observer =
+      "IntersectionObserver" in window
+        ? new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (!entry.isIntersecting) continue;
+                countUp(entry.target as HTMLElement);
+                observer?.unobserve(entry.target);
+              }
+            },
+            { rootMargin: "0px 0px -8% 0px" },
+          )
+        : null;
+    figures.forEach((el) => {
+      if (el.getBoundingClientRect().top < window.innerHeight) return; // on screen already
+      observer?.observe(el);
+    });
 
     return () => {
       window.removeEventListener("scroll", onScroll);
       document.removeEventListener("visibilitychange", onVisibility);
-      observer.disconnect();
+      observer?.disconnect();
     };
   }, [pathname]);
 
