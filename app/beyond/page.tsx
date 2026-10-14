@@ -46,7 +46,7 @@ export default function Beyond() {
             width={tiktokShot.width}
             height={tiktokShot.height}
             host={tiktokShot.host}
-            caption={`${tiktokShot.source}, as of ${tiktokShot.date}`}
+            caption={tiktokShot.caption}
           />
           <p>
             <a href={tiktokShot.url} target="_blank" rel="noopener noreferrer">

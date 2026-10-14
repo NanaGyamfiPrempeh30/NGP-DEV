@@ -306,7 +306,7 @@ test("TikTok card: only with a real screenshot, and the link opens safely", asyn
   await expect(link).toHaveAttribute("href", "https://www.tiktok.com/@ngp_dronelens");
   await expect(link).toHaveAttribute("target", "_blank");
   await expect(link).toHaveAttribute("rel", "noopener noreferrer");
-  await expect(card.locator("figcaption")).toContainText("TikTok profile, @ngp_dronelens, as of ");
+  await expect(card.locator("figcaption")).toHaveText("TikTok profile screenshot, 14 Oct 2026.");
   expect(await card.locator("iframe, script").count()).toBe(0);
 });
 
