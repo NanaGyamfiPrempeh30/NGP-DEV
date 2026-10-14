@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 import { profiles } from "@/content/profiles";
 
 // GitHub, Medium and X marks: Simple Icons 16.35.0, CC0 1.0 (simpleicons.org).
-// The envelope and the chain link are drawn for this site. LinkedIn is not in Simple Icons,
-// so it gets the neutral link icon.
+// The envelope is drawn for this site. LinkedIn is not in Simple Icons, so it gets a neutral
+// link icon from Feather (MIT licence).
 const icon = (d: string) => (
   <svg viewBox="0 0 24 24" aria-hidden="true">
     <path d={d} />
@@ -19,8 +19,12 @@ const shown: { label: string; glyph: ReactNode }[] = [
   },
   {
     label: "LinkedIn",
-    glyph: icon(
-      "M10.6 13.4a1 1 0 0 1 0-1.4l3.5-3.5a3 3 0 1 1 4.2 4.2l-2 2a1 1 0 1 1-1.4-1.4l2-2a1 1 0 1 0-1.4-1.4l-3.5 3.5a1 1 0 0 1-1.4 0zm2.8-2.8a1 1 0 0 1 0 1.4l-3.5 3.5a3 3 0 1 1-4.2-4.2l2-2a1 1 0 0 1 1.4 1.4l-2 2a1 1 0 1 0 1.4 1.4l3.5-3.5a1 1 0 0 1 1.4 0z",
+    // Feather "link" icon (MIT licence), drawn as a stroke so it matches the weight of the other marks.
+    glyph: (
+      <svg viewBox="0 0 24 24" aria-hidden="true" className="stroke">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+      </svg>
     ),
   },
   {
