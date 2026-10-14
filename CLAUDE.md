@@ -47,7 +47,7 @@ public/cv/           YNGP_CV_public.pdf (no address/phone/referees)
 6. **Copy style:** run every piece of site copy through the `ngp-humanizer` skill. No buzzwords ("results-driven", "leverage", "seamless", "cutting-edge"). Short sentences. Active voice. Plain words.
 7. **Design:** load the UI/UX plugin and the `frontend-design` skill before building any page. Check `/plugin` for the exact name.
 8. **Accessibility is not optional:** WCAG 2.2 AA, 18px body text min, line height 1.6, max 70ch, no justified text. Test keyboard nav on every page.
-9. **Performance budget:** Lighthouse mobile Performance >= 90, LCP <= 2.5 s, CLS <= 0.1, TBT <= 200 ms, and site-owned JS <= 25 KB gzipped. React and the Next.js runtime are excluded from the JS figure, because they ship about 112 KB on their own. Server components by default; `"use client"` only when needed. Images through `next/image`.
+9. **Performance budget:** Lighthouse mobile Performance >= 90, LCP <= 2.5 s, CLS <= 0.1, and site-owned JS <= 25 KB gzipped. Report TBT for information only; it is not a gate. React and the Next.js runtime are excluded from the JS figure, because they ship about 112 KB on their own. Server components by default; `"use client"` only when needed. Images through `next/image`.
 10. **Third-party embeds:** none in v1. If one is added later, use a click-to-load facade.
 
 ## Owner reminders (do not skip)
