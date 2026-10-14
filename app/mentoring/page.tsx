@@ -49,8 +49,9 @@ export default function Mentoring() {
 
       <h2>Being mentored</h2>
       {mentors.map((mentor) => (
-        <p key={mentor.url}>
-          <a href={mentor.url}>{mentor.name}</a>, {mentor.description}, mentored me {mentor.when}.
+        <p key={mentor.name}>
+          {mentor.url ? <a href={mentor.url}>{mentor.name}</a> : <strong>{mentor.name}</strong>}
+          {mentor.words}
         </p>
       ))}
     </>
