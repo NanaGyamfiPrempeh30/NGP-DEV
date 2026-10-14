@@ -26,8 +26,6 @@ export const DesignWork = z
 export type DesignWork = z.infer<typeof DesignWork>;
 export type DesignWorkInput = z.input<typeof DesignWork>;
 
-// TODO(owner): TKA logo. No file in /design-src yet. When it is there, add it as
-//   kind "client", clientName "TKA Auto Logistics", canNameClient true, consent true.
 // TODO(owner): Ebenezer. No file in /design-src yet. Fix the typo "GENIUE" in the source first.
 export const designWorks: DesignWorkInput[] = [
   {
@@ -72,6 +70,7 @@ export const designWorks: DesignWorkInput[] = [
     alt: "Logo: a fan of overlapping coloured leaves around the word Geomat, with Harvest Time Co. Ltd beneath.",
     kind: "client",
     clientName: "Geomat",
+    canNameClient: true, // owner, 14 Oct 2026: the client agreed to be named
     consent: true,
     verified: true,
     order: 5,
@@ -83,6 +82,7 @@ export const designWorks: DesignWorkInput[] = [
     alt: "Round logo in brown on orange: two fish circling each other, with RE above and NAM below.",
     kind: "client",
     clientName: "RE NAM",
+    canNameClient: true, // owner, 14 Oct 2026: the client agreed to be named
     consent: true,
     verified: true,
     order: 6,
@@ -94,6 +94,7 @@ export const designWorks: DesignWorkInput[] = [
     alt: "Logo on pink: the name Jeanzz Wura arched over a handwritten jw monogram, inside a thin black circle.",
     kind: "client",
     clientName: "Jeanzz Wura",
+    canNameClient: true, // owner, 14 Oct 2026: the client agreed to be named
     consent: true,
     verified: true,
     order: 7,
@@ -105,6 +106,7 @@ export const designWorks: DesignWorkInput[] = [
     alt: "Logo: the word Ahenken in orange script with a yellow outline, above a yellow pill that reads Restaurant.",
     kind: "client",
     clientName: "Ahenken",
+    canNameClient: true, // owner, 14 Oct 2026: the client agreed to be named
     consent: true,
     verified: true,
     order: 8,
@@ -116,10 +118,24 @@ export const designWorks: DesignWorkInput[] = [
     alt: "Two gold line-drawn champagne glasses clinking above the name Aboa Kese in silver script, on dark green.",
     kind: "client",
     clientName: "Aboa Kese",
+    canNameClient: true, // owner, 14 Oct 2026: the client agreed to be named
     consent: true,
     verified: true,
     order: 9,
     src: "Aboakese Cheers-02.jpg",
+  },
+  {
+    // Owner, 14 Oct 2026. The file arrived as "Tka autos logo.PNG", not "TKA-logo.jpg".
+    id: "tka-logo",
+    title: "Sports-car logo",
+    alt: "Logo for TKA Auto's & Logistics: a white sports-car outline with speed lines on black.",
+    kind: "client",
+    clientName: "TKA Auto Logistics",
+    canNameClient: true,
+    consent: true,
+    verified: true,
+    order: 10,
+    src: "Tka autos logo.PNG",
   },
   {
     // TODO(owner): low-res. Re-export, then set verified: true.
@@ -128,7 +144,7 @@ export const designWorks: DesignWorkInput[] = [
     alt: "Two Santas in headphones on pale yellow: one pops a bottle, the other carries wrapped presents.",
     kind: "own",
     verified: false,
-    order: 10,
+    order: 11,
     src: "Giving & Jamming-01.jpg",
   },
 ];

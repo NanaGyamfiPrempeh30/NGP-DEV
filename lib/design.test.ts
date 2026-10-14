@@ -51,7 +51,10 @@ describe("design entries", () => {
 
   it("names a client only when canNameClient is true", () => {
     expect(clientLine({ kind: "client", clientName: "Acme" })).toBe("Client work");
-    expect(clientLine({ kind: "client", clientName: "Acme", canNameClient: true })).toBe("Client work for Acme");
+    expect(clientLine({ kind: "client", clientName: "Acme", canNameClient: true })).toBe("Logo for Acme");
+    expect(
+      clientLine({ kind: "client", title: "Save-the-date card", clientName: "Acme", canNameClient: true }),
+    ).toBe("Save-the-date card for Acme");
     expect(clientLine({ kind: "own" })).toBe("Own work");
   });
 

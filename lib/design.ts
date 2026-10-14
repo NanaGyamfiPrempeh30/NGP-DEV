@@ -14,9 +14,17 @@ export function visibleDesign<T extends Rules>(works: T[], showDrafts: boolean):
   return works.filter((work) => publishable(work) && (showDrafts || work.verified));
 }
 
-export function clientLine(work: { kind: "own" | "client"; clientName?: string; canNameClient?: boolean }): string {
+// Caption under each piece. Named clients: "Logo for <name>", or "Save-the-date card for <name>".
+export function clientLine(work: {
+  kind: "own" | "client";
+  title?: string;
+  clientName?: string;
+  canNameClient?: boolean;
+}): string {
   if (work.kind === "own") return "Own work";
-  return work.canNameClient && work.clientName ? `Client work for ${work.clientName}` : "Client work";
+  if (!work.canNameClient || !work.clientName) return "Client work";
+  const what = work.title?.startsWith("Save-the-date") ? "Save-the-date card" : "Logo";
+  return `${what} for ${work.clientName}`;
 }
 
 export type Size = { width: number; height: number };
