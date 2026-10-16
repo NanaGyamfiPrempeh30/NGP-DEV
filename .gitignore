@@ -34,3 +34,8 @@ playwright-report/
 # runs from the OS temp directory, so these should never appear here.
 /C:*
 lighthouse-*/
+
+# Bank notes and other unapproved text stay local until the owner ticks them (CLAUDE.md rule 11).
+/private/
+# The pre-push hook's denylist. It names what must never be pushed, so it never goes in git either.
+/.prepush-denylist
