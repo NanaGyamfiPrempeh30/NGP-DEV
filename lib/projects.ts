@@ -38,6 +38,12 @@ export function servable<T extends { hidden: boolean; verified: boolean }>(proje
   return visible(projects.filter((project) => !project.hidden));
 }
 
+// The production rule, spelled out so tests can check it without a production build:
+// a project ships only when it is not hidden and is verified.
+export function servableInProduction<T extends { hidden: boolean; verified: boolean }>(projects: T[]): T[] {
+  return projects.filter((project) => !project.hidden && project.verified);
+}
+
 export function getProjects(): LoadedProject[] {
   return servable(loadProjects());
 }
