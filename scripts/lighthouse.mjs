@@ -28,6 +28,27 @@ if (process.env.VERCEL_AUTOMATION_BYPASS_SECRET) {
   args.push(`--extra-headers=${file}`);
 }
 
+// A run only counts if it measured the portfolio, not Vercel's login page.
+const NAME = "Yaw Nana Gyamfi Prempeh";
+const headers = process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+  ? { "x-vercel-protection-bypass": process.env.VERCEL_AUTOMATION_BYPASS_SECRET }
+  : {};
+async function isRealSite(url, attempt = 1) {
+  try {
+    const res = await fetch(url, { headers, redirect: "manual" });
+    const html = await res.text();
+    const title = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "";
+    const ok = res.status === 200 && title.includes(NAME) && /<h1[\s>]/.test(html) && html.includes(NAME);
+    console.log(`${url} preflight: status ${res.status}, title "${title}", ${ok ? "real site" : "NOT the site"}`);
+    return ok;
+  } catch {
+    if (attempt < 3) return isRealSite(url, attempt + 1); // a closed keep-alive socket after Chrome exits
+    console.log(`${url} preflight: fetch failed`);
+    return false;
+  }
+}
+const sameHost = (a, b) => new URL(a).host === new URL(b).host;
+
 const median = (values) => {
   const sorted = [...values].sort((a, b) => a - b);
   return sorted[Math.floor(sorted.length / 2)];
@@ -36,6 +57,7 @@ const median = (values) => {
 try {
   for (const url of urls) {
     const rows = [];
+    if (!(await isRealSite(url))) continue;
     for (let i = 0; i < runs; i++) {
       let report;
       try {
@@ -44,6 +66,15 @@ try {
         );
       } catch {
         console.log(`${url} run ${i + 1}: Lighthouse failed`); // the error itself is not printed: it holds the arguments
+        continue;
+      }
+      const final = report.finalDisplayedUrl ?? report.finalUrl ?? "";
+      if (report.runtimeError || report.categories.performance.score == null) {
+        console.log(`${url} run ${i + 1}: discarded, ${report.runtimeError?.code ?? "no score"}`);
+        continue;
+      }
+      if (!final || !sameHost(final, url) || /vercel\.com\/(login|sso)/.test(final)) {
+        console.log(`${url} run ${i + 1}: discarded, ended on another host`);
         continue;
       }
       const a = report.audits;
