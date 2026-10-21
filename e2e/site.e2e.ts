@@ -316,6 +316,11 @@ test("hero case-study card: tilted from 1024px, straightens on hover, hidden bel
   const card = page.locator(".hero-card");
   await expect(card).toBeVisible();
   await expect(card).toContainText("Case study");
+  await expect(card).toHaveAttribute(
+    "href",
+    bankPublic ? "/projects/rural-bank-staff-portal" : "/projects/ecdc-kubernetes-ionos",
+  );
+  await expect(card.locator("svg")).toHaveAttribute("aria-hidden", "true");
   const angle = () => card.evaluate((el) => getComputedStyle(el).transform);
   expect(await angle()).not.toBe("none");
   await card.hover();
