@@ -6,6 +6,7 @@ import { DraftBadge } from "@/components/DraftBadge";
 import { Tags } from "@/components/Tags";
 import { formatDate, formatRange } from "@/lib/dates";
 import { getProjects, type LoadedProject } from "@/lib/projects";
+import { slugify } from "@/lib/slug";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -33,6 +34,8 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound();
   const { default: Body } = await import(`@/content/projects/${slug}.mdx`);
 
+  const sections = [...project.body.matchAll(/^## (.+)$/gm)].map((match) => match[1] ?? "");
+
   return (
     <article>
       <p>
@@ -40,7 +43,7 @@ export default async function ProjectPage({ params }: Props) {
       </p>
       <h1>{project.title}</h1>
       <p className="lede">{project.outcome}</p>
-      <p className="meta">
+      <p className="label">
         {project.role}. {when(project)}.
         {project.kind === "client" && !project.canNameClient && project.clientLabel
           ? ` Client: ${project.clientLabel}.`
@@ -49,15 +52,37 @@ export default async function ProjectPage({ params }: Props) {
       <Tags items={project.stack} />
       <DraftBadge verified={project.verified} />
 
-      {project.claims.length > 0 ? (
-        <>
-          <h2>What I can prove</h2>
-          <Claims claims={project.claims} />
-        </>
-      ) : null}
+      <div className="study">
+        <nav className="toc" aria-label="On this page">
+          <p className="label">On this page</p>
+          <ol role="list">
+            {project.claims.length > 0 ? (
+              <li>
+                <a href="#proof">What I can prove</a>
+              </li>
+            ) : null}
+            {sections.map((title) => (
+              <li key={title}>
+                <a href={`#${slugify(title)}`}>{title}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
 
-      <div className="prose">
-        <Body />
+        <div>
+          {project.claims.length > 0 ? (
+            <>
+              <h2 id="proof" style={{ marginTop: 0 }}>
+                What I can prove
+              </h2>
+              <Claims claims={project.claims} />
+            </>
+          ) : null}
+
+          <div className="prose">
+            <Body />
+          </div>
+        </div>
       </div>
     </article>
   );

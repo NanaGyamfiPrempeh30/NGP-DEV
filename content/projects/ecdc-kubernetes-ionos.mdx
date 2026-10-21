@@ -45,6 +45,8 @@ IONOS gives you virtual machines, a network and a public IP. Everything else is 
 
 ## How it works
 
+<EcdcDiagram />
+
 1. A request reaches the bastion's public IP.
 2. HAProxy on the bastion passes it on in TCP mode. It does not open the TLS connection.
 3. Traefik inside the cluster ends TLS and routes the request.

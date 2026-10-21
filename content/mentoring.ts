@@ -15,10 +15,9 @@ export type MentoringSeries = {
 
 export type Mentor = {
   name: string;
-  description: string;
-  // What he mentored me on. The page prints: "<name>, <description>, mentored me <when>."
-  when: string;
-  url: string;
+  url?: string; // only when the owner has approved a link
+  // The words that follow the name on the page, exactly as the owner approved them.
+  words: string;
 };
 
 // PRD §7.5. Paused by the mentee after week 5: say so, and don't imply a finished programme.
@@ -43,17 +42,15 @@ export const mentoring: MentoringSeries | null = {
 // Use only the owner's words for each person. Order is the order on the page.
 export const mentors: Mentor[] = [
   {
-    // Owner, 13 Oct 2026. No phone, email, employer or dates.
-    name: "Dr. Fredrick Ayivor, Ph.D.",
-    description: "senior DevOps and AI engineer",
-    when: "at the beginning and in the early years of my DevOps career",
-    url: "https://www.linkedin.com/in/dr-fredrick-ayivor-ph-d-4347a491",
+    // Owner, 14 Oct 2026: exact wording. Name and words only: no link, employer, role, phone, email or dates.
+    name: "Dr Fredrick Ayivor",
+    words:
+      " mentored me early in my DevOps career. He made sure I understood the principles behind DevOps and cloud engineering, not just the tools. I'm grateful for the work he put in.",
   },
   {
     // Owner, 5 Oct 2026.
     name: "Wilson Mar",
-    description: "senior DevSecOps and AI leader",
-    when: "while I built the Ambient Weather MCP server",
     url: "https://wilsonmar.github.io/",
+    words: ", senior DevSecOps and AI leader, mentored me while I built the Ambient Weather MCP server.",
   },
 ];
