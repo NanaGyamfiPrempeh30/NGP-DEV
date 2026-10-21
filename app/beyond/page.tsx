@@ -48,11 +48,6 @@ export default function Beyond() {
             host={tiktokShot.host}
             caption={tiktokShot.caption}
           />
-          <p>
-            <a href={tiktokShot.url} target="_blank" rel="noopener noreferrer">
-              Open on TikTok
-            </a>
-          </p>
         </div>
       ) : null}
 

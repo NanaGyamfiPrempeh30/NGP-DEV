@@ -324,16 +324,36 @@ test("hero case-study card: tilted from 1024px, straightens on hover, hidden bel
   await expect(card).toBeHidden();
 });
 
-test("TikTok card: only with a real screenshot, and the link opens safely", async ({ page }) => {
+test("TikTok card: only with a real screenshot, with its caption and no link", async ({ page }) => {
   await page.goto("/beyond");
   const card = page.locator(".drone-card");
   if ((await card.count()) === 0) return; // no screenshot yet: the section is simply absent
-  const link = card.getByRole("link", { name: "Open on TikTok" });
-  await expect(link).toHaveAttribute("href", "https://www.tiktok.com/@ngp_dronelens");
-  await expect(link).toHaveAttribute("target", "_blank");
-  await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  await expect(card.locator("img")).toBeVisible();
   await expect(card.locator("figcaption")).toHaveText("TikTok profile screenshot, 14 Oct 2026.");
+  expect(await card.locator("a").count()).toBe(0);
   expect(await card.locator("iframe, script").count()).toBe(0);
+});
+
+// The only TikTok URL the owner approved is his own profile.
+test("every TikTok link on the site goes to the approved profile", async ({ page }) => {
+  for (const route of routes) {
+    await page.goto(route.path);
+    const hrefs = await page.locator('a[href*="tiktok.com"]').evaluateAll((links) => links.map((a) => a.getAttribute("href")));
+    for (const href of hrefs) expect(href, route.path).toBe("https://www.tiktok.com/@ngp_dronelens");
+  }
+});
+
+test("every social link has an accessible name and a drawn icon", async ({ page }) => {
+  await page.goto("/");
+  const links = page.locator("ul.social a");
+  expect(await links.count()).toBeGreaterThanOrEqual(5);
+  for (const link of await links.all()) {
+    const name = (await link.innerText()).trim();
+    expect(name.length).toBeGreaterThan(0);
+    await expect(link).toHaveAccessibleName(name);
+    const d = await link.locator("svg path").first().getAttribute("d");
+    expect((d ?? "").trim().length).toBeGreaterThan(10);
+  }
 });
 
 test("lower Home sections: anchors land below the header, find-in-page works, no shift while scrolling", async ({ page }) => {
@@ -474,3 +494,18 @@ test("record the Home load and scroll", async ({ browser }) => {
   await page.waitForTimeout(800);
   await context.close();
 });
+
+// Crops for PR review, saved with the CI artefacts: the social row and the TikTok block.
+for (const width of [390, 1280]) {
+  test(`review crops at ${width}px: social row and TikTok block`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    for (const scheme of ["dark", "light"] as const) {
+      await page.emulateMedia({ colorScheme: scheme });
+      await page.goto("/");
+      await page.locator("ul.social").first().screenshot({ path: `test-results/screens/social-row-${scheme}-${width}.png` });
+      await page.goto("/beyond");
+      const card = page.locator(".drone-card");
+      if ((await card.count()) > 0) await card.screenshot({ path: `test-results/screens/tiktok-${scheme}-${width}.png` });
+    }
+  });
+}
