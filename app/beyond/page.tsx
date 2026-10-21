@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import { designWorks, tiktok } from "@/content/beyond";
+import { FramedShot } from "@/components/FramedShot";
+import { Gallery } from "@/components/Gallery";
+import { tiktok } from "@/content/beyond";
+import { clientLine, getDesignWorks } from "@/lib/design";
+import { getScreenshot } from "@/lib/screenshots";
 
 export const metadata: Metadata = {
   title: "Beyond code",
@@ -8,6 +11,24 @@ export const metadata: Metadata = {
 };
 
 export default function Beyond() {
+  const tiktokShot = getScreenshot("tiktok-profile");
+  const works = getDesignWorks().flatMap((work) =>
+    work.width && work.height
+      ? [
+          {
+            id: work.id,
+            title: work.title,
+            alt: work.alt,
+            file: work.file,
+            width: work.width,
+            height: work.height,
+            credit: `${clientLine(work)}${work.year ? `, ${work.year}` : ""}`,
+            verified: work.verified,
+          },
+        ]
+      : [],
+  );
+
   return (
     <>
       <h1>Beyond code</h1>
@@ -17,16 +38,29 @@ export default function Beyond() {
         I fly drones as a hobby. My videos are on TikTok: <a href={tiktok.url}>{tiktok.label}</a>
       </p>
 
-      {designWorks.length > 0 ? (
+      {tiktokShot ? (
+        <div className="drone-card">
+          <FramedShot
+            src={tiktokShot.file}
+            alt={tiktokShot.alt}
+            width={tiktokShot.width}
+            height={tiktokShot.height}
+            host={tiktokShot.host}
+            caption={tiktokShot.caption}
+          />
+          <p>
+            <a href={tiktokShot.url} target="_blank" rel="noopener noreferrer">
+              Open on TikTok
+            </a>
+          </p>
+        </div>
+      ) : null}
+
+      {works.length > 0 ? (
         <>
           <h2>Graphic design</h2>
-          <ul role="list" className="cards">
-            {designWorks.map((work) => (
-              <li key={work.src}>
-                <Image src={work.src} alt={work.alt} width={work.width} height={work.height} />
-              </li>
-            ))}
-          </ul>
+          <p>I draw in Adobe Illustrator. Select a picture to open it at full size.</p>
+          <Gallery works={works} />
         </>
       ) : null}
     </>

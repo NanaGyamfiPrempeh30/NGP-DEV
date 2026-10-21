@@ -18,6 +18,15 @@ jobs:
           node-version: 24
           cache: pnpm
 
+      # Design originals (some are client files) stay local. Fail if any is tracked.
+      - name: design-src is not tracked
+        run: |
+          if [ -n "$(git ls-files design-src)" ]; then
+            echo "These files under design-src/ are tracked and must not be:"
+            git ls-files design-src
+            exit 1
+          fi
+
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm lint
@@ -57,8 +66,10 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: screenshots
-          path: test-results/screens
+          name: screenshots-and-video
+          path: |
+            test-results/screens
+            test-results/video
           retention-days: 14
 
   gitleaks:
