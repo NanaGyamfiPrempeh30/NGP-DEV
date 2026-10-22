@@ -801,14 +801,6 @@ main > section > h2::before {
   width: 1.15rem;
 }
 
-.social .glyph svg.stroke {
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
-}
-
 .social .glyph {
   align-items: center;
   background: var(--surface);
