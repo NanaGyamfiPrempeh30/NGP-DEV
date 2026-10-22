@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BankFlowDiagram } from "@/components/BankFlowDiagram";
 import { EcdcDiagram } from "@/components/EcdcDiagram";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SocialRow } from "@/components/SocialRow";
@@ -61,8 +62,14 @@ export default function Home() {
               fetchPriority="high"
             />
           </div>
-          {/* From 1024px: a tilted card on the photo's corner that leads to the ECDC case study. */}
-          {slugs.has("ecdc-kubernetes-ionos") ? (
+          {/* From 1024px: a tilted card on the photo's corner that leads to a case study.
+              The bank portal when it is published, otherwise ECDC. */}
+          {slugs.has("rural-bank-staff-portal") ? (
+            <Link className="hero-card" href="/projects/rural-bank-staff-portal" aria-label="Case study: Abokobi Rural Bank staff portal">
+              <BankFlowDiagram />
+              <span>Case study</span>
+            </Link>
+          ) : slugs.has("ecdc-kubernetes-ionos") ? (
             <Link className="hero-card" href="/projects/ecdc-kubernetes-ionos" aria-label="Case study: ECDC Kubernetes on IONOS">
               <EcdcDiagram thumbnail />
               <span>Case study</span>

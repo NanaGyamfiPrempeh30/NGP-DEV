@@ -18,15 +18,18 @@ describe("hidden projects", () => {
     for (const slug of hidden) expect(served).not.toContain(slug);
   });
 
-  it("keeps the bank page out of production while it is unverified, even if `hidden` is lifted", () => {
+  it("ships the bank page in production only while it is verified and not hidden", () => {
     const bank = loadProjects().find((p) => p.slug === "rural-bank-staff-portal");
     expect(bank).toBeDefined();
-    expect(bank!.verified).toBe(false);
-    expect(servableInProduction([bank!])).toEqual([]);
-    expect(servableInProduction([{ ...bank!, hidden: false }])).toEqual([]);
+    expect(servableInProduction([{ ...bank!, hidden: false, verified: false }])).toEqual([]);
+    expect(servableInProduction([{ ...bank!, hidden: true, verified: true }])).toEqual([]);
+    expect(servableInProduction([{ ...bank!, hidden: false, verified: true }])).toHaveLength(1);
   });
 
-  it("does not serve the bank portal", () => {
-    expect(getProjects().map((p) => p.slug)).not.toContain("rural-bank-staff-portal");
+  // Tests show drafts, so here only `hidden` decides. The production rule is the test above.
+  it("serves the bank portal exactly when it is not hidden", () => {
+    const bank = loadProjects().find((p) => p.slug === "rural-bank-staff-portal")!;
+    const served = getProjects().map((p) => p.slug).includes(bank.slug);
+    expect(served).toBe(!bank.hidden);
   });
 });

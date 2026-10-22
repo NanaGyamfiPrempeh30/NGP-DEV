@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { loadProjects, servableInProduction } from "../lib/projects";
 
 const routes = [
   { name: "home", path: "/" },
@@ -315,6 +316,11 @@ test("hero case-study card: tilted from 1024px, straightens on hover, hidden bel
   const card = page.locator(".hero-card");
   await expect(card).toBeVisible();
   await expect(card).toContainText("Case study");
+  await expect(card).toHaveAttribute(
+    "href",
+    bankPublic ? "/projects/rural-bank-staff-portal" : "/projects/ecdc-kubernetes-ionos",
+  );
+  await expect(card.locator("svg")).toHaveAttribute("aria-hidden", "true");
   const angle = () => card.evaluate((el) => getComputedStyle(el).transform);
   expect(await angle()).not.toBe("none");
   await card.hover();
@@ -460,21 +466,45 @@ test("reduced motion switches off every animation, including the glow and the di
   expect(await page.locator("figure.diagram line.flow").first().evaluate((el) => getComputedStyle(el).animationName)).toBe("none");
 });
 
-test("the hidden bank page is not served or linked", async ({ page, request }) => {
+// The bank page ships only while its file says verified: true and hidden: false (production rules).
+const bankPublic =
+  servableInProduction(loadProjects().filter((project) => project.slug === "rural-bank-staff-portal")).length === 1;
+
+test("the bank page is served only while it is verified and not hidden", async ({ page, request }) => {
   const response = await request.get("/projects/rural-bank-staff-portal");
-  expect(response.status()).toBe(404);
+  expect(response.status()).toBe(bankPublic ? 200 : 404);
+  if (bankPublic) {
+    await page.goto("/projects");
+    await expect(page.locator('a[href="/projects/rural-bank-staff-portal"]').first()).toBeVisible();
+    return;
+  }
   for (const path of ["/", "/projects", "/experience", "/cv"]) {
     await page.goto(path);
     const html = await page.content();
     expect(html).not.toContain("rural-bank-staff-portal");
     expect(html).not.toContain("Abokobi");
   }
-  // These do not exist until M5. When they do, the bank page must not be in them.
+  // These do not exist until M5. When they do, a hidden bank page must not be in them.
   for (const path of ["/sitemap.xml", "/feed.xml", "/rss.xml"]) {
     const file = await request.get(path);
     if (file.ok()) expect(await file.text()).not.toContain("rural-bank-staff-portal");
   }
 });
+
+// Screenshots of the bank page for the PR, saved with the CI artefacts.
+for (const width of [390, 1280]) {
+  test(`bank page at ${width}px: screenshot, no sideways scroll`, async ({ page }) => {
+    test.skip(!bankPublic, "the bank page is not public");
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.goto("/projects/rural-bank-staff-portal");
+    await settle(page);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
+    await page.screenshot({ path: `test-results/screens/bank-dark-${width}.png`, fullPage: true });
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.screenshot({ path: `test-results/screens/bank-light-${width}.png`, fullPage: true });
+  });
+}
 
 // A short film of Home loading and scrolling, with motion on. Saved with the CI artefacts.
 test("record the Home load and scroll", async ({ browser }) => {
