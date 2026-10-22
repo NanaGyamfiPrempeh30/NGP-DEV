@@ -1,19 +1,52 @@
 {/*
-# Placeholder. The real case study is kept outside git until the owner lifts this page.
+# Hidden: never rendered until the owner lifts `hidden` and ticks the bank page checklist (v3).
+# Facts checked read-only against the bank's private repo on 21 Oct 2026, or given by the owner.
+# Never publish hostnames, domains, IPs, ports, route paths, proxy config, certificate details,
+# private network names, staff names, file paths or the repo link.
 slug: rural-bank-staff-portal
-title: "Hidden client project"
+title: "Abokobi Rural Bank staff portal"
 kind: client
 featured: false
-hidden: true
-canNameClient: false
-role: "TODO(owner)"
-start: "TODO(owner)"
-startSource: owner
-stack: []
-outcome: "TODO(owner)"
-claims: []
+hidden: false
+canNameClient: true
+clientLabel: "Rural bank, Ghana"
+role: "Full-stack developer"
+start: "2026-05"
+startSource: first-commit
+stack: ["Node.js", "Express", "SQLite", "Docker Compose", "Caddy"]
+outcome: "Issue logging, signed approvals and an inventory approval chain for the bank's staff."
+claims:
+  - text: "Inventory requests pass through an 8-stage approval chain, with signatures and comments."
+    internal: true
+  - text: "Signature scans shrink in the browser to 600 px wide JPEGs: typically 40 to 80 KB instead of 400 to 500 KB."
+    internal: true
 links: []
-verified: false
+verified: true
 */}
 
-TODO(owner): placeholder. The real text is kept locally, outside git.
+## Context
+
+Abokobi Rural Bank's staff use this portal to log issues and to move requests through approvals that carry a signature. I work on it as the full-stack developer.
+
+Built with Claude Code as my pair.
+
+## Problem
+
+The first version, in May 2026, logged issues. The bank then needed approvals with signatures, and a chain of approvals for inventory.
+
+## What I built
+
+- A signed approval workflow for staff requests.
+- An inventory approval chain of 8 stages, with signatures and comments.
+
+## How it works
+
+The app runs on Node and Express, with SQLite for data. Docker Compose runs it with Caddy in front as the reverse proxy. Caddy serves the portal over HTTPS. Staff reach it over a private mesh VPN rather than the public internet.
+
+## What broke and how I fixed it
+
+Signature scans were too heavy. They now shrink in the browser before they are sent: 600 px wide JPEGs, typically 40 to 80 KB instead of 400 to 500 KB.
+
+## Links
+
+The code is private. It runs a live bank system, so there is nothing to link.

@@ -52,7 +52,8 @@ public/cv/           YNGP_CV_public.pdf (no address/phone/referees)
 11. **Bank and third parties stay out of git.** Nothing bank-related (case-study text, notes, checklist lines) and no third-party identifier (names, GitHub handles, repo links, IPs, hostnames, domains, Tailscale details, phone numbers) goes into any pushed commit, the PRD or a checklist until I tick it. Drafts live in `private/`, which is gitignored. A local pre-push hook checks a gitignored denylist; never bypass it with `--no-verify`.
 
 ## Owner reminders (do not skip)
-- **Bank page stays hidden.** The Abokobi Rural Bank page and card are hidden (`hidden: true`) until I confirm the bank's portal repo is private. This does not block launch. Don't unhide it and don't push its case study until I say so.
+- **Bank page is published.** Its text must stay identical to the ticked checklist (PR #25 comment 6325686300). Any change needs a new checklist and ticks.
+- **Headshot.** I own the picture and no third party has any claim to it. Don't ask about permission again.
 
 ## Data sources
 - Medium RSS: `https://medium.com/feed/@yawgyamfiprempeh27`, revalidate 86400. Merge with `content/articles.ts`. Never fail the build on fetch error.
