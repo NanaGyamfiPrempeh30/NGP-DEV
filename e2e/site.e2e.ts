@@ -1,5 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { loadProjects, servableInProduction } from "../lib/projects";
 
 const routes = [
   { name: "home", path: "/" },
@@ -315,6 +316,11 @@ test("hero case-study card: tilted from 1024px, straightens on hover, hidden bel
   const card = page.locator(".hero-card");
   await expect(card).toBeVisible();
   await expect(card).toContainText("Case study");
+  await expect(card).toHaveAttribute(
+    "href",
+    bankPublic ? "/projects/rural-bank-staff-portal" : "/projects/ecdc-kubernetes-ionos",
+  );
+  await expect(card.locator("svg")).toHaveAttribute("aria-hidden", "true");
   const angle = () => card.evaluate((el) => getComputedStyle(el).transform);
   expect(await angle()).not.toBe("none");
   await card.hover();
@@ -324,16 +330,36 @@ test("hero case-study card: tilted from 1024px, straightens on hover, hidden bel
   await expect(card).toBeHidden();
 });
 
-test("TikTok card: only with a real screenshot, and the link opens safely", async ({ page }) => {
+test("TikTok card: only with a real screenshot, with its caption and no link", async ({ page }) => {
   await page.goto("/beyond");
   const card = page.locator(".drone-card");
   if ((await card.count()) === 0) return; // no screenshot yet: the section is simply absent
-  const link = card.getByRole("link", { name: "Open on TikTok" });
-  await expect(link).toHaveAttribute("href", "https://www.tiktok.com/@ngp_dronelens");
-  await expect(link).toHaveAttribute("target", "_blank");
-  await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  await expect(card.locator("img")).toBeVisible();
   await expect(card.locator("figcaption")).toHaveText("TikTok profile screenshot, 14 Oct 2026.");
+  expect(await card.locator("a").count()).toBe(0);
   expect(await card.locator("iframe, script").count()).toBe(0);
+});
+
+// The only TikTok URL the owner approved is his own profile.
+test("every TikTok link on the site goes to the approved profile", async ({ page }) => {
+  for (const route of routes) {
+    await page.goto(route.path);
+    const hrefs = await page.locator('a[href*="tiktok.com"]').evaluateAll((links) => links.map((a) => a.getAttribute("href")));
+    for (const href of hrefs) expect(href, route.path).toBe("https://www.tiktok.com/@ngp_dronelens");
+  }
+});
+
+test("every social link has an accessible name and a drawn icon", async ({ page }) => {
+  await page.goto("/");
+  const links = page.locator("ul.social a");
+  expect(await links.count()).toBeGreaterThanOrEqual(5);
+  for (const link of await links.all()) {
+    const name = (await link.innerText()).trim();
+    expect(name.length).toBeGreaterThan(0);
+    await expect(link).toHaveAccessibleName(name);
+    const d = await link.locator("svg path").first().getAttribute("d");
+    expect((d ?? "").trim().length).toBeGreaterThan(10);
+  }
 });
 
 test("lower Home sections: anchors land below the header, find-in-page works, no shift while scrolling", async ({ page }) => {
@@ -440,21 +466,45 @@ test("reduced motion switches off every animation, including the glow and the di
   expect(await page.locator("figure.diagram line.flow").first().evaluate((el) => getComputedStyle(el).animationName)).toBe("none");
 });
 
-test("the hidden bank page is not served or linked", async ({ page, request }) => {
+// The bank page ships only while its file says verified: true and hidden: false (production rules).
+const bankPublic =
+  servableInProduction(loadProjects().filter((project) => project.slug === "rural-bank-staff-portal")).length === 1;
+
+test("the bank page is served only while it is verified and not hidden", async ({ page, request }) => {
   const response = await request.get("/projects/rural-bank-staff-portal");
-  expect(response.status()).toBe(404);
+  expect(response.status()).toBe(bankPublic ? 200 : 404);
+  if (bankPublic) {
+    await page.goto("/projects");
+    await expect(page.locator('a[href="/projects/rural-bank-staff-portal"]').first()).toBeVisible();
+    return;
+  }
   for (const path of ["/", "/projects", "/experience", "/cv"]) {
     await page.goto(path);
     const html = await page.content();
     expect(html).not.toContain("rural-bank-staff-portal");
     expect(html).not.toContain("Abokobi");
   }
-  // These do not exist until M5. When they do, the bank page must not be in them.
+  // These do not exist until M5. When they do, a hidden bank page must not be in them.
   for (const path of ["/sitemap.xml", "/feed.xml", "/rss.xml"]) {
     const file = await request.get(path);
     if (file.ok()) expect(await file.text()).not.toContain("rural-bank-staff-portal");
   }
 });
+
+// Screenshots of the bank page for the PR, saved with the CI artefacts.
+for (const width of [390, 1280]) {
+  test(`bank page at ${width}px: screenshot, no sideways scroll`, async ({ page }) => {
+    test.skip(!bankPublic, "the bank page is not public");
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ colorScheme: "dark" });
+    await page.goto("/projects/rural-bank-staff-portal");
+    await settle(page);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
+    await page.screenshot({ path: `test-results/screens/bank-dark-${width}.png`, fullPage: true });
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.screenshot({ path: `test-results/screens/bank-light-${width}.png`, fullPage: true });
+  });
+}
 
 // A short film of Home loading and scrolling, with motion on. Saved with the CI artefacts.
 test("record the Home load and scroll", async ({ browser }) => {
@@ -474,3 +524,18 @@ test("record the Home load and scroll", async ({ browser }) => {
   await page.waitForTimeout(800);
   await context.close();
 });
+
+// Crops for PR review, saved with the CI artefacts: the social row and the TikTok block.
+for (const width of [390, 1280]) {
+  test(`review crops at ${width}px: social row and TikTok block`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    for (const scheme of ["dark", "light"] as const) {
+      await page.emulateMedia({ colorScheme: scheme });
+      await page.goto("/");
+      await page.locator("ul.social").first().screenshot({ path: `test-results/screens/social-row-${scheme}-${width}.png` });
+      await page.goto("/beyond");
+      const card = page.locator(".drone-card");
+      if ((await card.count()) > 0) await card.screenshot({ path: `test-results/screens/tiktok-${scheme}-${width}.png` });
+    }
+  });
+}

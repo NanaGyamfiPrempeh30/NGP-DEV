@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { loadProjects } from "../lib/projects";
+import { loadProjects, servableInProduction } from "../lib/projects";
 
 // Run after `next build`. Fails if anything a visitor or crawler can fetch mentions a hidden project:
 // prerendered pages, RSC payloads, sitemap, feeds, OG metadata, client scripts and public files.
@@ -20,10 +20,14 @@ function walk(dir: string, textFile: RegExp): string[] {
   });
 }
 
-// The bank portal stays hidden until the owner lifts it (CLAUDE.md), whether or not its file is in the repo.
-const alwaysHidden = ["rural-bank-staff-portal", "Abokobi"];
+// The bank portal ships only when its file exists, is not hidden and is verified. Until then its slug
+// and name must not appear anywhere a visitor can fetch, whether or not its file is in the repo.
+const projects = loadProjects();
+const bankSlug = "rural-bank-staff-portal";
+const bankPublic = servableInProduction(projects.filter((project) => project.slug === bankSlug)).length === 1;
+const alwaysHidden = bankPublic ? [] : [bankSlug, "Abokobi"];
 
-const hidden = loadProjects().filter((project) => project.hidden);
+const hidden = projects.filter((project) => project.hidden);
 const needles = [...alwaysHidden, ...hidden.flatMap((project) => [project.slug, project.title])];
 const files = roots.flatMap(([dir, textFile]) => walk(dir, textFile));
 
@@ -39,7 +43,7 @@ for (const file of files) {
     if (text.includes(needle)) leaks.push(`${file}: contains "${needle}"`);
   }
 }
-for (const slug of ["rural-bank-staff-portal", ...hidden.map((project) => project.slug)]) {
+for (const slug of [...(bankPublic ? [] : [bankSlug]), ...hidden.map((project) => project.slug)]) {
   for (const ext of ["html", "rsc", "meta"]) {
     const page = path.join(".next/server/app/projects", `${slug}.${ext}`);
     if (fs.existsSync(page)) leaks.push(`${page}: page was built`);
