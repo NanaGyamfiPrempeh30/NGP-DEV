@@ -709,9 +709,25 @@ main > section > h2::before {
     width: 100%;
   }
 
-  /* At thumbnail size the labels are too small to read, so only the shapes and the flow show. */
-  .hero-card svg text {
+  /* At thumbnail size the ECDC labels are too small to read, so only its shapes and flow show. */
+  .hero-card svg:not(.flow) text {
     display: none;
+  }
+
+  /* The bank flow is drawn for this size: four short labels, readable in every theme. */
+  .hero-card .flow text {
+    fill: var(--fg);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .hero-card .flow .arrow {
+    fill: none;
+    stroke: var(--accent);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
   }
 
   .hero-card span {
@@ -783,14 +799,6 @@ main > section > h2::before {
   fill: currentColor;
   height: 1.15rem;
   width: 1.15rem;
-}
-
-.social .glyph svg.stroke {
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 2;
 }
 
 .social .glyph {
