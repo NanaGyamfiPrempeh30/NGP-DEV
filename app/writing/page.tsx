@@ -4,12 +4,13 @@ import { getArticles } from "@/lib/content";
 import { formatDate } from "@/lib/dates";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/writing" },
   title: "Writing",
   description: "Articles by Yaw Nana Gyamfi Prempeh on Kubernetes, DevSecOps and cloud infrastructure.",
 };
 
-export default function Writing() {
-  const articles = getArticles();
+export default async function Writing() {
+  const articles = await getArticles();
   return (
     <>
       <h1>Writing</h1>

@@ -6,6 +6,7 @@ import { clientLine, getDesignWorks } from "@/lib/design";
 import { getScreenshot } from "@/lib/screenshots";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/beyond" },
   title: "Beyond code",
   description: "What Yaw Nana Gyamfi Prempeh does away from the keyboard.",
 };

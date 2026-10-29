@@ -6,6 +6,7 @@ import { getCerts, getJobs } from "@/lib/content";
 import { formatDate, formatRange } from "@/lib/dates";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/experience" },
   title: "Experience",
   description: "Work history of Yaw Nana Gyamfi Prempeh, newest first, with proof for each claim.",
 };

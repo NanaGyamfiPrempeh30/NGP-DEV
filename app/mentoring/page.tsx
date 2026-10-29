@@ -3,6 +3,7 @@ import { mentoring, mentors } from "@/content/mentoring";
 import { formatDate } from "@/lib/dates";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/mentoring" },
   title: "Mentoring",
   description: "Mentoring given and received by Yaw Nana Gyamfi Prempeh.",
 };

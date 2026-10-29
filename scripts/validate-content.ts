@@ -8,6 +8,8 @@ import { DesignWork, designWorks } from "../content/design";
 import { designSizes, publishable } from "../lib/design";
 import { screenshots } from "../content/screenshots";
 import { loadProjects, type LoadedProject } from "../lib/projects";
+import { articlesFallback, mediumPostId } from "../content/articles";
+import { sitemapEntries } from "../lib/sitemap";
 
 function fail(message: string): never {
   console.error(`validate: ${message}`);
@@ -131,6 +133,25 @@ for (const [i, work] of designWorks.entries()) {
   }
 }
 
+// The static article list is what the feed merges into (lib/medium.ts), so every entry needs a
+// Medium post ID, unique, and an ISO date.
+const articleIds = new Set<string>();
+for (const [i, article] of articlesFallback.entries()) {
+  const id = mediumPostId(article.url);
+  if (!id) fail(`articles[${i}] (${article.title}): no Medium post ID in ${article.url}`);
+  if (articleIds.has(id)) fail(`articles[${i}] (${article.title}): post ID ${id} is listed twice`);
+  articleIds.add(id);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(article.date)) fail(`articles[${i}] (${article.title}): date must be YYYY-MM-DD`);
+}
+
+// The sitemap must never point at a hidden or unverified project.
+const listed = new Set(sitemapEntries(projects).map((entry) => entry.url));
+for (const project of projects) {
+  if ((project.hidden || !project.verified) && [...listed].some((url) => url.endsWith(`/projects/${project.slug}`))) {
+    fail(`${project.slug}: hidden or unverified, but listed in the sitemap`);
+  }
+}
+
 console.log(
-  `validate: ${jobs.length} job(s), ${certs.length} cert(s), ${projects.length} project(s), ${labs.length} lab(s), ${otherWork.length} other, ${designWorks.length} design work(s) OK`,
+  `validate: ${jobs.length} job(s), ${certs.length} cert(s), ${projects.length} project(s), ${labs.length} lab(s), ${otherWork.length} other, ${designWorks.length} design work(s), ${articlesFallback.length} article(s) OK`,
 );
