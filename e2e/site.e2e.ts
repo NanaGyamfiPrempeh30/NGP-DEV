@@ -6,7 +6,7 @@ const routes = [
   { name: "home", path: "/" },
   { name: "experience", path: "/experience" },
   { name: "projects", path: "/projects" },
-  { name: "project-detail", path: "/projects/ecdc-kubernetes-ionos" },
+  { name: "project-detail", path: "/projects/eu-health-kubernetes-ionos" },
   { name: "writing", path: "/writing" },
   { name: "mentoring", path: "/mentoring" },
   { name: "beyond", path: "/beyond" },
@@ -254,7 +254,7 @@ test("hero photo: served through the image optimiser with its alt text", async (
 test("proof tiles announce the final figure, not the count-up", async ({ page }) => {
   await page.goto("/");
   const tile = page.locator(".tile a").first();
-  await expect(tile).toHaveAttribute("aria-label", /^453 /);
+  await expect(tile).toHaveAccessibleName(/^k8s-troubleshoot-mcp\s+453\s+passing tests/);
   await expect(tile.locator(".figure")).toHaveAttribute("aria-hidden", "true");
 });
 
@@ -318,7 +318,7 @@ test("hero case-study card: tilted from 1024px, straightens on hover, hidden bel
   await expect(card).toContainText("Case study");
   await expect(card).toHaveAttribute(
     "href",
-    bankPublic ? "/projects/rural-bank-staff-portal" : "/projects/ecdc-kubernetes-ionos",
+    bankPublic ? "/projects/rural-bank-staff-portal" : "/projects/eu-health-kubernetes-ionos",
   );
   await expect(card.locator("svg")).toHaveAttribute("aria-hidden", "true");
   const angle = () => card.evaluate((el) => getComputedStyle(el).transform);
@@ -406,7 +406,7 @@ test("lower Home sections: anchors land below the header, find-in-page works, no
 
 test("case-study contents links land below the header", async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 800 });
-  await page.goto("/projects/ecdc-kubernetes-ionos");
+  await page.goto("/projects/eu-health-kubernetes-ionos");
   const header = (await page.locator(".site-header").boundingBox())!.height;
   for (const link of await page.locator(".toc a").all()) {
     const id = (await link.getAttribute("href"))!.slice(1);
@@ -417,10 +417,10 @@ test("case-study contents links land below the header", async ({ page }) => {
   }
 });
 
-test("ECDC diagram: complete with no hover, flows on touch and on keyboard focus", async ({ browser }) => {
+test("IONOS diagram: complete with no hover, flows on touch and on keyboard focus", async ({ browser }) => {
   const context = await browser.newContext({ hasTouch: true, isMobile: true, viewport: { width: 412, height: 860 } });
   const page = await context.newPage();
-  await page.goto("/projects/ecdc-kubernetes-ionos");
+  await page.goto("/projects/eu-health-kubernetes-ionos");
   const diagram = page.locator("figure.diagram");
   await diagram.scrollIntoViewIfNeeded();
   // Everything is drawn without any interaction: 5 boxes, the private network outline, 2 dashed links, all labels.
@@ -443,7 +443,7 @@ test("ECDC diagram: complete with no hover, flows on touch and on keyboard focus
   await context.close();
 
   const desktop = await browser.newPage();
-  await desktop.goto("/projects/ecdc-kubernetes-ionos");
+  await desktop.goto("/projects/eu-health-kubernetes-ionos");
   const scroller = desktop.locator("figure.diagram .scroll");
   await scroller.focus();
   expect(await desktop.locator("figure.diagram line.flow").first().evaluate((el) => getComputedStyle(el).animationPlayState)).toBe("running");
@@ -461,7 +461,7 @@ test("reduced motion switches off every animation, including the glow and the di
     return [...new Set(running)];
   });
   expect(names).toEqual([]);
-  await page.goto("/projects/ecdc-kubernetes-ionos");
+  await page.goto("/projects/eu-health-kubernetes-ionos");
   await page.locator("figure.diagram .scroll").focus();
   expect(await page.locator("figure.diagram line.flow").first().evaluate((el) => getComputedStyle(el).animationName)).toBe("none");
 });
@@ -538,4 +538,18 @@ for (const width of [390, 1280]) {
       if ((await card.count()) > 0) await card.screenshot({ path: `test-results/screens/tiktok-${scheme}-${width}.png` });
     }
   });
+}
+
+// Credibility pass review: the pages it changed, at phone and laptop width.
+for (const width of [390, 1280]) {
+  for (const path of ["/", "/experience", "/mentoring", "/cv"]) {
+    const name = path === "/" ? "home" : path.slice(1);
+    test(`credibility review at ${width}px: ${name}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.goto(path);
+      await expect(page.locator("h1")).toBeVisible();
+      await page.screenshot({ path: `test-results/screens/review-${name}-${width}.png`, fullPage: true });
+    });
+  }
 }

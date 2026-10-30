@@ -3,8 +3,10 @@ import { JobEntry } from "@/components/JobEntry";
 import { education, headline, sideWork } from "@/content/experience";
 import { cvPdf, cvUpdated, location, roleLine } from "@/content/home";
 import { email } from "@/content/profiles";
+import { languages, skills } from "@/content/skills";
 import { getCerts, getJobs } from "@/lib/content";
 import { formatDate, formatRange } from "@/lib/dates";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/cv" },
@@ -18,7 +20,7 @@ export default function Cv() {
       <h1>Yaw Nana Gyamfi Prempeh</h1>
       <p className="lede">{roleLine}</p>
       <p className="meta">
-        {location}. <a href={`mailto:${email}`}>{email}</a>
+        {location}. <a href={`mailto:${email}`}>{email}</a>. <a href={SITE_URL}>{new URL(SITE_URL).host}</a>
       </p>
       <p>{headline}</p>
 
@@ -43,6 +45,14 @@ export default function Cv() {
         ))}
       </ul>
 
+      <h2>Skills</h2>
+      <ul>
+        {skills.map((skill) => (
+          <li key={skill.group}>
+            {skill.group}: {skill.items}
+          </li>
+        ))}
+      </ul>
       <h2>Education</h2>
       <p>
         {education.degree}, {education.school}, {education.location}. {education.start} to{" "}
@@ -59,6 +69,8 @@ export default function Cv() {
         ))}
       </ul>
 
+      <h2>Languages</h2>
+      <p>{languages.join(". ")}</p>
       <h2>References</h2>
       <p>Available on request.</p>
     </>

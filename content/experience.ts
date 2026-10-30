@@ -19,10 +19,10 @@ export const jobs: Job[] = [
     end: "2026-01",
     // PRD §10.1 approves 9 claims; §7.2 caps a job at 5 with 1 internal.
     // The other 4 (cert-manager, Tractus-X EDC, GXDCH 9 of 12, 80+ pages of docs)
-    // go on the ECDC project page (owner approved the split, 5 Oct 2026).
+    // go on the IONOS project page (owner approved the split, 5 Oct 2026).
     claims: [
       {
-        text: "Built ECDC's compliance platform cluster on IONOS Cloud from scratch with Terraform and Ansible. Sole DevSecOps engineer.",
+        text: "Built an EU public-health agency's compliance platform cluster on IONOS Cloud from scratch with Terraform and Ansible. Sole DevSecOps engineer.",
         evidence: ionosArticle,
         internal: false,
       },
@@ -80,7 +80,7 @@ export const jobs: Job[] = [
       },
       {
         text: "Built the GitHub Actions CI/CD for those apps.",
-        internal: false,
+        internal: true,
       },
     ],
     stack: ["GitHub Actions", "Heroku", "Vue", "TypeScript", "Node.js", "Python", "FastAPI"],
@@ -97,23 +97,23 @@ export const jobs: Job[] = [
     claims: [
       {
         text: "Automated build, test and deploy workflows with Jenkins and GitLab CI/CD.",
-        internal: false,
+        internal: true,
       },
       {
         text: "Monitored system performance and resource use with Prometheus and Grafana.",
-        internal: false,
+        internal: true,
       },
       {
         text: "Provisioned infrastructure with Terraform and Ansible, so development, staging and production were built the same way.",
-        internal: false,
+        internal: true,
       },
       {
         text: "Set up access controls, vulnerability management and compliance checks.",
-        internal: false,
+        internal: true,
       },
       {
         text: "Managed version control, branching and deployment history in Git.",
-        internal: false,
+        internal: true,
       },
     ],
     stack: ["Jenkins", "GitLab CI/CD", "Prometheus", "Grafana", "Terraform", "Ansible", "Git"],
@@ -130,23 +130,23 @@ export const jobs: Job[] = [
     claims: [
       {
         text: "Designed and maintained cloud infrastructure.",
-        internal: false,
+        internal: true,
       },
       {
         text: "Provisioned and managed resources across AWS and Google Cloud.",
-        internal: false,
+        internal: true,
       },
       {
         text: "Wrote infrastructure as code with Terraform and CloudFormation to replace manual provisioning.",
-        internal: false,
+        internal: true,
       },
       {
         text: "Managed access controls, encryption and threat detection.",
-        internal: false,
+        internal: true,
       },
       {
         text: "Mentored team members.",
-        internal: false,
+        internal: true,
       },
     ],
     stack: ["AWS", "Google Cloud", "Terraform", "CloudFormation"],
@@ -156,26 +156,26 @@ export const jobs: Job[] = [
     company: "Millicom Tigo",
     country: "Ghana",
     mode: "onsite",
-    // TODO(owner): employment type (full-time or part-time). Left out until confirmed.
+    // No employment type: none is known and the job overlaps nothing (owner, 30 Oct 2026).
     title: "Linux System Engineer",
     start: "2019-02",
     end: "2020-03",
     claims: [
       {
         text: "Ran Linux servers on Ubuntu, CentOS and RHEL.",
-        internal: false,
+        internal: true,
       },
       {
         text: "Installed, configured and fixed Linux services: Apache, Nginx and MySQL.",
-        internal: false,
+        internal: true,
       },
       {
         text: "Set up firewalls and intrusion detection.",
-        internal: false,
+        internal: true,
       },
       {
         text: "Documented system configurations and procedures.",
-        internal: false,
+        internal: true,
       },
     ],
     stack: ["Linux", "Ubuntu", "CentOS", "RHEL", "Apache", "Nginx", "MySQL"],

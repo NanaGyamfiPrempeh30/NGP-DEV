@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { mentoring, mentors } from "@/content/mentoring";
+import { mentoring, mentors, type MentoringPost } from "@/content/mentoring";
 import { formatDate } from "@/lib/dates";
 
 export const metadata: Metadata = {
@@ -7,6 +7,15 @@ export const metadata: Metadata = {
   title: "Mentoring",
   description: "Mentoring given and received by Yaw Nana Gyamfi Prempeh.",
 };
+
+// "6 posts, 18 Apr to 18 Jun 2026": the count and range come from the post list itself.
+function postSpan(posts: MentoringPost[]): string {
+  const dates = posts.map((post) => post.date).sort();
+  const first = formatDate(dates[0]!);
+  const last = formatDate(dates[dates.length - 1]!);
+  const sameYear = dates[0]!.slice(0, 4) === dates[dates.length - 1]!.slice(0, 4);
+  return `${posts.length} posts, ${sameYear ? first.replace(/ \d{4}$/, "") : first} to ${last},`;
+}
 
 export default function Mentoring() {
   return (
@@ -24,13 +33,13 @@ export default function Mentoring() {
             {mentoring.format} One rule: &ldquo;{mentoring.rule}&rdquo;
           </p>
           <p>
-            Over {mentoring.weeks} weeks he went {mentoring.progress.charAt(0).toLowerCase()}
+            Across {postSpan(mentoring.posts)} he went {mentoring.progress.charAt(0).toLowerCase()}
             {mentoring.progress.slice(1)}
           </p>
           <p>
             <strong>Status: {mentoring.status}.</strong>{" "}
             {mentoring.status === "paused"
-              ? `${mentoring.menteeName} paused the sessions after week ${mentoring.weeks}. The series is not finished.`
+              ? `${mentoring.menteeName}, the mentee, paused the series. It is not finished.`
               : null}
           </p>
 

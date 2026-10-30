@@ -709,7 +709,7 @@ main > section > h2::before {
     width: 100%;
   }
 
-  /* At thumbnail size the ECDC labels are too small to read, so only its shapes and flow show. */
+  /* At thumbnail size the IONOS diagram labels are too small to read, so only its shapes and flow show. */
   .hero-card svg:not(.flow) text {
     display: none;
   }
@@ -1411,7 +1411,7 @@ main > section > h2::before {
   padding: 0.7rem 0.9rem;
 }
 
-/* ECDC diagram */
+/* IONOS diagram */
 .diagram {
   background: var(--surface);
   border: 1px solid var(--rule);

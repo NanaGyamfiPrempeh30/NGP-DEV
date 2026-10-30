@@ -10,11 +10,13 @@ export function SiteHeader() {
         Skip to content
       </a>
       <div className="wrap bar">
-        <Link className="brand" href="/" aria-label="Yaw Nana Gyamfi Prempeh, home">
+        {/* No aria-label: the name comes from the visible text, so it always contains it (WCAG 2.5.3). */}
+        <Link className="brand" href="/">
           <span className="mark" aria-hidden="true">
             NGP
           </span>
           <span className="brand-name">Yaw Nana Gyamfi Prempeh</span>
+          <span className="sr-only">, home</span>
         </Link>
         <nav aria-label="Main" className="nav-wide">
           <NavLinks />
