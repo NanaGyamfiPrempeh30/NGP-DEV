@@ -4,6 +4,7 @@ import { ViewTransition } from "react";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteMotion } from "@/components/SiteMotion";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 // Two families, both variable, latin only. next/font downloads them at build time and serves them from this site.
@@ -25,13 +26,14 @@ const mono = Atkinson_Hyperlegible_Mono({
   fallback: ["Atkinson Mono Fallback", "ui-monospace", "monospace"],
 });
 
+// Each page sets its own canonical path; metadataBase turns it into a full URL.
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Yaw Nana Gyamfi Prempeh, DevSecOps Engineer",
-    template: "%s | Yaw Nana Gyamfi Prempeh",
+    default: `${SITE_NAME}, DevSecOps Engineer`,
+    template: `%s | ${SITE_NAME}`,
   },
-  description:
-    "Portfolio of Yaw Nana Gyamfi Prempeh (NGP-Dev), DevSecOps engineer in Accra, Ghana. Every claim links to proof.",
+  description: SITE_DESCRIPTION,
 };
 
 export const viewport: Viewport = { viewportFit: "cover" };

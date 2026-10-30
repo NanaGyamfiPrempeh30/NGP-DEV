@@ -9,6 +9,7 @@ import { formatDate } from "@/lib/dates";
 import { getProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/projects" },
   title: "Projects",
   description: "Work, client and open source projects by Yaw Nana Gyamfi Prempeh, each with links to proof.",
 };

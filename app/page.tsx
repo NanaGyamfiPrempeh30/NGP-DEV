@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { BankFlowDiagram } from "@/components/BankFlowDiagram";
@@ -9,20 +10,24 @@ import { cvPdf, location, proofStrip, roleLine, tagline } from "@/content/home";
 import { getArticles, getJobs } from "@/lib/content";
 import { formatDate, formatRange } from "@/lib/dates";
 import { heroPhoto } from "@/lib/hero";
+import { jsonLdScript, personJsonLd } from "@/lib/jsonld";
 import { getProjects } from "@/lib/projects";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 const typeLabel = { "full-time": "Full-time", "part-time": "Part-time", contract: "Contract" } as const;
 
-export default function Home() {
+export default async function Home() {
   const projects = getProjects();
   const slugs = new Set(projects.map((p) => p.slug));
   const proof = proofStrip.filter((item) => slugs.has(item.project));
   const featured = projects.filter((p) => p.featured).slice(0, 3);
-  const articles = getArticles().slice(0, 3);
+  const articles = (await getArticles()).slice(0, 3);
   const jobs = getJobs();
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(personJsonLd()) }} />
       <section className="hero">
         <div className="hero-bg" aria-hidden="true" />
         <div className="hero-text">

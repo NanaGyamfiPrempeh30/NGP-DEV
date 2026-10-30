@@ -3,6 +3,7 @@ import { jobs } from "../content/experience";
 import { labs } from "../content/labs";
 import { otherWork } from "../content/other-work";
 import { articlesFallback } from "../content/articles";
+import { fetchFeed, mergeArticles } from "./medium";
 import { visible } from "./visibility";
 
 export function getJobs() {
@@ -22,7 +23,8 @@ export function getCerts(today = new Date().toISOString().slice(0, 10)) {
   return certs.filter((cert) => !cert.expires || cert.expires >= today);
 }
 
-// M4 merges the Medium feed into this list. Until then the static list is the source.
-export function getArticles() {
-  return [...articlesFallback].sort((a, b) => b.date.localeCompare(a.date));
+// The static list plus any newer post from the Medium feed (lib/medium.ts). No total count is shown:
+// the feed holds only the latest 10 posts.
+export async function getArticles() {
+  return mergeArticles(await fetchFeed(), articlesFallback);
 }

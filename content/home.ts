@@ -17,7 +17,7 @@ export type ProofItem = {
 };
 
 // Figures come from METRICS.md only. Each tile links to where a visitor can check it.
-// GitHub stars and a live article count join at M4, when they update from their feeds.
+// No live article count: Medium's feed holds only the latest 10 posts (lib/medium.ts).
 export const proofStrip: ProofItem[] = [
   {
     label: "k8s-troubleshoot-mcp",
