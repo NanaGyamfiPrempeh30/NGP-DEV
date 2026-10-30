@@ -54,6 +54,7 @@ public/cv/           YNGP_CV_public.pdf (no address/phone/referees)
 ## Owner reminders (do not skip)
 - **Bank page is published.** Its text must stay identical to the ticked checklist (PR #25 comment 6325686300). Any change needs a new checklist and ticks.
 - **Headshot.** I own the picture and no third party has any claim to it. Don't ask about permission again.
+- **Google Search Console file.** `public/googlec9589d4fbea855f7.html` proves site ownership to Google. Keep it forever, byte for byte. Never rename, move or delete it.
 
 ## Data sources
 - Medium RSS: `https://medium.com/feed/@yawgyamfiprempeh27`, revalidate 86400. Merge with `content/articles.ts`. Never fail the build on fetch error.

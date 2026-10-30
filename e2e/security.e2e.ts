@@ -63,3 +63,20 @@ for (const path of routes) {
     expect(problems).toEqual([]);
   });
 }
+
+// Google Search Console ownership file (CLAUDE.md: keep it forever).
+test("Google verification file is served as is", async ({ request }) => {
+  const res = await request.get("/googlec9589d4fbea855f7.html");
+  expect(res.status()).toBe(200);
+  expect(res.headers()["content-type"]).toContain("text/html");
+  expect(await res.text()).toBe("google-site-verification: googlec9589d4fbea855f7.html");
+});
+
+test("robots.txt and sitemap.xml are served", async ({ request }) => {
+  const robots = await request.get("/robots.txt");
+  expect(robots.status()).toBe(200);
+  expect(await robots.text()).toContain("Sitemap:");
+  const sitemap = await request.get("/sitemap.xml");
+  expect(sitemap.status()).toBe(200);
+  expect(await sitemap.text()).toContain("<urlset");
+});
