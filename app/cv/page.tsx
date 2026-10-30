@@ -7,6 +7,7 @@ import { getCerts, getJobs } from "@/lib/content";
 import { formatDate, formatRange } from "@/lib/dates";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/cv" },
   title: "CV",
   description: "Printable CV of Yaw Nana Gyamfi Prempeh, with a PDF download.",
 };
