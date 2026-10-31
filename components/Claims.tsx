@@ -12,7 +12,13 @@ export function Claims({ claims }: { claims: Claim[] }) {
               Proof: {claim.evidence.label}
             </a>
           ) : claim.internal ? (
-            <span className="proof">Private work, no public link</span>
+            // On paper one dagger stands in for the label; the CV page prints a single footnote for it.
+            <span className="proof">
+              <span className="screen-only">Private work, no public link</span>
+              <span className="print-only" aria-hidden="true">
+                †
+              </span>
+            </span>
           ) : null}
         </li>
       ))}

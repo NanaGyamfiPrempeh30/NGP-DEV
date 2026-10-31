@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { pdfText } from "../lib/pdf-text";
+import { pdfPageCount, pdfText } from "../lib/pdf-text";
 import { jobs } from "./experience";
 import { skills } from "./skills";
 
@@ -52,6 +52,17 @@ describe("public CV PDF", () => {
     for (const figure of text.match(/\d+(?:\.\d+)?\s?%/g) ?? []) {
       expect(siteSource).toContain(figure);
     }
+  });
+
+  it("fits on 3 A4 pages at most", () => {
+    expect(pdfPageCount(pdf)).toBeGreaterThan(0);
+    expect(pdfPageCount(pdf)).toBeLessThanOrEqual(3);
+  });
+
+  it("marks private work with one dagger and a single footnote", () => {
+    expect(text).not.toContain("Private work, no public link Private");
+    expect(text.match(/Private work, no public link/g)?.length).toBe(1);
+    expect(text).toContain("† Private work, no public link.");
   });
 
   it("matches the site: every job claim and skill line is in it", () => {

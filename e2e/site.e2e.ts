@@ -553,3 +553,20 @@ for (const width of [390, 1280]) {
     });
   }
 }
+
+test("no built page or text file has the old LinkedIn slug", async ({ request }) => {
+  const paths = [
+    ...routes.map((route) => route.path),
+    ...servableInProduction(loadProjects()).map((project) => `/projects/${project.slug}`),
+    "/llms.txt",
+    "/sitemap.xml",
+    "/robots.txt",
+  ];
+  for (const path of paths) {
+    const res = await request.get(path);
+    expect(res.status(), path).toBe(200);
+    expect(await res.text(), path).not.toContain("yaw-gyamfi-prempeh");
+  }
+  const home = await (await request.get("/")).text();
+  expect(home).toContain("https://www.linkedin.com/in/yaw-nana-gyamfi-prempeh-4042a0129/");
+});

@@ -310,7 +310,7 @@ Link every profile directly. No verification needed; they are the owner's own UR
 | Email (only address on the site) | mailto:yawnanagyamfiprempeh@proton.me |
 | GitHub | https://github.com/NanaGyamfiPrempeh30 |
 | GitLab | https://gitlab.com/NanaGyamfiPrempeh30 |
-| LinkedIn | https://www.linkedin.com/in/yaw-gyamfi-prempeh-4042a0129 |
+| LinkedIn | https://www.linkedin.com/in/yaw-nana-gyamfi-prempeh-4042a0129/ |
 | Medium | https://medium.com/@yawgyamfiprempeh27 |
 | X | https://x.com/y_nagprem |
 | TikTok | https://www.tiktok.com/@ngp_dronelens |

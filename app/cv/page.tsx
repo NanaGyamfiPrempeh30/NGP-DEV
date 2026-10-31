@@ -35,6 +35,7 @@ export default function Cv() {
           <JobEntry key={`${job.company}-${job.start}`} job={job} maxTags={8} />
         ))}
       </ol>
+      <p className="meta print-only">† Private work, no public link.</p>
 
       <h2>Freelance and side projects</h2>
       <ul>

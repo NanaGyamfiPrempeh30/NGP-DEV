@@ -109,3 +109,7 @@ export function pdfText(pdf: Buffer): string {
   }
   return pages.join("\n");
 }
+
+export function pdfPageCount(pdf: Buffer): number {
+  return pdf.toString("latin1").match(/\/Type \/Page\s/g)?.length ?? 0;
+}
