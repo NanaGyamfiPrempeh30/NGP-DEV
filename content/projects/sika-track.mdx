@@ -8,7 +8,7 @@ role: "Author"
 start: "2026-04"
 startSource: first-commit
 stack: ["Flask", "Supabase", "Render", "Telegram"]
-outcome: "Telegram bookkeeping bot for informal businesses in Ghana. I use it, and so do others."
+outcome: "A personal Telegram app I use, with others, that keeps the books for informal businesses in Ghana."
 claims:
   - text: "Money columns moved from REAL to NUMERIC(12,2) after 12345.67 was stored as 12345.7. Existing databases migrate automatically."
     evidence: { label: "PR #3", url: "https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/3" }
@@ -17,12 +17,13 @@ links:
   - { label: "Repo", url: "https://github.com/NanaGyamfiPrempeh30/Sika-Track" }
   - { label: "PR #3", url: "https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/3" }
   - { label: "PR #6", url: "https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/6" }
+  - { label: "Backup workflow", url: "https://github.com/NanaGyamfiPrempeh30/Sika-Track/blob/main/.github/workflows/backup.yml" }
 verified: true
 */}
 
 ## Context
 
-Sika Track is a Telegram bot for bookkeeping. I made it for informal businesses in Ghana, where the daily record is often a paper notebook. It is a personal project. I use it myself, and so do other people.
+Sika Track is a Telegram bot for bookkeeping. I made it for informal businesses in Ghana, where the daily record is often a paper notebook. It is a personal Telegram app I use, with others.
 
 Built with Claude.
 
@@ -45,7 +46,7 @@ A trader will not open a spreadsheet at the end of a long day. Most already use 
 2. Telegram posts it to a Flask app through a webhook.
 3. The app works out the amount and the category, then saves the entry.
 
-The app runs on Render and the data sits in Supabase. A GitHub Action backs up the database every Sunday. The repo is public, so each backup is encrypted before it is stored, and kept for 90 days.
+The app runs on Render and the data sits in Supabase. A GitHub Action backs up the database every Sunday. The repo is public, so each backup is encrypted before it is stored, and kept for 90 days. See the [backup workflow](https://github.com/NanaGyamfiPrempeh30/Sika-Track/blob/main/.github/workflows/backup.yml).
 
 ## What broke and how I fixed it
 
@@ -59,14 +60,15 @@ A failed database step could jam the bot. The same PR made the bot reuse one con
 
 Anyone who knew the bot's web address could have sent it fake messages, for example to delete another trader's data. I added a webhook secret, and the bot now rejects any call without it. That is also in [PR #3](https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/3).
 
-An unzipped backup sat in my code folder, where it could have been pushed to the public repo. I made Git ignore backup files in [PR #6](https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/6), merged on 28 September 2026.
+An unzipped backup sat in my code folder, where it could have been pushed to the public repo. I made Git ignore backup files in [PR #6](https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/6), merged on 28 September 2026. The repo's history, checked on 30 October 2026, shows no backup, archive or `.env` file was ever committed.
 
 ## Result
 
-It is in daily use by me and by others.
+It is a personal Telegram app I use, with others.
 
 ## Links
 
 - [Repo](https://github.com/NanaGyamfiPrempeh30/Sika-Track)
 - [PR #3: webhook secret, exact money type, connection handling](https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/3)
 - [PR #6: keep backups out of Git](https://github.com/NanaGyamfiPrempeh30/Sika-Track/pull/6)
+- [Backup workflow: weekly, encrypted, kept 90 days](https://github.com/NanaGyamfiPrempeh30/Sika-Track/blob/main/.github/workflows/backup.yml)

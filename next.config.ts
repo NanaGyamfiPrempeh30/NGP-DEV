@@ -59,6 +59,16 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  // The IONOS case study moved when the client stopped being named. Old links keep working.
+  async redirects() {
+    return [
+      {
+        source: "/projects/ecdc-kubernetes-ionos",
+        destination: "/projects/eu-health-kubernetes-ionos",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 // No plugins: each project file keeps its YAML inside an MDX comment, which MDX skips.

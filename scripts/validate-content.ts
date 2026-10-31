@@ -25,9 +25,10 @@ for (const [i, job] of jobs.entries()) {
   if (!result.success) {
     fail(`jobs[${i}] (${job.company}): ${result.error.message}`);
   }
-  // PRD §7.2: at most one internal claim per job.
-  if (job.claims.filter((c) => c.internal).length > 1) {
-    fail(`jobs[${i}] (${job.company}): more than 1 internal claim`);
+  // PRD §7.2: a bullet with a number needs evidence or internal: true, and at most one per job may
+  // lean on internal. Bullets with no number may be internal too: that only labels them as private work.
+  if (job.claims.filter((c) => c.internal && !c.evidence && /\d/.test(c.text)).length > 1) {
+    fail(`jobs[${i}] (${job.company}): more than 1 internal claim with a number`);
   }
   if (!job.verified) {
     warn(`${job.company} is verified: false and will be hidden in production`);

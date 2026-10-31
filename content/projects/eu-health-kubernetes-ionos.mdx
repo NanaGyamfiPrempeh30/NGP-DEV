@@ -1,18 +1,19 @@
 {/*
 # Holds the 4 Bosonit claims from PRD §10.1 that do not fit on the job entry (max 5, 1 internal).
-slug: ecdc-kubernetes-ionos
-title: "ECDC Kubernetes on IONOS"
+slug: eu-health-kubernetes-ionos
+title: "Kubernetes on IONOS for an EU public-health agency"
 kind: work
 featured: true
 canNameClient: false
+clientLabel: "EU public-health agency"
 role: "Sole DevSecOps engineer"
 start: "2025-11"
 end: "2026-01"
 startSource: owner
 stack: ["Kubernetes", "IONOS Cloud", "Terraform", "Ansible", "Traefik", "HAProxy", "Vault", "ArgoCD"]
-outcome: "ECDC's compliance platform cluster on IONOS Cloud, built from scratch."
+outcome: "An EU public-health agency's compliance platform cluster on IONOS Cloud, built from scratch."
 claims:
-  - text: "cert-manager with a self-signed CA for cluster services; Let's Encrypt HTTP-01 tested on a dummy domain (`hello.ecdc.es`)."
+  - text: "cert-manager with a self-signed CA for cluster services; Let's Encrypt HTTP-01 tested on a dummy domain."
     evidence: { label: "Article", url: "https://medium.com/@yawgyamfiprempeh27/i-deployed-a-production-kubernetes-cluster-on-a-european-bare-metal-cloud-85555b1fe4a8" }
     internal: false
   - text: "Eclipse Tractus-X EDC with custom Helm values and Vault integration."
@@ -28,7 +29,7 @@ verified: true
 
 ## Context
 
-A contract with Bosonit, from November 2025 to January 2026. The end client was ECDC, and the job was the Kubernetes cluster for its compliance platform. It ran on IONOS Cloud. I was the only DevSecOps engineer on it.
+A contract with Bosonit, from November 2025 to January 2026. The end client was an EU public-health agency, and the job was the Kubernetes cluster for its compliance platform. It ran on IONOS Cloud. I was the only DevSecOps engineer on it.
 
 ## Problem
 
@@ -45,7 +46,7 @@ IONOS gives you virtual machines, a network and a public IP. Everything else is 
 
 ## How it works
 
-<EcdcDiagram />
+<IonosDiagram />
 
 1. A request reaches the bastion's public IP.
 2. HAProxy on the bastion passes it on in TCP mode. It does not open the TLS connection.
