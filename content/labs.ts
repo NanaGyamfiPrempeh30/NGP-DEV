@@ -23,7 +23,7 @@ export const labs: Lab[] = [
         url: "https://medium.com/@yawgyamfiprempeh27/deploying-an-advanced-comprehensive-end-to-end-devsecops-kubernetes-three-tier-project-a18003741d0a",
       },
     ],
-    verified: false,
+    verified: true,
   },
 ];
 

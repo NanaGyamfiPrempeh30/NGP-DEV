@@ -16,6 +16,6 @@ export const otherWork: OtherWork[] = [
         url: "https://medium.com/@yawgyamfiprempeh27/deploy-a-fastapi-app-to-azure-container-apps-using-github-actions-complete-ci-cd-guide-5ef253cafbba",
       },
     ],
-    verified: false,
+    verified: true,
   },
 ];
