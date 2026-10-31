@@ -36,7 +36,7 @@ export default function Beyond() {
 
       <h2>Drone flying</h2>
       <p>
-        I fly drones as a hobby. My videos are on TikTok: <a href={tiktok.url}>{tiktok.label}</a>
+        I am a hobbyist drone pilot. My videos are on TikTok: <a href={tiktok.url}>{tiktok.label}</a>
       </p>
 
       {tiktokShot ? (

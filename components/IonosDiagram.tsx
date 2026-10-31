@@ -1,18 +1,18 @@
-// Access path of the ECDC cluster. Every label is a fact from the Medium article linked on the page.
+// Access path of the IONOS cluster. Every label is a fact from the Medium article linked on the page.
 // `thumbnail` draws the same picture with no text alternative and no ids, for decorative reuse.
-export function EcdcDiagram({ thumbnail = false }: { thumbnail?: boolean }) {
-  const id = thumbnail ? "ecdc-thumb" : "ecdc";
+export function IonosDiagram({ thumbnail = false }: { thumbnail?: boolean }) {
+  const id = thumbnail ? "ionos-thumb" : "ionos";
   const drawing = (
       <svg
         viewBox="0 0 720 270"
         {...(thumbnail
           ? { "aria-hidden": true, focusable: false }
-          : { role: "img", "aria-labelledby": "ecdc-diagram-title ecdc-diagram-desc" })}
+          : { role: "img", "aria-labelledby": "ionos-diagram-title ionos-diagram-desc" })}
       >
         {thumbnail ? null : (
           <>
-            <title id="ecdc-diagram-title">How traffic reaches the ECDC cluster</title>
-            <desc id="ecdc-diagram-desc">
+            <title id="ionos-diagram-title">How traffic reaches the cluster</title>
+            <desc id="ionos-diagram-desc">
               The internet reaches one bastion host. The bastion runs OpenVPN and HAProxy. Behind it, on a
               private network, sit three nodes with no public IPs: one master and two workers.
             </desc>

@@ -709,7 +709,7 @@ main > section > h2::before {
     width: 100%;
   }
 
-  /* At thumbnail size the ECDC labels are too small to read, so only its shapes and flow show. */
+  /* At thumbnail size the IONOS diagram labels are too small to read, so only its shapes and flow show. */
   .hero-card svg:not(.flow) text {
     display: none;
   }
@@ -1194,6 +1194,11 @@ main > section > h2::before {
   font-weight: 650;
 }
 
+/* Text for one medium only: the CV prints a dagger where the screen shows "Private work, no public link". */
+.print-only {
+  display: none;
+}
+
 /* Inner-page entries: date rail on wide screens, stacked on small ones. */
 .entries {
   margin-top: 0.5rem;
@@ -1411,7 +1416,7 @@ main > section > h2::before {
   padding: 0.7rem 0.9rem;
 }
 
-/* ECDC diagram */
+/* IONOS diagram */
 .diagram {
   background: var(--surface);
   border: 1px solid var(--rule);
@@ -1702,7 +1707,81 @@ main > section > h2::before {
     text-decoration: none;
   }
 
+  /* Compact CV: about two A4 pages. Screen rules (18px, 1.6) stay as they are; this is paper only. */
+  @page {
+    margin: 12mm 14mm;
+  }
+
+  html {
+    font-size: 9.5pt;
+  }
+
+  body {
+    line-height: 1.35;
+  }
+
+  h1 {
+    font-size: 18pt;
+  }
+
+  h2 {
+    font-size: 12pt;
+    margin-top: 10pt;
+  }
+
+  main p,
+  main ul,
+  main ol {
+    margin-top: 0.3rem;
+  }
+
+  .screen-only {
+    display: none;
+  }
+
+  .print-only {
+    display: revert;
+  }
+
   .entry {
+    display: grid;
+    gap: 0.8rem;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .entry .when {
+    margin-top: 0.1rem;
+  }
+
+  .entry-title {
+    font-size: 11pt;
+  }
+
+  .claims {
+    margin-top: 0.25rem;
+  }
+
+  .claims li {
+    border-left-width: 2px;
     break-inside: avoid;
+    margin-top: 0.2rem;
+    padding-left: 0.5rem;
+  }
+
+  .claims .proof {
+    display: inline;
+    margin-left: 0.4em;
+  }
+
+  .tags {
+    gap: 0.2rem;
+    margin-top: 0.3rem;
+  }
+
+  .tags li {
+    font-size: 7.5pt;
+    padding: 0 0.35rem;
   }
 }

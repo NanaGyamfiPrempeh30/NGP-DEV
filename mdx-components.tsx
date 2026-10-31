@@ -1,6 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import type { ReactNode } from "react";
-import { EcdcDiagram } from "@/components/EcdcDiagram";
+import { IonosDiagram } from "@/components/IonosDiagram";
 import { slugify } from "@/lib/slug";
 
 function text(children: ReactNode): string {
@@ -26,6 +26,6 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     p: ({ children }) => (
       <p className={text(children).startsWith("TODO(owner)") ? "todo" : undefined}>{children}</p>
     ),
-    EcdcDiagram,
+    IonosDiagram,
   };
 }

@@ -13,6 +13,7 @@
     "build": "pnpm validate && next build",
     "check:hidden": "tsx scripts/check-hidden.ts",
     "design:images": "tsx scripts/design-images.ts",
+    "cv:pdf": "node scripts/cv-pdf.mjs",
     "e2e": "playwright test",
     "lighthouse": "node scripts/lighthouse.mjs",
     "start": "next start"
@@ -28,7 +29,7 @@
     "zod": "4.6.5"
   },
   "devDependencies": {
-    "@axe-core/playwright": "4.13.0",
+    "@axe-core/playwright": "4.14.0",
     "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "4.3.3",
     "@types/mdx": "2.0.13",
