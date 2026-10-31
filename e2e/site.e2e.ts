@@ -570,3 +570,25 @@ test("no built page or text file has the old LinkedIn slug", async ({ request })
   const home = await (await request.get("/")).text();
   expect(home).toContain("https://www.linkedin.com/in/yaw-nana-gyamfi-prempeh-4042a0129/");
 });
+
+// Published 31 Oct 2026: TKA's page, and the lab and py-guardian-ops cards on /projects.
+for (const width of [390, 1280]) {
+  test(`published pages at ${width}px: TKA, three-tier lab card, py-guardian-ops card`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    const tka = await page.goto("/projects/tka-auto-logistics");
+    expect(tka?.status()).toBe(200);
+    await page.screenshot({ path: `test-results/screens/published-tka-${width}.png`, fullPage: true });
+    await page.goto("/projects");
+    for (const [name, title] of [
+      ["eks-lab", "DevSecOps three-tier project on EKS"],
+      ["py-guardian-ops", "py-guardian-ops"],
+    ] as const) {
+      const card = page.locator("article.card", { has: page.locator("h3", { hasText: title }) });
+      await card.scrollIntoViewIfNeeded();
+      await expect(card).toBeVisible();
+      await expect(card).not.toContainText("Unverified draft");
+      await card.screenshot({ path: `test-results/screens/published-${name}-${width}.png` });
+    }
+  });
+}

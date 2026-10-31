@@ -27,6 +27,8 @@ describe("sitemap", () => {
       else expect(urls).toContain(url);
     }
     expect(urls).toContain(`${SITE_URL}/projects/rural-bank-staff-portal`);
+    // Published 31 Oct 2026 after its checklist was fully ticked (PR #34 comment 6536848141).
+    expect(urls).toContain(`${SITE_URL}/projects/tka-auto-logistics`);
     expect(urls.every((url) => url.startsWith("https://"))).toBe(true);
   });
 });
