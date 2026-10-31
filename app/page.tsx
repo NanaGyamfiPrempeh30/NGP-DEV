@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { BankFlowDiagram } from "@/components/BankFlowDiagram";
-import { EcdcDiagram } from "@/components/EcdcDiagram";
+import { IonosDiagram } from "@/components/IonosDiagram";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SocialRow } from "@/components/SocialRow";
 import { headline } from "@/content/experience";
@@ -68,16 +68,18 @@ export default async function Home() {
             />
           </div>
           {/* From 1024px: a tilted card on the photo's corner that leads to a case study.
-              The bank portal when it is published, otherwise ECDC. */}
+              The bank portal when it is published, otherwise the IONOS cluster. */}
           {slugs.has("rural-bank-staff-portal") ? (
-            <Link className="hero-card" href="/projects/rural-bank-staff-portal" aria-label="Case study: Abokobi Rural Bank staff portal">
+            <Link className="hero-card" href="/projects/rural-bank-staff-portal">
               <BankFlowDiagram />
               <span>Case study</span>
+              <span className="sr-only">: Abokobi Rural Bank staff portal</span>
             </Link>
-          ) : slugs.has("ecdc-kubernetes-ionos") ? (
-            <Link className="hero-card" href="/projects/ecdc-kubernetes-ionos" aria-label="Case study: ECDC Kubernetes on IONOS">
-              <EcdcDiagram thumbnail />
+          ) : slugs.has("eu-health-kubernetes-ionos") ? (
+            <Link className="hero-card" href="/projects/eu-health-kubernetes-ionos">
+              <IonosDiagram thumbnail />
               <span>Case study</span>
+              <span className="sr-only">: Kubernetes on IONOS for an EU public-health agency</span>
             </Link>
           ) : null}
           </div>
@@ -95,14 +97,17 @@ export default async function Home() {
           <ul role="list" className="bento">
             {proof.map((item) => (
               <li key={item.label} className={`tile ${item.size}`} data-reveal>
-                {/* The label carries the final figure for screen readers. The animated digits are hidden from them. */}
-                <a
-                  href={item.url}
-                  aria-label={`${item.count}${item.suffix ?? ""} ${item.what}. ${item.label}. ${
-                    item.internal ? "Private work: see why" : "See proof"
-                  }`}
-                >
-                  <span className="label">{item.label}</span>
+                {/* No aria-label, so the link's name is its visible text (WCAG 2.5.3). The animated digits are
+                    hidden from screen readers; the sr-only copy gives them the final figure instead. */}
+                <a href={item.url}>
+                  <span className="label">
+                    {item.label}
+                    <span className="sr-only">
+                      {" "}
+                      {item.count}
+                      {item.suffix ?? ""}{" "}
+                    </span>
+                  </span>
                   <span className="figure" aria-hidden="true">
                     <span data-count={item.count}>{item.count}</span>
                     {item.suffix ? <small>{item.suffix}</small> : null}

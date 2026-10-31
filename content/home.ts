@@ -1,7 +1,8 @@
 export const roleLine = "DevSecOps Engineer · Kubernetes · Terraform · AWS";
 export const location = "Accra, Ghana · remote";
 export const cvPdf = "/cv/YNGP_CV_public.pdf";
-export const cvUpdated = "2026-10-05";
+// The /cv page and its PDF are rebuilt from the same content, so the date is the build date.
+export const cvUpdated = new Date().toISOString().slice(0, 10);
 
 export const tagline = "Each claim links to its source, or says why it can't.";
 
@@ -36,22 +37,21 @@ export const proofStrip: ProofItem[] = [
     size: "wide",
   },
   {
-    label: "ECDC on IONOS",
+    label: "IONOS cluster",
     count: 3,
     suffix: " nodes",
     what: "with 0 public IPs, and one bastion as the way in",
     url: "https://medium.com/@yawgyamfiprempeh27/i-deployed-a-production-kubernetes-cluster-on-a-european-bare-metal-cloud-85555b1fe4a8",
-    project: "ecdc-kubernetes-ionos",
+    project: "eu-health-kubernetes-ionos",
     size: "small",
   },
   {
-    label: "ECDC, GXDCH",
-    count: 9,
-    suffix: " of 12",
-    what: "compliance tests passing",
-    internal: true,
-    url: "/projects/ecdc-kubernetes-ionos",
-    project: "ecdc-kubernetes-ionos",
+    // PRD §10.2: 53 stars and 19 forks. Checked again on GitHub on 30 Oct 2026: 53 stars.
+    label: "k8s-devsecops",
+    count: 53,
+    what: "GitHub stars, checked 30 Oct 2026",
+    url: "https://github.com/NanaGyamfiPrempeh30/k8s-devsecops",
+    project: "k8s-devsecops",
     size: "small",
   },
 ];

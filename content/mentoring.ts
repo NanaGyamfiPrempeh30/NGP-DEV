@@ -6,7 +6,6 @@ export type MentoringPost = {
 export type MentoringSeries = {
   menteeName: string;
   status: "active" | "paused";
-  weeks: number;
   format: string;
   rule: string;
   progress: string;
@@ -20,11 +19,11 @@ export type Mentor = {
   words: string;
 };
 
-// PRD §7.5. Paused by the mentee after week 5: say so, and don't imply a finished programme.
+// PRD §7.5. Paused by the mentee: say so, and don't imply a finished programme.
+// The page counts the posts and takes the date range from them (owner, 30 Oct 2026).
 export const mentoring: MentoringSeries | null = {
   menteeName: "Clinton",
   status: "paused",
-  weeks: 5,
   format: "Weekly 3-question check-in, run in public on X.",
   rule: "Attempt first, AI second.",
   progress:
